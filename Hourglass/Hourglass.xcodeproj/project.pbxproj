@@ -1,0 +1,573 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DD29A5D88C007BD118 /* HourglassApp.swift */; };
+		253816E029A5D88C007BD118 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DF29A5D88C007BD118 /* ContentView.swift */; };
+		253816E229A5D88C007BD118 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E129A5D88C007BD118 /* Assets.xcassets */; };
+		253816E529A5D88C007BD118 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E429A5D88C007BD118 /* Preview Assets.xcassets */; };
+		253816F029A5D88C007BD118 /* HourglassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816EF29A5D88C007BD118 /* HourglassTests.swift */; };
+		253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816F929A5D88C007BD118 /* HourglassUITests.swift */; };
+		253816FC29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		253816EC29A5D88C007BD118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 253816D229A5D88C007BD118 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 253816D929A5D88C007BD118;
+			remoteInfo = Hourglass;
+		};
+		253816F629A5D88C007BD118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 253816D229A5D88C007BD118 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 253816D929A5D88C007BD118;
+			remoteInfo = Hourglass;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		253816DA29A5D88C007BD118 /* Hourglass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hourglass.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		253816DD29A5D88C007BD118 /* HourglassApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassApp.swift; sourceTree = "<group>"; };
+		253816DF29A5D88C007BD118 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		253816E129A5D88C007BD118 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		253816E429A5D88C007BD118 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		253816E629A5D88C007BD118 /* Hourglass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hourglass.entitlements; sourceTree = "<group>"; };
+		253816EB29A5D88C007BD118 /* HourglassTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HourglassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		253816EF29A5D88C007BD118 /* HourglassTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassTests.swift; sourceTree = "<group>"; };
+		253816F529A5D88C007BD118 /* HourglassUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HourglassUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		253816F929A5D88C007BD118 /* HourglassUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITests.swift; sourceTree = "<group>"; };
+		253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		253816D729A5D88C007BD118 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		253816E829A5D88C007BD118 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		253816F229A5D88C007BD118 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		253816D129A5D88C007BD118 = {
+			isa = PBXGroup;
+			children = (
+				253816DC29A5D88C007BD118 /* Hourglass */,
+				253816EE29A5D88C007BD118 /* HourglassTests */,
+				253816F829A5D88C007BD118 /* HourglassUITests */,
+				253816DB29A5D88C007BD118 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		253816DB29A5D88C007BD118 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				253816DA29A5D88C007BD118 /* Hourglass.app */,
+				253816EB29A5D88C007BD118 /* HourglassTests.xctest */,
+				253816F529A5D88C007BD118 /* HourglassUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		253816DC29A5D88C007BD118 /* Hourglass */ = {
+			isa = PBXGroup;
+			children = (
+				253816DD29A5D88C007BD118 /* HourglassApp.swift */,
+				253816DF29A5D88C007BD118 /* ContentView.swift */,
+				253816E129A5D88C007BD118 /* Assets.xcassets */,
+				253816E629A5D88C007BD118 /* Hourglass.entitlements */,
+				253816E329A5D88C007BD118 /* Preview Content */,
+			);
+			path = Hourglass;
+			sourceTree = "<group>";
+		};
+		253816E329A5D88C007BD118 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				253816E429A5D88C007BD118 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		253816EE29A5D88C007BD118 /* HourglassTests */ = {
+			isa = PBXGroup;
+			children = (
+				253816EF29A5D88C007BD118 /* HourglassTests.swift */,
+			);
+			path = HourglassTests;
+			sourceTree = "<group>";
+		};
+		253816F829A5D88C007BD118 /* HourglassUITests */ = {
+			isa = PBXGroup;
+			children = (
+				253816F929A5D88C007BD118 /* HourglassUITests.swift */,
+				253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */,
+			);
+			path = HourglassUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		253816D929A5D88C007BD118 /* Hourglass */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 253816FF29A5D88C007BD118 /* Build configuration list for PBXNativeTarget "Hourglass" */;
+			buildPhases = (
+				253816D629A5D88C007BD118 /* Sources */,
+				253816D729A5D88C007BD118 /* Frameworks */,
+				253816D829A5D88C007BD118 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hourglass;
+			productName = Hourglass;
+			productReference = 253816DA29A5D88C007BD118 /* Hourglass.app */;
+			productType = "com.apple.product-type.application";
+		};
+		253816EA29A5D88C007BD118 /* HourglassTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2538170229A5D88C007BD118 /* Build configuration list for PBXNativeTarget "HourglassTests" */;
+			buildPhases = (
+				253816E729A5D88C007BD118 /* Sources */,
+				253816E829A5D88C007BD118 /* Frameworks */,
+				253816E929A5D88C007BD118 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				253816ED29A5D88C007BD118 /* PBXTargetDependency */,
+			);
+			name = HourglassTests;
+			productName = HourglassTests;
+			productReference = 253816EB29A5D88C007BD118 /* HourglassTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		253816F429A5D88C007BD118 /* HourglassUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2538170529A5D88C007BD118 /* Build configuration list for PBXNativeTarget "HourglassUITests" */;
+			buildPhases = (
+				253816F129A5D88C007BD118 /* Sources */,
+				253816F229A5D88C007BD118 /* Frameworks */,
+				253816F329A5D88C007BD118 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				253816F729A5D88C007BD118 /* PBXTargetDependency */,
+			);
+			name = HourglassUITests;
+			productName = HourglassUITests;
+			productReference = 253816F529A5D88C007BD118 /* HourglassUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		253816D229A5D88C007BD118 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					253816D929A5D88C007BD118 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					253816EA29A5D88C007BD118 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 253816D929A5D88C007BD118;
+					};
+					253816F429A5D88C007BD118 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = 253816D929A5D88C007BD118;
+					};
+				};
+			};
+			buildConfigurationList = 253816D529A5D88C007BD118 /* Build configuration list for PBXProject "Hourglass" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 253816D129A5D88C007BD118;
+			productRefGroup = 253816DB29A5D88C007BD118 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				253816D929A5D88C007BD118 /* Hourglass */,
+				253816EA29A5D88C007BD118 /* HourglassTests */,
+				253816F429A5D88C007BD118 /* HourglassUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		253816D829A5D88C007BD118 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				253816E529A5D88C007BD118 /* Preview Assets.xcassets in Resources */,
+				253816E229A5D88C007BD118 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		253816E929A5D88C007BD118 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		253816F329A5D88C007BD118 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		253816D629A5D88C007BD118 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				253816E029A5D88C007BD118 /* ContentView.swift in Sources */,
+				253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		253816E729A5D88C007BD118 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				253816F029A5D88C007BD118 /* HourglassTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		253816F129A5D88C007BD118 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */,
+				253816FC29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		253816ED29A5D88C007BD118 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 253816D929A5D88C007BD118 /* Hourglass */;
+			targetProxy = 253816EC29A5D88C007BD118 /* PBXContainerItemProxy */;
+		};
+		253816F729A5D88C007BD118 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 253816D929A5D88C007BD118 /* Hourglass */;
+			targetProxy = 253816F629A5D88C007BD118 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		253816FD29A5D88C007BD118 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		253816FE29A5D88C007BD118 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		2538170029A5D88C007BD118 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Hourglass/Hourglass.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Hourglass/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madebyisiah.Hourglass;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2538170129A5D88C007BD118 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Hourglass/Hourglass.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Hourglass/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madebyisiah.Hourglass;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2538170329A5D88C007BD118 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madebyisiah.HourglassTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hourglass.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hourglass";
+			};
+			name = Debug;
+		};
+		2538170429A5D88C007BD118 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madebyisiah.HourglassTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hourglass.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hourglass";
+			};
+			name = Release;
+		};
+		2538170629A5D88C007BD118 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madebyisiah.HourglassUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Hourglass;
+			};
+			name = Debug;
+		};
+		2538170729A5D88C007BD118 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madebyisiah.HourglassUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Hourglass;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		253816D529A5D88C007BD118 /* Build configuration list for PBXProject "Hourglass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				253816FD29A5D88C007BD118 /* Debug */,
+				253816FE29A5D88C007BD118 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		253816FF29A5D88C007BD118 /* Build configuration list for PBXNativeTarget "Hourglass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2538170029A5D88C007BD118 /* Debug */,
+				2538170129A5D88C007BD118 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2538170229A5D88C007BD118 /* Build configuration list for PBXNativeTarget "HourglassTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2538170329A5D88C007BD118 /* Debug */,
+				2538170429A5D88C007BD118 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2538170529A5D88C007BD118 /* Build configuration list for PBXNativeTarget "HourglassUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2538170629A5D88C007BD118 /* Debug */,
+				2538170729A5D88C007BD118 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 253816D229A5D88C007BD118 /* Project object */;
+}
