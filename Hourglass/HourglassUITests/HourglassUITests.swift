@@ -1,10 +1,3 @@
-//
-//  HourglassUITests.swift
-//  HourglassUITests
-//
-//  Created by Isiah Manns on 2/21/23.
-//
-
 import XCTest
 
 final class HourglassUITests: XCTestCase {

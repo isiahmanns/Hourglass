@@ -1,10 +1,3 @@
-//
-//  HourglassTests.swift
-//  HourglassTests
-//
-//  Created by Isiah Manns on 2/21/23.
-//
-
 import XCTest
 @testable import Hourglass
 

@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Hourglass
-//
-//  Created by Isiah Manns on 2/21/23.
-//
-
 import SwiftUI
 
 struct ContentView: View {
