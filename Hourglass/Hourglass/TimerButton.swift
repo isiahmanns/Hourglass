@@ -14,7 +14,7 @@ struct TimerButton: View {
     }
 }
 
-struct TimerButtonStyle: ButtonStyle {
+private struct TimerButtonStyle: ButtonStyle {
     let size: Double = 60
 
     func makeBody(configuration: Self.Configuration) -> some View {
