@@ -18,6 +18,8 @@
 		25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6A29AAD45C005BC143 /* Color.swift */; };
 		25EB6D6F29AAE226005BC143 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */; };
 		25EB6D7229AAE32C005BC143 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D7129AAE32C005BC143 /* Font.swift */; };
+		25EB6DAC29B027AB005BC143 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6DAB29B027AB005BC143 /* ViewModel.swift */; };
+		25EB6DAE29B04BC3005BC143 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6DAD29B04BC3005BC143 /* TimerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +56,8 @@
 		25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		25EB6D7029AAE24B005BC143 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		25EB6D7129AAE32C005BC143 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		25EB6DAB29B027AB005BC143 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		25EB6DAD29B04BC3005BC143 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				25EB6D7029AAE24B005BC143 /* Info.plist */,
 				253816DD29A5D88C007BD118 /* HourglassApp.swift */,
 				253816DF29A5D88C007BD118 /* ContentView.swift */,
+				25EB6DAB29B027AB005BC143 /* ViewModel.swift */,
+				25EB6DAD29B04BC3005BC143 /* TimerManager.swift */,
 				25EB6D6829A67985005BC143 /* TimerButton.swift */,
 				253816E129A5D88C007BD118 /* Assets.xcassets */,
 				253816E629A5D88C007BD118 /* Hourglass.entitlements */,
@@ -286,6 +292,8 @@
 				25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */,
 				25EB6D7229AAE32C005BC143 /* Font.swift in Sources */,
 				253816E029A5D88C007BD118 /* ContentView.swift in Sources */,
+				25EB6DAC29B027AB005BC143 /* ViewModel.swift in Sources */,
+				25EB6DAE29B04BC3005BC143 /* TimerManager.swift in Sources */,
 				253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

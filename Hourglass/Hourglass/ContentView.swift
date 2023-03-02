@@ -1,34 +1,53 @@
 import SwiftUI
 
 struct ContentView: View {
-    let ySpacing = 20.0
-    let xSpacing = 26.0
+    private var viewModel = ViewModel()
 
     var body: some View {
         VStack(alignment: .center, spacing: 30.0) {
             Logo()
 
-            HStack(alignment: .center, spacing: xSpacing) {
-                VStack(alignment: .center, spacing: ySpacing) {
-                    Header(content: "Focus")
-                    TimerButton(value: 15)
-                    TimerButton(value: 25)
-                    TimerButton(value: 35)
-                }
-
-                VStack(alignment: .center, spacing: ySpacing) {
-                    Header(content: "Break")
-                    TimerButton(value: 3)
-                    TimerButton(value: 5)
-                    TimerButton(value: 10)
-                }
-            }
+            TimerGrid(viewModel: viewModel)
 
             SettingsButton()
         }
         .padding(40)
         .background(Color.background)
         .cornerRadius(50)
+    }
+}
+
+private struct TimerGrid: View {
+    @StateObject var viewModel: ViewModel
+    let ySpacing = 20.0
+    let xSpacing = 26.0
+
+    var body: some View {
+        HStack(alignment: .center, spacing: xSpacing) {
+            VStack(alignment: .center, spacing: ySpacing) {
+                Header(content: "Focus")
+
+                if let focusTimerModels = viewModel.timerModels[.focus] {
+                    ForEach(Array(focusTimerModels.enumerated()), id: \.element) { index, model in
+                        TimerButton(value: model.length, state: model.state) {
+                            viewModel.didTapTimer(from: model.category, index: index)
+                        }
+                    }
+                }
+            }
+
+            VStack(alignment: .center, spacing: ySpacing) {
+                Header(content: "Break")
+
+                if let restTimerModels = viewModel.timerModels[.rest] {
+                    ForEach(Array(restTimerModels.enumerated()), id: \.element) { index, model in
+                        TimerButton(value: model.length, state: model.state) {
+                            viewModel.didTapTimer(from: model.category, index: index)
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
