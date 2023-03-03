@@ -18,7 +18,7 @@ struct ContentView: View {
 }
 
 private struct TimerGrid: View {
-    @StateObject var viewModel: ViewModel
+    var viewModel: ViewModel
     let ySpacing = 20.0
     let xSpacing = 26.0
 
@@ -28,9 +28,10 @@ private struct TimerGrid: View {
                 Header(content: "Focus")
 
                 if let focusTimerModels = viewModel.timerModels[.focus] {
-                    ForEach(Array(focusTimerModels.enumerated()), id: \.element) { index, model in
-                        TimerButton(value: model.length, state: model.state) {
-                            viewModel.didTapTimer(from: model.category, index: index)
+                    ForEach(focusTimerModels) { model in
+                        let publisher = model.$state.eraseToAnyPublisher()
+                        TimerButton(value: model.length, state: model.state, publisher: publisher) {
+                            viewModel.didTapTimer(from: model)
                         }
                     }
                 }
@@ -40,9 +41,10 @@ private struct TimerGrid: View {
                 Header(content: "Break")
 
                 if let restTimerModels = viewModel.timerModels[.rest] {
-                    ForEach(Array(restTimerModels.enumerated()), id: \.element) { index, model in
-                        TimerButton(value: model.length, state: model.state) {
-                            viewModel.didTapTimer(from: model.category, index: index)
+                    ForEach(restTimerModels) { model in
+                        let publisher = model.$state.eraseToAnyPublisher()
+                        TimerButton(value: model.length, state: model.state, publisher: publisher) {
+                            viewModel.didTapTimer(from: model)
                         }
                     }
                 }

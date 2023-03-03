@@ -1,8 +1,10 @@
 import SwiftUI
+import Combine
 
 struct TimerButton: View {
     let value: Int
-    let state: Timer.State
+    @State var state: Timer.State
+    let publisher: AnyPublisher<Timer.State, Never>
     let action: () -> Void
 
     var body: some View {
@@ -12,6 +14,9 @@ struct TimerButton: View {
             Text(String(value))
         }
         .buttonStyle(TimerButton.Style(for: state))
+        .onReceive(publisher) { timerState in
+            state = timerState
+        }
     }
 }
 
@@ -50,7 +55,8 @@ extension TimerButton {
 
 struct TimerButton_Previews: PreviewProvider {
     static var previews: some View {
-        TimerButton(value: 15, state: .active) {}
+        let publisher = Just(Timer.State.inactive).eraseToAnyPublisher()
+        TimerButton(value: 15, state: .inactive, publisher: publisher) {}
             .font(Font.poppins)
     }
 }

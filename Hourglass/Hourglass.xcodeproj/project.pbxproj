@@ -14,6 +14,7 @@
 		253816F029A5D88C007BD118 /* HourglassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816EF29A5D88C007BD118 /* HourglassTests.swift */; };
 		253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816F929A5D88C007BD118 /* HourglassUITests.swift */; };
 		253816FC29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */; };
+		25937DBA29B1B4E900A15F0B /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25937DB929B1B4E900A15F0B /* TimerModel.swift */; };
 		25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6829A67985005BC143 /* TimerButton.swift */; };
 		25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6A29AAD45C005BC143 /* Color.swift */; };
 		25EB6D6F29AAE226005BC143 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */; };
@@ -51,6 +52,7 @@
 		253816F529A5D88C007BD118 /* HourglassUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HourglassUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		253816F929A5D88C007BD118 /* HourglassUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITests.swift; sourceTree = "<group>"; };
 		253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		25937DB929B1B4E900A15F0B /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		25EB6D6829A67985005BC143 /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
 		25EB6D6A29AAD45C005BC143 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				253816DD29A5D88C007BD118 /* HourglassApp.swift */,
 				253816DF29A5D88C007BD118 /* ContentView.swift */,
 				25EB6DAB29B027AB005BC143 /* ViewModel.swift */,
+				25937DB929B1B4E900A15F0B /* TimerModel.swift */,
 				25EB6DAD29B04BC3005BC143 /* TimerManager.swift */,
 				25EB6D6829A67985005BC143 /* TimerButton.swift */,
 				253816E129A5D88C007BD118 /* Assets.xcassets */,
@@ -293,6 +296,7 @@
 				25EB6D7229AAE32C005BC143 /* Font.swift in Sources */,
 				253816E029A5D88C007BD118 /* ContentView.swift in Sources */,
 				25EB6DAC29B027AB005BC143 /* ViewModel.swift in Sources */,
+				25937DBA29B1B4E900A15F0B /* TimerModel.swift in Sources */,
 				25EB6DAE29B04BC3005BC143 /* TimerManager.swift in Sources */,
 				253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */,
 			);
