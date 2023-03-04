@@ -14,6 +14,10 @@ class ViewModel: ObservableObject {
             Timer.Model(length: 10, category: .rest, size: .large)]
     ]
 
+    private var activeTimerModel: Timer.Model?
+
+    private var pendingTimerModel: Timer.Model?
+
     private let timerManager = TimerManager.shared
 
     @Published var viewState = ViewState()
@@ -25,28 +29,61 @@ class ViewModel: ObservableObject {
     func didTapTimer(from model: Timer.Model) -> Void {
         if timerManager.isTimerActive {
             if model.id == timerManager.activeTimerModelId {
-                timerManager.stopTimer()
-                model.state = .inactive
+                stopTimer(for: model)
             } else {
-                // TODO: - Prompt to cancel currently active timer and start new one
-                viewState.showCancelTimerAlert = true
+                promptStartNewTimer(for: model)
             }
         } else {
-            timerManager.startTimer(length: model.length,
-                                    activeTimerModelId: model.id) { [weak self] in
-                // TODO: - Show timer complete alert, play sound FX
-                model.state = .inactive
-                self?.viewState.showTimerCompleteAlert = true
-            }
-            model.state = .active
+            startTimer(for: model)
         }
+    }
+
+    func handleStartNewTimerDialog(response: StartNewTimerDialogResponse) -> Void {
+        switch response {
+        case .no:
+            break
+        case .yes:
+            guard let activeTimerModel, let pendingTimerModel else { fatalError() }
+
+            stopTimer(for: activeTimerModel)
+            startTimer(for: pendingTimerModel)
+        }
+
+        pendingTimerModel = nil
+    }
+
+    private func stopTimer(for model: Timer.Model) {
+        timerManager.stopTimer()
+        model.state = .inactive
+        activeTimerModel = nil
+    }
+
+    private func startTimer(for model: Timer.Model) {
+        timerManager.startTimer(length: model.length,
+                                activeTimerModelId: model.id) { [weak self] in
+            // TODO: - Play sound FX
+            model.state = .inactive
+            self?.viewState.showTimerCompleteAlert = true
+        }
+        model.state = .active
+        activeTimerModel = model
+    }
+
+    private func promptStartNewTimer(for model: Timer.Model) {
+        pendingTimerModel = model
+        viewState.showStartNewTimerDialog = true
     }
 }
 
 extension ViewModel {
     struct ViewState {
-        var showCancelTimerAlert: Bool = false
+        var showStartNewTimerDialog: Bool = false
         var showTimerCompleteAlert: Bool = false
+    }
+
+    enum StartNewTimerDialogResponse {
+        case yes
+        case no
     }
 }
 

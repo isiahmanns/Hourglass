@@ -14,12 +14,17 @@ struct ContentView: View {
         .padding(40)
         .background(Color.background)
         .cornerRadius(50)
-        .alert("Start a new timer?", isPresented: $viewModel.viewState.showCancelTimerAlert) {
-            Button("Button", role: .none) {}
+        .confirmationDialog("Are you sure you want to start a new timer?",
+                            isPresented: $viewModel.viewState.showStartNewTimerDialog) {
+            Button("Start timer", role: .none) {
+                viewModel.handleStartNewTimerDialog(response: .yes)
+            }
+            Button("Cancel", role: .cancel) {
+                viewModel.handleStartNewTimerDialog(response: .no)
+            }
         }
-        .alert("Timer completed!", isPresented: $viewModel.viewState.showTimerCompleteAlert) {
-            Button("Button", role: .none) {}
-        }
+        .alert("Timer completed!", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
+        // TODO: - Try notification on timer complete
     }
 }
 
