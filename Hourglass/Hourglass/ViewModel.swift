@@ -16,8 +16,7 @@ class ViewModel: ObservableObject {
 
     private let timerManager = TimerManager.shared
 
-    @Published var showCancelTimerAlert: Bool = false
-    @Published var showTimerCompleteAlert: Bool = false
+    @Published var viewState = ViewState()
 
     // TODO: - Inject dependencies into ViewModel (support a MockTimerManager)
     init() {}
@@ -30,16 +29,25 @@ class ViewModel: ObservableObject {
                 model.state = .inactive
             } else {
                 // TODO: - Prompt to cancel currently active timer and start new one
-                showCancelTimerAlert = true
+                viewState.showCancelTimerAlert = true
             }
         } else {
             timerManager.startTimer(length: model.length,
                                     activeTimerModelId: model.id) { [weak self] in
                 // TODO: - Show timer complete alert, play sound FX
                 model.state = .inactive
-                self?.showTimerCompleteAlert = true
+                self?.viewState.showTimerCompleteAlert = true
             }
             model.state = .active
         }
     }
 }
+
+extension ViewModel {
+    struct ViewState {
+        var showCancelTimerAlert: Bool = false
+        var showTimerCompleteAlert: Bool = false
+    }
+}
+
+// TODO: - BOOKMARK - handle alerts appropriately, write tests for timer and timerButton states to close #3, then create ticket for hooking up menu bar
