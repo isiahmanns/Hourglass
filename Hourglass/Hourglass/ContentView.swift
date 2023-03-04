@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    private var viewModel = ViewModel()
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
         VStack(alignment: .center, spacing: 30.0) {
@@ -14,6 +14,12 @@ struct ContentView: View {
         .padding(40)
         .background(Color.background)
         .cornerRadius(50)
+        .alert("Start a new timer?", isPresented: $viewModel.showCancelTimerAlert) {
+            Button("Button", role: .none) {}
+        }
+        .alert("Timer completed!", isPresented: $viewModel.showTimerCompleteAlert) {
+            Button("Button", role: .none) {}
+        }
     }
 }
 
@@ -29,8 +35,9 @@ private struct TimerGrid: View {
 
                 if let focusTimerModels = viewModel.timerModels[.focus] {
                     ForEach(focusTimerModels) { model in
-                        let publisher = model.$state.eraseToAnyPublisher()
-                        TimerButton(value: model.length, state: model.state, publisher: publisher) {
+                        TimerButton(value: model.length,
+                                    state: model.state,
+                                    publisher: model.$state.eraseToAnyPublisher()) {
                             viewModel.didTapTimer(from: model)
                         }
                     }
@@ -42,8 +49,9 @@ private struct TimerGrid: View {
 
                 if let restTimerModels = viewModel.timerModels[.rest] {
                     ForEach(restTimerModels) { model in
-                        let publisher = model.$state.eraseToAnyPublisher()
-                        TimerButton(value: model.length, state: model.state, publisher: publisher) {
+                        TimerButton(value: model.length,
+                                    state: model.state,
+                                    publisher: model.$state.eraseToAnyPublisher()) {
                             viewModel.didTapTimer(from: model)
                         }
                     }

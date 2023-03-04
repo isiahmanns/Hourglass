@@ -1,6 +1,10 @@
 import XCTest
 @testable import Hourglass
 
+//TODO: - Tests for TimerButton state
+//TODO: - UITest for TimerButton, TimerGrid
+//TODO: - Test TimerManager logic
+//TODO: - Test the viewModel
 final class HourglassTests: XCTestCase {
 
     override func setUpWithError() throws {
