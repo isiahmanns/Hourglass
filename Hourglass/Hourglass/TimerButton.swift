@@ -55,8 +55,9 @@ extension TimerButton {
 
 struct TimerButton_Previews: PreviewProvider {
     static var previews: some View {
-        let publisher = Just(Timer.State.inactive).eraseToAnyPublisher()
-        TimerButton(value: 15, state: .inactive, publisher: publisher) {}
+        TimerButton(value: 15,
+                    state: .active,
+                    publisher: Empty<Timer.State, Never>().eraseToAnyPublisher()) {}
             .font(Font.poppins)
     }
 }
