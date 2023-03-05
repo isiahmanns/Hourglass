@@ -7,7 +7,7 @@ class TimerManager {
     private var count: Int = 0
     var activeTimerModelId: Timer.Model.ID?
     var isTimerActive: Bool {
-        activeTimerModelId != nil
+        timerCancellable != nil
     }
 
     // TODO: - Inject publisher depencency. Abstract TimerManager to a protocol, and create a separate mock.
