@@ -86,5 +86,3 @@ extension ViewModel {
         case no
     }
 }
-
-// TODO: - BOOKMARK - handle alerts appropriately, write tests for timer and timerButton states to close #3, then create ticket for hooking up menu bar

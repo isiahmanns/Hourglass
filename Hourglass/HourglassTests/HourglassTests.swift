@@ -1,10 +1,16 @@
 import XCTest
 @testable import Hourglass
 
-//TODO: - Tests for TimerButton state
-//TODO: - UITest for TimerButton, TimerGrid
-//TODO: - Test TimerManager logic
-//TODO: - Test the viewModel
+/**
+ UnitTests:
+  - TimerButton test for tapping an inactive button, and expecting state to change to active
+  - TimerButton test for tapping an active button, and expecting state change to inactive
+  - Test view model state logic
+    - Separate responsibilities with delegate
+    - Use handler for alert to simulate alert response
+  - Test timer countdown logic (try using a Subject, Record, or Sequence publisher)
+ */
+
 final class HourglassTests: XCTestCase {
 
     override func setUpWithError() throws {
