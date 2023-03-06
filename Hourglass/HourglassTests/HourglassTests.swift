@@ -36,7 +36,6 @@ final class HourglassTests: XCTestCase {
     func testTimerCountdown() {
         let publisher = PassthroughSubject<Date, Never>()
         let wrappedPublisher = publisher
-            .eraseToAnyPublisher()
             .makeConnectable()
 
         let timerManager = TimerManagerMock(timerPublisher: wrappedPublisher)
@@ -65,7 +64,6 @@ final class HourglassTests: XCTestCase {
     func testTimerCountdownCancel() {
         let publisher = PassthroughSubject<Date, Never>()
         let wrappedPublisher = publisher
-            .eraseToAnyPublisher()
             .makeConnectable()
 
         let timerManager = TimerManagerMock(timerPublisher: wrappedPublisher)
