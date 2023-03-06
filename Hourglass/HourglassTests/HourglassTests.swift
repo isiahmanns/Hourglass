@@ -1,3 +1,4 @@
+import Combine
 import XCTest
 @testable import Hourglass
 
@@ -8,32 +9,82 @@ import XCTest
   - Test view model state logic
     - Separate responsibilities with delegate
     - Use handler for alert to simulate alert response
-  - Test timer countdown logic (try using a Subject, Record, or Sequence publisher)
  */
 
 final class HourglassTests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func disabled_testTimerButtonSelect() {
+        let publisher = PassthroughSubject<Hourglass.Timer.State, Never>()
+        let wrappedPublisher = publisher.eraseToAnyPublisher()
+
+        let timerButton = TimerButton(value: 5, state: .inactive, publisher: wrappedPublisher) {}
+        publisher.send(.active)
+        XCTAssertEqual(timerButton.state, .active)
+        // TODO: - Test is failing, due to timerButton being a value type. Can't unit test views for reactivitiy to @state properties
+        // TODO: - Could test sinking on the Timer.Model publisher for changed state, but this is implied by declaring a property @published
+        // TODO: - UI tests can only verify if UIElement is hittable and exists. Not state of the instance or value.
+        // TODO: - *Snapshot test is a better solution to create a state for the button and verify its appearance pixel for pixel.
+        // TODO: - *Unit test view model to verify model state change when didTapButton message is received
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testTimerCountdown() {
+        let publisher = PassthroughSubject<Date, Never>()
+        let wrappedPublisher = publisher
+            .eraseToAnyPublisher()
+            .makeConnectable()
+
+        let timerManager = TimerManagerMock(timerPublisher: wrappedPublisher)
+        let now = Date.now
+        let timerID = UUID()
+
+        XCTAssertFalse(timerManager.isTimerActive)
+
+        timerManager.startTimer(length: 3, activeTimerModelId: timerID) {}
+        XCTAssertTrue(timerManager.isTimerActive)
+        XCTAssertEqual(timerManager.activeTimerModelId, timerID)
+        XCTAssertEqual(timerManager.timeStamp, "0:3")
+
+        publisher.send(now)
+        XCTAssertEqual(timerManager.timeStamp, "0:2")
+
+        publisher.send(now + 1)
+        XCTAssertEqual(timerManager.timeStamp, "0:1")
+
+        publisher.send(now + 2)
+        XCTAssertEqual(timerManager.timeStamp, "0:0")
+        XCTAssertFalse(timerManager.isTimerActive)
+        XCTAssertNil(timerManager.activeTimerModelId)
     }
 
+    func testTimerCountdownCancel() {
+        let publisher = PassthroughSubject<Date, Never>()
+        let wrappedPublisher = publisher
+            .eraseToAnyPublisher()
+            .makeConnectable()
+
+        let timerManager = TimerManagerMock(timerPublisher: wrappedPublisher)
+        let now = Date.now
+        let timerID = UUID()
+
+        XCTAssertFalse(timerManager.isTimerActive)
+
+        timerManager.startTimer(length: 3, activeTimerModelId: timerID) {}
+        XCTAssertTrue(timerManager.isTimerActive)
+        XCTAssertEqual(timerManager.activeTimerModelId, timerID)
+        XCTAssertEqual(timerManager.timeStamp, "0:3")
+
+        publisher.send(now)
+        XCTAssertEqual(timerManager.timeStamp, "0:2")
+
+        timerManager.stopTimer()
+        XCTAssertFalse(timerManager.isTimerActive)
+        XCTAssertNil(timerManager.activeTimerModelId)
+        XCTAssertEqual(timerManager.timeStamp, "0:0")
+    }
 }

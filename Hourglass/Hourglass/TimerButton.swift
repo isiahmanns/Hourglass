@@ -3,7 +3,7 @@ import Combine
 
 struct TimerButton: View {
     let value: Int
-    @State var state: Timer.State
+    @State private(set) var state: Timer.State
     let publisher: AnyPublisher<Timer.State, Never>
     let action: () -> Void
 
