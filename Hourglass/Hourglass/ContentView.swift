@@ -17,10 +17,10 @@ struct ContentView: View {
         .confirmationDialog("Are you sure you want to start a new timer?",
                             isPresented: $viewModel.viewState.showStartNewTimerDialog) {
             Button("Start timer", role: .none) {
-                viewModel.handleStartNewTimerDialog(response: .yes)
+                viewModel.didReceiveStartNewTimerDialog(response: .yes)
             }
             Button("Cancel", role: .cancel) {
-                viewModel.handleStartNewTimerDialog(response: .no)
+                viewModel.didReceiveStartNewTimerDialog(response: .no)
             }
         }
         .alert("Timer completed!", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}

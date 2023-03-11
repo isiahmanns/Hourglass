@@ -22,7 +22,7 @@ class TimerManager {
         !timerCancellables.isEmpty
     }
 
-    fileprivate init(timerPublisher: any ConnectablePublisher<Date, Never>) {
+    fileprivate init(timerPublisher: some ConnectablePublisher<Date, Never>) {
         self.timerPublisher = timerPublisher
     }
     
@@ -55,7 +55,8 @@ class TimerManager {
 }
 
 class TimerManagerMock: TimerManager {
-    override init(timerPublisher: any ConnectablePublisher<Date, Never>) {
-        super.init(timerPublisher: timerPublisher)
+    init(timerPublisher: some Subject<Date, Never>) {
+        let connectableTimerPublisher = timerPublisher.makeConnectable()
+        super.init(timerPublisher: connectableTimerPublisher)
     }
 }
