@@ -26,6 +26,5 @@ jobs:
         -scheme 'HourglassCITesting'
         -destination 'platform=macOS,arch=x86_64'
         -sdk 'macosx13.1'
-        -skip-testing:HourglassUITests
         -parallel-testing-enabled NO
         | xcpretty && exit ${PIPESTATUS[0]}

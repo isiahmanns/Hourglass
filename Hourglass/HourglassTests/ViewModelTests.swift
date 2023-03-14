@@ -17,7 +17,7 @@ final class ViewModelTests: XCTestCase {
     /**
      Test starting timer while inactive.
      */
-    func testViewModelTimerButtonSelect() {
+    func testStartTimerToCompletion() {
         let timerModel = viewModel.timerModels[.focus]![0]
         assertTimerDefault(for: timerModel)
 
@@ -37,7 +37,7 @@ final class ViewModelTests: XCTestCase {
     /**
      Test stopping timer while active.
      */
-    func testViewModelTimerButtonDeselect() {
+    func testStopTimer() {
         let timerModel = viewModel.timerModels[.focus]![0]
         assertTimerDefault(for: timerModel)
 
@@ -54,7 +54,7 @@ final class ViewModelTests: XCTestCase {
     /**
      Test accepting start-new-timer flow (starting a new timer while current timer is active via alert response).
      */
-    func testViewModelTimerButtonSwapAccept () {
+    func testStartNewTimerFlowConfirm () {
         let timerModelA = viewModel.timerModels[.focus]![0]
         let timerModelB = viewModel.timerModels[.focus]![1]
 
@@ -70,7 +70,7 @@ final class ViewModelTests: XCTestCase {
     /**
      Test cancelling start-new-timer flow.
      */
-    func testViewModelTimerButtonSwapCancel () {
+    func testStartNewTimerFlowDeny () {
         let timerModelA = viewModel.timerModels[.focus]![0]
         let timerModelB = viewModel.timerModels[.focus]![1]
 

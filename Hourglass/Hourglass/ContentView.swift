@@ -23,7 +23,7 @@ struct ContentView: View {
                 viewModel.didReceiveStartNewTimerDialog(response: .no)
             }
         }
-        .alert("Timer completed!", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
+        .alert("Timer completed.", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
         // TODO: - Try notification on timer complete
     }
 }
@@ -63,6 +63,8 @@ private struct TimerGrid: View {
                 }
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("timer-grid")
     }
 }
 
@@ -74,6 +76,7 @@ private struct Logo: View {
             .resizable()
             .scaledToFit()
             .frame(width: size, height: size)
+            .accessibilityIdentifier("hourglass-logo")
     }
 }
 
@@ -88,9 +91,15 @@ private struct Header: View {
 
 private struct SettingsButton: View {
     var body: some View {
-        Image(systemName: "gearshape.fill")
-            .imageScale(.large)
-            .foregroundColor(Color.onBackgroundSecondary)
+        Button {
+            print("tapped settings button")
+        } label: {
+            Image(systemName: "gearshape.fill")
+                .imageScale(.large)
+                .foregroundColor(Color.onBackgroundSecondary)
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("settings-button")
     }
 }
 

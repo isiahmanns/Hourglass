@@ -13,7 +13,6 @@
 		253816E529A5D88C007BD118 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E429A5D88C007BD118 /* Preview Assets.xcassets */; };
 		253816F029A5D88C007BD118 /* ViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816EF29A5D88C007BD118 /* ViewModelTests.swift */; };
 		253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816F929A5D88C007BD118 /* HourglassUITests.swift */; };
-		253816FC29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */; };
 		25937DBA29B1B4E900A15F0B /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25937DB929B1B4E900A15F0B /* TimerModel.swift */; };
 		25C3126629B5AE1E000070DF /* TimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C3126529B5AE1E000070DF /* TimeUnit.swift */; };
 		25C3126829BC1750000070DF /* TimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C3126729BC1750000070DF /* TimerManagerTests.swift */; };
@@ -54,7 +53,6 @@
 		253816EF29A5D88C007BD118 /* ViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTests.swift; sourceTree = "<group>"; };
 		253816F529A5D88C007BD118 /* HourglassUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HourglassUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		253816F929A5D88C007BD118 /* HourglassUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITests.swift; sourceTree = "<group>"; };
-		253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		25937DB929B1B4E900A15F0B /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		25C3126529B5AE1E000070DF /* TimeUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUnit.swift; sourceTree = "<group>"; };
 		25C3126729BC1750000070DF /* TimerManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManagerTests.swift; sourceTree = "<group>"; };
@@ -156,7 +154,6 @@
 			isa = PBXGroup;
 			children = (
 				253816F929A5D88C007BD118 /* HourglassUITests.swift */,
-				253816FB29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift */,
 			);
 			path = HourglassUITests;
 			sourceTree = "<group>";
@@ -327,7 +324,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */,
-				253816FC29A5D88C007BD118 /* HourglassUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

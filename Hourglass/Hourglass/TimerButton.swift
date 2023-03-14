@@ -17,6 +17,7 @@ struct TimerButton: View {
         .onReceive(publisher) { timerState in
             state = timerState
         }
+        .accessibilityIdentifier("\(value)s-timer-button")
     }
 }
 
