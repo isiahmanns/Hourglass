@@ -13,6 +13,7 @@ final class HourglassUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app.launch()
+        app.statusItems["menu-bar-select"].tap()
     }
 
     override func tearDownWithError() throws {

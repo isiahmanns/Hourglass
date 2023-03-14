@@ -13,7 +13,7 @@ struct ContentView: View {
         }
         .padding(40)
         .background(Color.background)
-        .cornerRadius(50)
+        // .cornerRadius(50)
         .confirmationDialog("Are you sure you want to start a new timer?",
                             isPresented: $viewModel.viewState.showStartNewTimerDialog) {
             Button("Start timer", role: .none) {
