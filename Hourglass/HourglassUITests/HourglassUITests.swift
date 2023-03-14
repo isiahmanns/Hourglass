@@ -13,6 +13,8 @@ final class HourglassUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         app.launch()
+        // Note: - Locally, menu bar must be "always visible" or mouse should hover on menu bar for tests to work.
+        // NSStatusBar.system
         app.statusItems["menu-bar-select"].tap()
     }
 
