@@ -1,30 +1,42 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = ViewModel()
+    private var viewModel = ViewModel()
 
     var body: some View {
-        VStack(alignment: .center, spacing: 30.0) {
-            Logo()
+        ZStack {
+            AlertWrapper(viewModel: viewModel)
 
-            TimerGrid(viewModel: viewModel)
+            VStack(alignment: .center, spacing: 30.0) {
+                Logo()
 
-            SettingsButton()
-        }
-        .padding(40)
-        .background(Color.background)
-        // .cornerRadius(50)
-        .confirmationDialog("Are you sure you want to start a new timer?",
-                            isPresented: $viewModel.viewState.showStartNewTimerDialog) {
-            Button("Start timer", role: .none) {
-                viewModel.didReceiveStartNewTimerDialog(response: .yes)
+                TimerGrid(viewModel: viewModel)
+
+                SettingsButton()
             }
-            Button("Cancel", role: .cancel) {
-                viewModel.didReceiveStartNewTimerDialog(response: .no)
-            }
+            .padding(40)
+            .background(Color.background)
         }
-        .alert("Timer completed.", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
-        // TODO: - Try notification on timer complete
+    }
+}
+
+private struct AlertWrapper: View {
+    @StateObject var viewModel: ViewModel
+    
+    var body: some View {
+        Color.clear
+            .frame(width: 0, height: 0)
+            .confirmationDialog("Are you sure you want to start a new timer?",
+                                isPresented: $viewModel.viewState.showStartNewTimerDialog) {
+                Button("Start timer", role: .none) {
+                    viewModel.didReceiveStartNewTimerDialog(response: .yes)
+                }
+                Button("Cancel", role: .cancel) {
+                    viewModel.didReceiveStartNewTimerDialog(response: .no)
+                }
+            }
+            .alert("Timer completed.", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
+            // TODO: - Try notification on timer complete
     }
 }
 
