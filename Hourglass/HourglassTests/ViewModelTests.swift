@@ -5,7 +5,10 @@ import XCTest
 
 final class ViewModelTests: XCTestCase {
 
-    let (timerPublisher, viewModel) = UnitTestProviders.mockViewModel
+    let (timerPublisher,
+         viewModel,
+         userNotificationManager,
+         settingsManager) = UnitTestProviders.fakeViewModel
     let now = Date.now
 
     override func setUpWithError() throws {
@@ -15,10 +18,15 @@ final class ViewModelTests: XCTestCase {
     }
 
     /**
-     Test starting timer while inactive.
+     Test starting timer while inactive. Popup, Sound On
      */
     func testStartTimerToCompletion() {
         let timerModel = viewModel.timerModels[.focus]![0]
+        let notificationStyle: NotificationStyle = .popup
+        let soundIsEnabled = true
+        settingsManager.setNotification(style: notificationStyle)
+        settingsManager.setSound(isEnabled: soundIsEnabled)
+
         assertTimerDefault(for: timerModel)
 
         viewModel.didTapTimer(from: timerModel)
@@ -31,7 +39,69 @@ final class ViewModelTests: XCTestCase {
         assertTimerInProgress(for: timerModel)
 
         timerPublisher.send(now + 2)
-        assertTimerComplete(for: timerModel)
+        assertTimerComplete(for: timerModel,
+                            notificationStyle: notificationStyle,
+                            soundIsEnabled: soundIsEnabled)
+    }
+
+    /**
+     Test starting timer while inactive.  Popup, Sound Off
+     */
+    func testStartTimerToCompletionPopupSoundOff() {
+        let timerModel = viewModel.timerModels[.focus]![0]
+        let notificationStyle: NotificationStyle = .popup
+        let soundIsEnabled = false
+        settingsManager.setNotification(style: notificationStyle)
+        settingsManager.setSound(isEnabled: soundIsEnabled)
+
+        viewModel.didTapTimer(from: timerModel)
+        timerPublisher.send(now)
+        timerPublisher.send(now + 1)
+        timerPublisher.send(now + 2)
+
+        assertTimerComplete(for: timerModel,
+                            notificationStyle: notificationStyle,
+                            soundIsEnabled: soundIsEnabled)
+    }
+
+    /**
+     Test starting timer while inactive.  Banner, Sound On
+     */
+    func testStartTimerToCompletionBannerSoundOn() {
+        let timerModel = viewModel.timerModels[.focus]![0]
+        let notificationStyle: NotificationStyle = .banner
+        let soundIsEnabled = true
+        settingsManager.setNotification(style: notificationStyle)
+        settingsManager.setSound(isEnabled: soundIsEnabled)
+
+        viewModel.didTapTimer(from: timerModel)
+        timerPublisher.send(now)
+        timerPublisher.send(now + 1)
+        timerPublisher.send(now + 2)
+
+        assertTimerComplete(for: timerModel,
+                            notificationStyle: notificationStyle,
+                            soundIsEnabled: soundIsEnabled)
+    }
+
+    /**
+     Test starting timer while inactive.  Banner, Sound Off
+     */
+    func testStartTimerToCompletionBannerSoundOff() {
+        let timerModel = viewModel.timerModels[.focus]![0]
+        let notificationStyle: NotificationStyle = .banner
+        let soundIsEnabled = false
+        settingsManager.setNotification(style: notificationStyle)
+        settingsManager.setSound(isEnabled: soundIsEnabled)
+
+        viewModel.didTapTimer(from: timerModel)
+        timerPublisher.send(now)
+        timerPublisher.send(now + 1)
+        timerPublisher.send(now + 2)
+
+        assertTimerComplete(for: timerModel,
+                            notificationStyle: notificationStyle,
+                            soundIsEnabled: soundIsEnabled)
     }
 
     /**
@@ -88,9 +158,22 @@ final class ViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.viewState.showTimerCompleteAlert)
     }
 
-    private func assertTimerComplete(for timerModel: Hourglass.Timer.Model) {
+    private func assertTimerComplete(for timerModel: Hourglass.Timer.Model,
+                                     notificationStyle: NotificationStyle,
+                                     soundIsEnabled: Bool) {
         XCTAssertEqual(timerModel.state, .inactive)
-        XCTAssertTrue(viewModel.viewState.showTimerCompleteAlert)
+
+        switch (notificationStyle, soundIsEnabled) {
+        case (.banner, _):
+            XCTAssertTrue(userNotificationManager.didFireNotification)
+            XCTAssertFalse(viewModel.viewState.showTimerCompleteAlert)
+        case (.popup, true):
+            XCTAssertTrue(userNotificationManager.didFireNotification)
+            XCTAssertTrue(viewModel.viewState.showTimerCompleteAlert)
+        case (.popup, false):
+            XCTAssertFalse(userNotificationManager.didFireNotification)
+            XCTAssertTrue(viewModel.viewState.showTimerCompleteAlert)
+        }
     }
 
     private func assertTimerDefault(for timerModel: Hourglass.Timer.Model) {

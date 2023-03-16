@@ -36,8 +36,7 @@ private struct AlertWrapper: View {
                     viewModel.didReceiveStartNewTimerDialog(response: .no)
                 }
             }
-            .alert("Timer completed.", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
-            // TODO: - Try notification on timer complete
+            .alert("Time's up", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
     }
 }
 
@@ -54,6 +53,7 @@ private struct TimerGrid: View {
                 if let focusTimerModels = viewModel.timerModels[.focus] {
                     ForEach(focusTimerModels) { model in
                         TimerButton(value: model.length,
+                                    //TODO: - pass length binding to button view
                                     state: model.state,
                                     publisher: model.$state.eraseToAnyPublisher()) {
                             viewModel.didTapTimer(from: model)

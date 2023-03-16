@@ -4,6 +4,8 @@ class ViewModel: ObservableObject {
     // TODO: - TimerModels should be fetched from cache before setting to default
     private(set) var timerModels: [Timer.Category: [Timer.Model]]
     private let timerManager: TimerManager
+    private let userNotificationManager: NotificationManager
+    private let settingsManager: SettingsManager
     private var activeTimerModel: Timer.Model?
     private var pendingTimerModel: Timer.Model?
     @Published var viewState = ViewState()
@@ -19,11 +21,15 @@ class ViewModel: ObservableObject {
             Timer.Model(length: 5, category: .rest, size: .medium),
             Timer.Model(length: 10, category: .rest, size: .large)]
         ],
-         timerManager: TimerManager = .shared) {
+         timerManager: TimerManager = TimerManager.shared,
+         userNotificationManager: NotificationManager = UserNotificationManager.shared,
+         settingsManager: SettingsManager = SettingsManager.shared) {
         // TODO: - Add a DataManager dependency, use it to set timerModels
         // TODO: - Explicitly inject dependencies from call site
         self.timerModels = timerModels
         self.timerManager = timerManager
+        self.userNotificationManager = userNotificationManager
+        self.settingsManager = settingsManager
     }
 
     func didTapTimer(from model: Timer.Model) -> Void {
@@ -61,10 +67,9 @@ class ViewModel: ObservableObject {
     private func startTimer(for model: Timer.Model) {
         timerManager.startTimer(length: model.length,
                                 activeTimerModelId: model.id) { [weak self] in
-            // TODO: - Play sound FX
             // TODO: - Save completed time block via data manager
             model.state = .inactive
-            self?.viewState.showTimerCompleteAlert = true
+            self?.notifyUser(.timerCompleted)
         }
         model.state = .active
         activeTimerModel = model
@@ -73,6 +78,25 @@ class ViewModel: ObservableObject {
     private func promptStartNewTimer(for model: Timer.Model) {
         pendingTimerModel = model
         viewState.showStartNewTimerDialog = true
+    }
+
+    private func notifyUser(_ event: HourglassEvent) {
+        switch event {
+        case .timerCompleted:
+            let soundIsEnabled = settingsManager.getSoundIsEnabled()
+
+            switch settingsManager.getNotificationStyle() {
+            case .banner:
+                userNotificationManager.fireNotification(.timerCompleteBanner,
+                                                         soundIsEnabled: soundIsEnabled)
+            case .popup:
+                if soundIsEnabled {
+                    userNotificationManager.fireNotification(.noBanner,
+                                                             soundIsEnabled: true)
+                }
+                viewState.showTimerCompleteAlert = true
+            }
+        }
     }
 }
 

@@ -3,7 +3,7 @@ import XCTest
 
 final class TimerManagerTests: XCTestCase {
 
-    let (timerPublisher, timerManager) = UnitTestProviders.mockTimerManager
+    let (timerPublisher, timerManager) = UnitTestProviders.fakeTimerManager
     let timerID = UUID()
     let now = Date.now
 

@@ -54,7 +54,7 @@ class TimerManager {
     }
 }
 
-class TimerManagerMock: TimerManager {
+class TimerManagerFake: TimerManager {
     init(timerPublisher: some Subject<Date, Never>) {
         let connectableTimerPublisher = timerPublisher.makeConnectable()
         super.init(timerPublisher: connectableTimerPublisher)
