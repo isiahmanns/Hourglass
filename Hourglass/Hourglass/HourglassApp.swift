@@ -1,6 +1,5 @@
 import SwiftUI
 
-#if DEBUG || RELEASE
 @main
 struct HourglassApp: App {
     var body: some Scene {
@@ -18,13 +17,3 @@ struct HourglassApp: App {
         .menuBarExtraStyle(.window)
     }
 }
-
-#elseif CITESTING
-@main
-struct HourglassApp: App {
-    var body: some Scene {
-        // Note: Only need to build target for *unit testing* on CI 12.6.3
-        WindowGroup {}
-    }
-}
-#endif
