@@ -16,6 +16,17 @@ struct HourglassApp: App {
             .accessibilityIdentifier("menu-bar-select")
         }
         .menuBarExtraStyle(.window)
+
+        Window("Options", id: "options-window") {
+            Form {
+                Text("asdf")
+                Slider(value: .constant(0.5))
+                    .frame(width: 300)
+            }
+            .padding(40)
+        }
+        .windowResizability(.contentSize)
+        .defaultPosition(.top)
     }
 }
 

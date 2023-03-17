@@ -103,9 +103,30 @@ private struct Header: View {
 }
 
 private struct SettingsButton: View {
+    @Environment(\.openWindow) var openWindow
+
     var body: some View {
-        Button {
-            print("tapped settings button")
+        // Note: Settings Menu can use Menu element or open separate window to host menu.
+        Menu {
+            Section {
+                Button("About Hourglass") {
+                    print("About")
+                }
+            }
+            Section {
+                Button("Statistics") {
+                    print("Statistics")
+                }
+                Button("Settings") {
+                    print("Settings")
+                    openWindow(id: "options-window")
+                }
+            }
+            Section {
+                Button("Quit Hourglass") {
+                    NSApplication.shared.terminate(self)
+                }
+            }
         } label: {
             Image(systemName: "gearshape.fill")
                 .imageScale(.large)
