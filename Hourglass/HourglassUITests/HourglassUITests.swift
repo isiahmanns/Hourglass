@@ -40,7 +40,7 @@ final class HourglassUITests: XCTestCase {
             XCTAssertTrue(timerButton.isHittable)
         }
 
-        let settingsButton = app.buttons["settings-button"]
+        let settingsButton = app.popUpButtons["settings-button"]
         XCTAssertTrue(settingsButton.exists)
     }
 

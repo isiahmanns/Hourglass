@@ -103,9 +103,66 @@ private struct Header: View {
 }
 
 private struct SettingsButton: View {
+    @Environment(\.openWindow) var openWindow
+    //@AppStorage(\)
+
     var body: some View {
-        Button {
-            print("tapped settings button")
+        Menu {
+            Section {
+                Button("About") {
+                    // open window
+                }
+            }
+            Section {
+                Button("Statistics") {
+                    // open window
+                }
+                Section("Options") {
+                    Picker("Notification Style", selection: .constant(true)) {
+                        //TODO: Apply tag and test mutually exclusive selection
+                        Text("Menu Bar Popup")
+                        Text("Notification Banner")
+                    }
+                    Toggle("Sound", isOn: .constant(true))
+                    Toggle("Fullscreen on Rest", isOn: .constant(true))
+                }
+                Section("Timer Presets") {
+                    Menu("Focus Timers") {
+                        Picker("Small", selection: .constant(true)) {
+                            Text("15")
+                            Text("20")
+                        }
+                        Picker("Medium", selection: .constant(true)) {
+                            Text("25")
+                            Text("30")
+                        }
+                        Picker("Large", selection: .constant(true)) {
+                            Text("35")
+                            Text("40")
+                        }
+                    }.pickerStyle(.inline)
+                    Menu("Rest Timers") {
+                        Picker("Small", selection: .constant(true)) {
+                            Text("3")
+                            Text("5")
+                        }
+                        Picker("Medium", selection: .constant(true)) {
+                            Text("10")
+                            Text("15")
+                        }
+                        Picker("Large", selection: .constant(true)) {
+                            Text("20")
+                            Text("25")
+                        }
+                    }
+                    .pickerStyle(.inline)
+                }
+            }
+            Section {
+                Button("Quit") {
+                    NSApplication.shared.terminate(self)
+                }
+            }
         } label: {
             Image(systemName: "gearshape.fill")
                 .imageScale(.large)
