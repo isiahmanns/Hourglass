@@ -48,7 +48,7 @@ final class HourglassUITests: XCTestCase {
         XCTAssertTrue(alert.waitForExistence(timeout: 4))
         // print(app.debugDescription)
 
-        let alertTitle = alert.staticTexts["Timer completed."]
+        let alertTitle = alert.staticTexts["Time's up"]
         let okButton = alert.buttons["OK"]
         [alertTitle, okButton].forEach { element in
             XCTAssertTrue(element.exists)
