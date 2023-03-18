@@ -103,8 +103,10 @@ private struct Header: View {
 }
 
 private struct SettingsButton: View {
+    @AppStorage(SettingsKeys.notificationStyle.rawValue)
+    var notificationStyle: NotificationStyle = .popup
+
     @Environment(\.openWindow) var openWindow
-    //@AppStorage(\)
 
     var body: some View {
         Menu {
@@ -118,10 +120,9 @@ private struct SettingsButton: View {
                     // open window
                 }
                 Section("Options") {
-                    Picker("Notification Style", selection: .constant(true)) {
-                        //TODO: Apply tag and test mutually exclusive selection
-                        Text("Menu Bar Popup")
-                        Text("Notification Banner")
+                    Picker("Notification Style", selection: $notificationStyle) {
+                        Text("Menu Bar Popup").tag(NotificationStyle.popup)
+                        Text("Notification Banner").tag(NotificationStyle.banner)
                     }
                     Toggle("Sound", isOn: .constant(true))
                     Toggle("Fullscreen on Rest", isOn: .constant(true))

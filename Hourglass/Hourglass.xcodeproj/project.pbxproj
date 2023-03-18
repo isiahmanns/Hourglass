@@ -189,6 +189,7 @@
 				253816D629A5D88C007BD118 /* Sources */,
 				253816D729A5D88C007BD118 /* Frameworks */,
 				253816D829A5D88C007BD118 /* Resources */,
+				258302F229C61F6500D37115 /* Wipe macOS app sandbox user defaults */,
 			);
 			buildRules = (
 			);
@@ -304,6 +305,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		258302F229C61F6500D37115 /* Wipe macOS app sandbox user defaults */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Wipe macOS app sandbox user defaults";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "defaults delete \\\n~/Library/Containers/com.madebyisiah.hourglass/Data/Library/Preferences/com.madebyisiah.Hourglass\nexit 0\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		253816D629A5D88C007BD118 /* Sources */ = {
