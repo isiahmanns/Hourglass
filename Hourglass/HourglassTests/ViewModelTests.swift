@@ -20,7 +20,7 @@ final class ViewModelTests: XCTestCase {
     /**
      Test starting timer while inactive. Popup, Sound On
      */
-    func testStartTimerToCompletion() {
+    func testStartTimerToCompletionPopupSoundOn() {
         let timerModel = viewModel.timerModels[.focus]![0]
         let notificationStyle: NotificationStyle = .popup
         let soundIsEnabled = true

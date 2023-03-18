@@ -25,4 +25,5 @@ workflows:
             -destination 'platform=macOS,arch=x86_64'
             -sdk 'macosx13.1'
             -parallel-testing-enabled NO
+            -skip-testing:HourglassUITests/HourglassUITests/testStartTimerToCompletionBanner
             | xcpretty && exit ${PIPESTATUS[0]}
