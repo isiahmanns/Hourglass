@@ -13,7 +13,7 @@ struct SettingsManager {
         store.set(length, forKey: key.rawValue)
     }
 
-    func getTimerLength(for timerSetting: SettingsKeys.TimerSetting) -> Int? {
+    func getTimerLength(for timerSetting: SettingsKeys.TimerSetting) -> Int {
         let value = store.object(forKey: timerSetting.rawValue)
 
         if let intValue = value as? Int {
@@ -22,19 +22,33 @@ struct SettingsManager {
 
         // Note: This supports launch args in UI Testing
         if let stringValue = value as? String {
-            return Int(stringValue)
+            return Int(stringValue)!
         }
 
-        return nil
+        switch timerSetting {
+        case .timerFocusSmall:
+            return Constants.timerFocusSmallDefault
+        case .timerFocusMedium:
+            return Constants.timerFocusMediumDefault
+        case .timerFocusLarge:
+            return Constants.timerFocusLargeDefault
+        case .timerRestSmall:
+            return Constants.timerRestSmallDefault
+        case .timerRestMedium:
+            return Constants.timerRestMediumDefault
+        case .timerRestLarge:
+            return Constants.timerRestLargeDefault
+        }
     }
 
     // Sound
     func setSound(isEnabled: Bool) {
-        store.set(isEnabled, forKey: SettingsKeys.soundEnabled.rawValue)
+        store.set(isEnabled, forKey: SettingsKeys.soundIsEnabled.rawValue)
     }
 
     func getSoundIsEnabled() -> Bool {
-        store.bool(forKey: SettingsKeys.soundEnabled.rawValue)
+        let value = store.object(forKey: SettingsKeys.soundIsEnabled.rawValue)
+        return value as? Bool ?? Constants.soundIsEnabled
     }
 
     // Fullscreen Break
@@ -43,7 +57,8 @@ struct SettingsManager {
     }
 
     func getFullScreenOnBreakIsEnabled() -> Bool {
-        store.bool(forKey: SettingsKeys.fullScreenOnBreak.rawValue)
+        let value = store.object(forKey: SettingsKeys.fullScreenOnBreak.rawValue)
+        return value as? Bool ?? Constants.fullscreenOnBreak
     }
 
     // Notification Style
@@ -52,26 +67,7 @@ struct SettingsManager {
     }
 
     func getNotificationStyle() -> NotificationStyle {
-        let value = store.integer(forKey: SettingsKeys.notificationStyle.rawValue)
-        return NotificationStyle(rawValue: value)!
+        let value = store.object(forKey: SettingsKeys.notificationStyle.rawValue)
+        return NotificationStyle(rawValue: value as? Int ?? Constants.notificationStyle)!
     }
-}
-
-enum SettingsKeys: String {
-    enum TimerSetting: String {
-        case timerFocusSmall
-        case timerFocusMedium
-        case timerFocusLarge
-        case timerRestSmall
-        case timerRestMedium
-        case timerRestLarge
-    }
-    case soundEnabled
-    case fullScreenOnBreak
-    case notificationStyle
-}
-
-enum NotificationStyle: Int {
-    case popup
-    case banner
 }

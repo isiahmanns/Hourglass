@@ -97,8 +97,18 @@ private struct Header: View {
 private struct SettingsButton: View {
     let viewModel: ViewModel
 
+    /**
+     Note: These default values are not persisted.
+     - They serve as temporary values to display in the Menu, that sync up with default values
+       consumed by the ViewModel via SettingsManager.
+     - The UserDefaults cache gets written to only when selecting new options via the Menu.
+     */
+
     @AppStorage(SettingsKeys.notificationStyle.rawValue)
-    var notificationStyle: NotificationStyle = .popup
+    var notificationStyle: NotificationStyle = .init(rawValue: Constants.notificationStyle)!
+
+    @AppStorage(SettingsKeys.soundIsEnabled.rawValue)
+    var soundIsEnabled: Bool = Constants.soundIsEnabled
 
     @AppStorage(SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
     var timerFocusSmallPreset: Int = Constants.timerFocusSmallDefault
@@ -136,7 +146,7 @@ private struct SettingsButton: View {
                         Text("Menu Bar Popup").tag(NotificationStyle.popup)
                         Text("Notification Banner").tag(NotificationStyle.banner)
                     }
-                    Toggle("Sound", isOn: .constant(true))
+                    Toggle("Sound", isOn: $soundIsEnabled)
                     Toggle("Fullscreen on Rest", isOn: .constant(true))
                 }
                 Section("Timer Presets") {

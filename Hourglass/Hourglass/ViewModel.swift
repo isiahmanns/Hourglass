@@ -22,28 +22,22 @@ class ViewModel: ObservableObject {
         self.userNotificationManager = userNotificationManager
         self.settingsManager = settingsManager
         self.timerModels = timerModels ?? [
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall)
-                            ?? Constants.timerFocusSmallDefault,
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall),
                         category: .focus,
                         size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusMedium)
-                            ?? Constants.timerFocusMediumDefault,
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusMedium),
                         category: .focus,
                         size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusLarge)
-                            ?? Constants.timerFocusLargeDefault,
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusLarge),
                         category: .focus,
                         size: .large),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestSmall)
-                            ?? Constants.timerRestSmallDefault,
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestSmall),
                         category: .rest,
                         size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestMedium)
-                            ?? Constants.timerRestMediumDefault,
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestMedium),
                         category: .rest,
                         size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestLarge)
-                            ?? Constants.timerRestLargeDefault,
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestLarge),
                         category: .rest,
                         size: .large)
         ]
