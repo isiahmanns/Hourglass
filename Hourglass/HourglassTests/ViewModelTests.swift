@@ -21,7 +21,7 @@ final class ViewModelTests: XCTestCase {
      Test starting timer while inactive. Popup, Sound On
      */
     func testStartTimerToCompletionPopupSoundOn() {
-        let timerModel = viewModel.timerModels[.focus]![0]
+        let timerModel = viewModel.timerModels[0]
         let notificationStyle: NotificationStyle = .popup
         let soundIsEnabled = true
         settingsManager.setNotification(style: notificationStyle)
@@ -48,7 +48,7 @@ final class ViewModelTests: XCTestCase {
      Test starting timer while inactive.  Popup, Sound Off
      */
     func testStartTimerToCompletionPopupSoundOff() {
-        let timerModel = viewModel.timerModels[.focus]![0]
+        let timerModel = viewModel.timerModels[0]
         let notificationStyle: NotificationStyle = .popup
         let soundIsEnabled = false
         settingsManager.setNotification(style: notificationStyle)
@@ -68,7 +68,7 @@ final class ViewModelTests: XCTestCase {
      Test starting timer while inactive.  Banner, Sound On
      */
     func testStartTimerToCompletionBannerSoundOn() {
-        let timerModel = viewModel.timerModels[.focus]![0]
+        let timerModel = viewModel.timerModels[0]
         let notificationStyle: NotificationStyle = .banner
         let soundIsEnabled = true
         settingsManager.setNotification(style: notificationStyle)
@@ -88,7 +88,7 @@ final class ViewModelTests: XCTestCase {
      Test starting timer while inactive.  Banner, Sound Off
      */
     func testStartTimerToCompletionBannerSoundOff() {
-        let timerModel = viewModel.timerModels[.focus]![0]
+        let timerModel = viewModel.timerModels[0]
         let notificationStyle: NotificationStyle = .banner
         let soundIsEnabled = false
         settingsManager.setNotification(style: notificationStyle)
@@ -108,7 +108,7 @@ final class ViewModelTests: XCTestCase {
      Test stopping timer while active.
      */
     func testStopTimer() {
-        let timerModel = viewModel.timerModels[.focus]![0]
+        let timerModel = viewModel.timerModels[0]
         assertTimerDefault(for: timerModel)
 
         viewModel.didTapTimer(from: timerModel)
@@ -125,8 +125,8 @@ final class ViewModelTests: XCTestCase {
      Test accepting start-new-timer flow (starting a new timer while current timer is active via alert response).
      */
     func testStartNewTimerFlowConfirm () {
-        let timerModelA = viewModel.timerModels[.focus]![0]
-        let timerModelB = viewModel.timerModels[.focus]![1]
+        let timerModelA = viewModel.timerModels[0]
+        let timerModelB = viewModel.timerModels[1]
 
         viewModel.didTapTimer(from: timerModelA)
         viewModel.didTapTimer(from: timerModelB)
@@ -141,8 +141,8 @@ final class ViewModelTests: XCTestCase {
      Test cancelling start-new-timer flow.
      */
     func testStartNewTimerFlowDeny () {
-        let timerModelA = viewModel.timerModels[.focus]![0]
-        let timerModelB = viewModel.timerModels[.focus]![1]
+        let timerModelA = viewModel.timerModels[0]
+        let timerModelB = viewModel.timerModels[1]
 
         viewModel.didTapTimer(from: timerModelA)
         viewModel.didTapTimer(from: timerModelB)

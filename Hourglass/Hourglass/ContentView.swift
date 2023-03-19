@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    private var viewModel = ViewModel()
+    private let viewModel = ViewModel()
 
     var body: some View {
         ZStack {
@@ -12,7 +12,7 @@ struct ContentView: View {
 
                 TimerGrid(viewModel: viewModel)
 
-                SettingsButton()
+                SettingsButton(viewModel: viewModel)
             }
             .padding([.top, .bottom], 40)
             .padding([.leading, .trailing], 60)
@@ -41,7 +41,7 @@ private struct AlertWrapper: View {
 }
 
 private struct TimerGrid: View {
-    var viewModel: ViewModel
+    let viewModel: ViewModel
     let ySpacing = 20.0
     let xSpacing = 26.0
 
@@ -50,14 +50,9 @@ private struct TimerGrid: View {
             VStack(alignment: .center, spacing: ySpacing) {
                 Header(content: "Focus")
 
-                if let focusTimerModels = viewModel.timerModels[.focus] {
-                    ForEach(focusTimerModels) { model in
-                        TimerButton(value: model.length,
-                                    //TODO: - pass length binding to button view
-                                    state: model.state,
-                                    publisher: model.$state.eraseToAnyPublisher()) {
-                            viewModel.didTapTimer(from: model)
-                        }
+                ForEach(viewModel.timerModels.filterByCategory(.focus)) { model in
+                    TimerButton(model: model) {
+                        viewModel.didTapTimer(from: model)
                     }
                 }
             }
@@ -65,13 +60,9 @@ private struct TimerGrid: View {
             VStack(alignment: .center, spacing: ySpacing) {
                 Header(content: "Break")
 
-                if let restTimerModels = viewModel.timerModels[.rest] {
-                    ForEach(restTimerModels) { model in
-                        TimerButton(value: model.length,
-                                    state: model.state,
-                                    publisher: model.$state.eraseToAnyPublisher()) {
-                            viewModel.didTapTimer(from: model)
-                        }
+                ForEach(viewModel.timerModels.filterByCategory(.rest)) { model in
+                    TimerButton(model: model) {
+                        viewModel.didTapTimer(from: model)
                     }
                 }
             }
@@ -103,8 +94,34 @@ private struct Header: View {
 }
 
 private struct SettingsButton: View {
+    let focusTimerModels: [Timer.Model]
+    let restTimerModels: [Timer.Model]
+
+    init(viewModel: ViewModel) {
+        self.focusTimerModels = viewModel.timerModels.filterByCategory(.focus)
+        self.restTimerModels = viewModel.timerModels.filterByCategory(.rest)
+    }
+
     @AppStorage(SettingsKeys.notificationStyle.rawValue)
     var notificationStyle: NotificationStyle = .popup
+
+    @AppStorage(SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
+    var timerFocusSmallPreset: Int = Constants.timerFocusSmallDefault
+
+    @AppStorage(SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
+    var timerFocusMediumPreset: Int = Constants.timerFocusMediumDefault
+
+    @AppStorage(SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
+    var timerFocusLargePreset: Int = Constants.timerFocusLargeDefault
+
+    @AppStorage(SettingsKeys.TimerSetting.timerRestSmall.rawValue)
+    var timerRestSmallPreset: Int = Constants.timerRestSmallDefault
+
+    @AppStorage(SettingsKeys.TimerSetting.timerRestMedium.rawValue)
+    var timerRestMediumPreset: Int = Constants.timerRestMediumDefault
+
+    @AppStorage(SettingsKeys.TimerSetting.timerRestLarge.rawValue)
+    var timerRestLargePreset: Int = Constants.timerRestLargeDefault
 
     @Environment(\.openWindow) var openWindow
 
@@ -128,32 +145,49 @@ private struct SettingsButton: View {
                     Toggle("Fullscreen on Rest", isOn: .constant(true))
                 }
                 Section("Timer Presets") {
+                    // TODO: - If timer in progress while changing setting, prompt user to stop timer first. (use activeTimerModel) (#21)
                     Menu("Focus Timers") {
-                        Picker("Small", selection: .constant(true)) {
-                            Text("15")
-                            Text("20")
+                        Picker("Small", selection: $timerFocusSmallPreset) {
+                            Text("15").tag(15)
+                            Text("20").tag(20)
+                        }.onChange(of: timerFocusSmallPreset) { value in
+                            focusTimerModels[0].length = value
                         }
-                        Picker("Medium", selection: .constant(true)) {
-                            Text("25")
-                            Text("30")
+
+                        Picker("Medium", selection: $timerFocusMediumPreset) {
+                            Text("25").tag(25)
+                            Text("30").tag(30)
+                        }.onChange(of: timerFocusMediumPreset) { value in
+                            focusTimerModels[1].length = value
                         }
-                        Picker("Large", selection: .constant(true)) {
-                            Text("35")
-                            Text("40")
+
+                        Picker("Large", selection: $timerFocusLargePreset) {
+                            Text("35").tag(35)
+                            Text("40").tag(40)
+                        }.onChange(of: timerFocusLargePreset) { value in
+                            focusTimerModels[2].length = value
                         }
                     }.pickerStyle(.inline)
                     Menu("Rest Timers") {
-                        Picker("Small", selection: .constant(true)) {
-                            Text("3")
-                            Text("5")
+                        Picker("Small", selection: $timerRestSmallPreset) {
+                            Text("3").tag(3)
+                            Text("5").tag(5)
+                        }.onChange(of: timerRestSmallPreset) { value in
+                            restTimerModels[0].length = value
                         }
-                        Picker("Medium", selection: .constant(true)) {
-                            Text("10")
-                            Text("15")
+
+                        Picker("Medium", selection: $timerRestMediumPreset) {
+                            Text("10").tag(10)
+                            Text("15").tag(15)
+                        }.onChange(of: timerRestMediumPreset) { value in
+                            restTimerModels[1].length = value
                         }
-                        Picker("Large", selection: .constant(true)) {
-                            Text("20")
-                            Text("25")
+
+                        Picker("Large", selection: $timerRestLargePreset) {
+                            Text("20").tag(20)
+                            Text("25").tag(25)
+                        }.onChange(of: timerRestLargePreset) { value in
+                            restTimerModels[2].length = value
                         }
                     }
                     .pickerStyle(.inline)

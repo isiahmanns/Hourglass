@@ -13,6 +13,7 @@
 		253816E529A5D88C007BD118 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E429A5D88C007BD118 /* Preview Assets.xcassets */; };
 		253816F029A5D88C007BD118 /* ViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816EF29A5D88C007BD118 /* ViewModelTests.swift */; };
 		253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816F929A5D88C007BD118 /* HourglassUITests.swift */; };
+		25458EE129C6A69F00A118C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25458EE029C6A69F00A118C0 /* Constants.swift */; };
 		258302EA29C331CC00D37115 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302E929C331CC00D37115 /* SettingsManager.swift */; };
 		258302EC29C369E400D37115 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302EB29C369E400D37115 /* Events.swift */; };
 		258302EE29C36A0000D37115 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302ED29C36A0000D37115 /* Notifications.swift */; };
@@ -58,6 +59,7 @@
 		253816EF29A5D88C007BD118 /* ViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelTests.swift; sourceTree = "<group>"; };
 		253816F529A5D88C007BD118 /* HourglassUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HourglassUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		253816F929A5D88C007BD118 /* HourglassUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITests.swift; sourceTree = "<group>"; };
+		25458EE029C6A69F00A118C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		258302E929C331CC00D37115 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		258302EB29C369E400D37115 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		258302ED29C36A0000D37115 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 				25EB6D7029AAE24B005BC143 /* Info.plist */,
 				253816DD29A5D88C007BD118 /* HourglassApp.swift */,
 				253816DF29A5D88C007BD118 /* ContentView.swift */,
+				25458EE029C6A69F00A118C0 /* Constants.swift */,
 				258302E929C331CC00D37115 /* SettingsManager.swift */,
 				25EB6DAB29B027AB005BC143 /* ViewModel.swift */,
 				258CB4C429C2E4D800812DA4 /* UserNotificationManager.swift */,
@@ -344,6 +347,7 @@
 				25C3126629B5AE1E000070DF /* TimeUnit.swift in Sources */,
 				258CB4C529C2E4D800812DA4 /* UserNotificationManager.swift in Sources */,
 				258302EA29C331CC00D37115 /* SettingsManager.swift in Sources */,
+				25458EE129C6A69F00A118C0 /* Constants.swift in Sources */,
 				25EB6DAE29B04BC3005BC143 /* TimerManager.swift in Sources */,
 				253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */,
 			);

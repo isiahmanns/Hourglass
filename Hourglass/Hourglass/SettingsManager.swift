@@ -9,12 +9,23 @@ struct SettingsManager {
     }
 
     // Timer
-    func setTimer(length: Int, for key: SettingsKeys.TimerLengths) {
+    func setTimer(length: Int, for key: SettingsKeys.TimerSetting) {
         store.set(length, forKey: key.rawValue)
     }
 
-    func getTimerLength(for timerLength: SettingsKeys.TimerLengths) -> Int {
-        store.integer(forKey: timerLength.rawValue)
+    func getTimerLength(for timerSetting: SettingsKeys.TimerSetting) -> Int? {
+        let value = store.object(forKey: timerSetting.rawValue)
+
+        if let intValue = value as? Int {
+            return intValue
+        }
+
+        // Note: This supports launch args in UI Testing
+        if let stringValue = value as? String {
+            return Int(stringValue)
+        }
+
+        return nil
     }
 
     // Sound
@@ -42,12 +53,12 @@ struct SettingsManager {
 
     func getNotificationStyle() -> NotificationStyle {
         let value = store.integer(forKey: SettingsKeys.notificationStyle.rawValue)
-        return NotificationStyle(rawValue: value) ?? .popup
+        return NotificationStyle(rawValue: value)!
     }
 }
 
 enum SettingsKeys: String {
-    enum TimerLengths: String {
+    enum TimerSetting: String {
         case timerFocusSmall
         case timerFocusMedium
         case timerFocusLarge

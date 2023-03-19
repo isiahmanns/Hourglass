@@ -9,11 +9,9 @@ struct UnitTestProviders {
         return (stubTimerPublisher, fakeTimerManager)
     }
 
-    private static var stubTimerModels: [Hourglass.Timer.Category : [Hourglass.Timer.Model]] {
-        [.focus: [Timer.Model(length: 3, category: .focus, size: .small),
-                  Timer.Model(length: 5, category: .focus, size: .medium)],
-         .rest: [Timer.Model(length: 3, category: .rest, size: .small),
-                 Timer.Model(length: 5, category: .rest, size: .medium)]]
+    private static var stubTimerModels: [Hourglass.Timer.Model] {
+        [Timer.Model(length: 3, category: .focus, size: .small),
+         Timer.Model(length: 5, category: .rest, size: .medium)]
     }
 
     static var mockUserNotificationManager: UserNotificationManagerMock {

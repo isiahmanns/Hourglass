@@ -44,8 +44,8 @@ final class HourglassUITests: XCTestCase {
         XCTAssertTrue(settingsButton.exists)
     }
 
-    // TODO: - Use launch arguments to override userdefault timer settings for testing (#15)
     func testStartTimerToCompletionPopup() {
+        app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.popup)
         app.launchMenu()
 
@@ -67,6 +67,7 @@ final class HourglassUITests: XCTestCase {
 
     // Note: - Locally, notifications must be visible (DND off).
     func testStartTimerToCompletionBanner() {
+        app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.banner)
         app.launchMenu()
 
@@ -163,5 +164,9 @@ extension XCUIApplication {
 extension XCUIApplication {
     func setNotificationStyle(_ style: NotificationStyle) {
         launchArguments += ["-\(SettingsKeys.notificationStyle.rawValue)", "\(style.rawValue)"]
+    }
+
+    func setTimerLength(_ length: Int, for timerSetting: SettingsKeys.TimerSetting) {
+        launchArguments += ["-\(timerSetting.rawValue)", "\(length)"]
     }
 }

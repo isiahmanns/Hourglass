@@ -2,22 +2,17 @@ import SwiftUI
 import Combine
 
 struct TimerButton: View {
-    let value: Int
-    @State private(set) var state: Timer.State
-    let publisher: AnyPublisher<Timer.State, Never>
+    @StateObject var model: Timer.Model
     let action: () -> Void
 
     var body: some View {
         Button {
             action()
         } label: {
-            Text(String(value))
+            Text(String(model.length))
         }
-        .buttonStyle(TimerButton.Style(for: state))
-        .onReceive(publisher) { timerState in
-            state = timerState
-        }
-        .accessibilityIdentifier("\(value)s-timer-button")
+        .buttonStyle(TimerButton.Style(for: model.state))
+        .accessibilityIdentifier("\(model.length)s-timer-button")
     }
 }
 
@@ -56,9 +51,8 @@ extension TimerButton {
 
 struct TimerButton_Previews: PreviewProvider {
     static var previews: some View {
-        TimerButton(value: 15,
-                    state: .active,
-                    publisher: Empty<Timer.State, Never>().eraseToAnyPublisher()) {}
+        let timerModel = Timer.Model(length: 15, category: .rest, size: .large)
+        TimerButton(model: timerModel) {}
             .font(Font.poppins)
     }
 }

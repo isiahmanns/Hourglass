@@ -1,9 +1,9 @@
 import Foundation
 
 enum Timer {
-    class Model: Identifiable {
+    class Model: Identifiable, ObservableObject {
         let id: UUID
-        let length: Int
+        @Published var length: Int
         @Published var state: State
         let category: Category
         let size: Size
@@ -33,5 +33,15 @@ extension Timer {
         case small
         case medium
         case large
+    }
+}
+
+extension [Timer.Model] {
+    func filterByCategory(_ category: Timer.Category) -> [Timer.Model] {
+        self
+            .filter { timerModel in
+                timerModel.category == category
+            }
+            .sorted(by: {$0.length < $1.length})
     }
 }
