@@ -6,8 +6,9 @@ class ViewModel: ObservableObject {
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
 
-    // TODO: - make this a calculated value from the timer manager
-    private var activeTimerModel: Timer.Model?
+    var activeTimerModel: Timer.Model? {
+        timerModels.filter({$0.id == timerManager.activeTimerModelId}).first
+    }
 
     private var pendingTimerModel: Timer.Model?
     @Published var viewState = ViewState()
@@ -65,19 +66,31 @@ class ViewModel: ObservableObject {
         case .no:
             break
         case .yes:
-            guard let activeTimerModel, let pendingTimerModel else { fatalError() }
+            if let activeTimerModel {
+                stopTimer(for: activeTimerModel)
+            }
 
-            stopTimer(for: activeTimerModel)
+            guard let pendingTimerModel else {
+                // TODO: - Analytics, invalid state
+                fatalError()
+            }
+
             startTimer(for: pendingTimerModel)
         }
 
         pendingTimerModel = nil
     }
 
+    func cancelTimerIfNeeded(_ timerModel: Timer.Model) {
+        if activeTimerModel === timerModel {
+            stopTimer(for: timerModel)
+            viewState.showTimerResetAlert = true
+        }
+    }
+
     private func stopTimer(for model: Timer.Model) {
         timerManager.stopTimer()
         model.state = .inactive
-        activeTimerModel = nil
     }
 
     private func startTimer(for model: Timer.Model) {
@@ -88,7 +101,6 @@ class ViewModel: ObservableObject {
             self?.notifyUser(.timerCompleted)
         }
         model.state = .active
-        activeTimerModel = model
     }
 
     private func promptStartNewTimer(for model: Timer.Model) {
@@ -120,6 +132,7 @@ extension ViewModel {
     struct ViewState {
         var showStartNewTimerDialog: Bool = false
         var showTimerCompleteAlert: Bool = false
+        var showTimerResetAlert: Bool = false
     }
 
     enum StartNewTimerDialogResponse {

@@ -37,6 +37,7 @@ private struct AlertWrapper: View {
                 }
             }
             .alert("Time's up", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
+            .alert("Timer has been reset.", isPresented: $viewModel.viewState.showTimerResetAlert) {}
     }
 }
 
@@ -94,13 +95,7 @@ private struct Header: View {
 }
 
 private struct SettingsButton: View {
-    let focusTimerModels: [Timer.Model]
-    let restTimerModels: [Timer.Model]
-
-    init(viewModel: ViewModel) {
-        self.focusTimerModels = viewModel.timerModels.filterByCategory(.focus)
-        self.restTimerModels = viewModel.timerModels.filterByCategory(.rest)
-    }
+    let viewModel: ViewModel
 
     @AppStorage(SettingsKeys.notificationStyle.rawValue)
     var notificationStyle: NotificationStyle = .popup
@@ -145,27 +140,29 @@ private struct SettingsButton: View {
                     Toggle("Fullscreen on Rest", isOn: .constant(true))
                 }
                 Section("Timer Presets") {
-                    // TODO: - If timer in progress while changing setting, prompt user to stop timer first. (use activeTimerModel) (#21)
+                    let focusTimerModels = viewModel.timerModels.filterByCategory(.focus)
+                    let restTimerModels = viewModel.timerModels.filterByCategory(.rest)
+
                     Menu("Focus Timers") {
                         Picker("Small", selection: $timerFocusSmallPreset) {
                             Text("15").tag(15)
                             Text("20").tag(20)
                         }.onChange(of: timerFocusSmallPreset) { value in
-                            focusTimerModels[0].length = value
+                            handleTimerPresetSelection(value, for: focusTimerModels[0])
                         }
 
                         Picker("Medium", selection: $timerFocusMediumPreset) {
                             Text("25").tag(25)
                             Text("30").tag(30)
                         }.onChange(of: timerFocusMediumPreset) { value in
-                            focusTimerModels[1].length = value
+                            handleTimerPresetSelection(value, for: focusTimerModels[1])
                         }
 
                         Picker("Large", selection: $timerFocusLargePreset) {
                             Text("35").tag(35)
                             Text("40").tag(40)
                         }.onChange(of: timerFocusLargePreset) { value in
-                            focusTimerModels[2].length = value
+                            handleTimerPresetSelection(value, for: focusTimerModels[2])
                         }
                     }.pickerStyle(.inline)
                     Menu("Rest Timers") {
@@ -173,21 +170,21 @@ private struct SettingsButton: View {
                             Text("3").tag(3)
                             Text("5").tag(5)
                         }.onChange(of: timerRestSmallPreset) { value in
-                            restTimerModels[0].length = value
+                            handleTimerPresetSelection(value, for: restTimerModels[0])
                         }
 
                         Picker("Medium", selection: $timerRestMediumPreset) {
                             Text("10").tag(10)
                             Text("15").tag(15)
                         }.onChange(of: timerRestMediumPreset) { value in
-                            restTimerModels[1].length = value
+                            handleTimerPresetSelection(value, for: restTimerModels[1])
                         }
 
                         Picker("Large", selection: $timerRestLargePreset) {
                             Text("20").tag(20)
                             Text("25").tag(25)
                         }.onChange(of: timerRestLargePreset) { value in
-                            restTimerModels[2].length = value
+                            handleTimerPresetSelection(value, for: restTimerModels[2])
                         }
                     }
                     .pickerStyle(.inline)
@@ -205,6 +202,11 @@ private struct SettingsButton: View {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("settings-button")
+    }
+
+    private func handleTimerPresetSelection(_ length: Int, for timerModel: Timer.Model) {
+        viewModel.cancelTimerIfNeeded(timerModel)
+        timerModel.length = length
     }
 }
 
