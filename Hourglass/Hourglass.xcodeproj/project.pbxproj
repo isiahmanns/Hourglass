@@ -13,6 +13,7 @@
 		2507BB4F29C91BBB004478BE /* TimerGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4E29C91BBB004478BE /* TimerGrid.swift */; };
 		2507BB5129C91BF9004478BE /* AlertWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB5029C91BF9004478BE /* AlertWrapper.swift */; };
 		2507BB5329C91C2E004478BE /* SettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB5229C91C2E004478BE /* SettingsMenu.swift */; };
+		2507BB5929C925FF004478BE /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4629C7A77F004478BE /* SettingsKeys.swift */; };
 		253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DD29A5D88C007BD118 /* HourglassApp.swift */; };
 		253816E029A5D88C007BD118 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DF29A5D88C007BD118 /* ContentView.swift */; };
 		253816E229A5D88C007BD118 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E129A5D88C007BD118 /* Assets.xcassets */; };
@@ -422,6 +423,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2507BB5929C925FF004478BE /* SettingsKeys.swift in Sources */,
 				253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
