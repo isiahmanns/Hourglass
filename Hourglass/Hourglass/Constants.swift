@@ -1,3 +1,5 @@
+import Foundation
+
 enum Constants {
     // Notification style default
     static let notificationStyle = NotificationStyle.popup.rawValue
@@ -15,4 +17,7 @@ enum Constants {
     static let timerRestSmallDefault = 3
     static let timerRestMediumDefault = 10
     static let timerRestLargeDefault = 20
+
+    // Window Ids
+    static let aboutWindowId = UUID().uuidString
 }

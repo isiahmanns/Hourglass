@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2507BB4729C7A77F004478BE /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4629C7A77F004478BE /* SettingsKeys.swift */; };
 		2507BB4929C7B119004478BE /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4629C7A77F004478BE /* SettingsKeys.swift */; };
+		2507BB4B29C805BD004478BE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4A29C805BD004478BE /* AboutView.swift */; };
 		253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DD29A5D88C007BD118 /* HourglassApp.swift */; };
 		253816E029A5D88C007BD118 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DF29A5D88C007BD118 /* ContentView.swift */; };
 		253816E229A5D88C007BD118 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E129A5D88C007BD118 /* Assets.xcassets */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		2507BB4629C7A77F004478BE /* SettingsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeys.swift; sourceTree = "<group>"; };
+		2507BB4A29C805BD004478BE /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		253816DA29A5D88C007BD118 /* Hourglass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hourglass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		253816DD29A5D88C007BD118 /* HourglassApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassApp.swift; sourceTree = "<group>"; };
 		253816DF29A5D88C007BD118 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 			children = (
 				25EB6D7029AAE24B005BC143 /* Info.plist */,
 				253816DD29A5D88C007BD118 /* HourglassApp.swift */,
+				2507BB4A29C805BD004478BE /* AboutView.swift */,
 				253816DF29A5D88C007BD118 /* ContentView.swift */,
 				25458EE029C6A69F00A118C0 /* Constants.swift */,
 				258302E929C331CC00D37115 /* SettingsManager.swift */,
@@ -339,6 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2507BB4B29C805BD004478BE /* AboutView.swift in Sources */,
 				258302EC29C369E400D37115 /* Events.swift in Sources */,
 				25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */,
 				25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */,

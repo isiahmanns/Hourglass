@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    // TODO: - Move views into separate files
     private let viewModel = ViewModel()
 
     var body: some View {
@@ -8,7 +9,7 @@ struct ContentView: View {
             AlertWrapper(viewModel: viewModel)
 
             VStack(alignment: .center, spacing: 30.0) {
-                Logo()
+                Logo(size: 40)
 
                 TimerGrid(viewModel: viewModel)
 
@@ -73,8 +74,8 @@ private struct TimerGrid: View {
     }
 }
 
-private struct Logo: View {
-    let size: Double = 40
+struct Logo: View {
+    let size: Double
 
     var body: some View {
         Image("hourglassLogo")
@@ -133,8 +134,8 @@ private struct SettingsButton: View {
     var body: some View {
         Menu {
             Section {
-                Button("About") {
-                    // open window
+                Button("About Hourglass") {
+                    openWindow(id: Constants.aboutWindowId)
                 }
             }
             Section {
@@ -201,7 +202,7 @@ private struct SettingsButton: View {
                 }
             }
             Section {
-                Button("Quit") {
+                Button("Quit Hourglass") {
                     NSApplication.shared.terminate(self)
                 }
             }

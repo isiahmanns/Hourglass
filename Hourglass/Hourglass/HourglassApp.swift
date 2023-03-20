@@ -15,5 +15,11 @@ struct HourglassApp: App {
             .accessibilityIdentifier("menu-bar-select")
         }
         .menuBarExtraStyle(.window)
+
+        Window("About Hourglass", id: Constants.aboutWindowId) {
+            AboutView()
+        }
+        .windowResizability(.contentSize)
+        .windowStyle(.hiddenTitleBar)
     }
 }
