@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    private let viewModel = ViewModel()
+    let viewModel: ViewModel
 
     var body: some View {
         ZStack {
@@ -23,7 +23,10 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let viewModel = ViewModel(timerManager: TimerManager.shared,
+                                  userNotificationManager: UserNotificationManager.shared,
+                                  settingsManager: SettingsManager.shared)
+        ContentView(viewModel: viewModel)
             .font(Font.poppins)
     }
 }

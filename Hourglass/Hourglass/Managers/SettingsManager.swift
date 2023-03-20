@@ -1,10 +1,10 @@
 import Foundation
 
 struct SettingsManager {
-    static let shared = SettingsManager()
+    static let shared = SettingsManager(store: UserDefaults.standard)
     let store: UserDefaults
 
-    private init(store: UserDefaults = .standard) {
+    private init(store: UserDefaults) {
         self.store = store
     }
 

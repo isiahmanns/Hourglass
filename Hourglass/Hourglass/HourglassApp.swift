@@ -2,9 +2,17 @@ import SwiftUI
 
 @main
 struct HourglassApp: App {
+    let timerManager = TimerManager.shared
+    let userNotificationManager = UserNotificationManager.shared
+    let settingsManager = SettingsManager.shared
+
     var body: some Scene {
         MenuBarExtra {
-            ContentView()
+            let viewModel = ViewModel(timerManager: timerManager,
+                                      userNotificationManager: userNotificationManager,
+                                      settingsManager: settingsManager)
+
+            ContentView(viewModel: viewModel)
                 .font(Font.poppins)
         } label: {
             HStack {

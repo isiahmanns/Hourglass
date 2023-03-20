@@ -14,10 +14,9 @@ class ViewModel: ObservableObject {
     @Published var viewState = ViewState()
 
     init(timerModels: [Timer.Model]? = nil,
-         timerManager: TimerManager = TimerManager.shared,
-         userNotificationManager: NotificationManager = UserNotificationManager.shared,
-         settingsManager: SettingsManager = SettingsManager.shared) {
-        // TODO: - Explicitly inject dependencies from call site
+         timerManager: TimerManager,
+         userNotificationManager: NotificationManager,
+         settingsManager: SettingsManager) {
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager
         self.settingsManager = settingsManager
