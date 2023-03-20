@@ -68,6 +68,15 @@ struct SettingsManager {
 
     func getNotificationStyle() -> NotificationStyle {
         let value = store.object(forKey: SettingsKeys.notificationStyle.rawValue)
-        return NotificationStyle(rawValue: value as? Int ?? Constants.notificationStyle)!
+
+        if let intValue = value as? Int {
+            return NotificationStyle(rawValue: intValue)!
+        }
+
+        if let stringValue = value as? String {
+            return NotificationStyle(rawValue: Int(stringValue)!)!
+        }
+
+        return NotificationStyle(rawValue: Constants.notificationStyle)!
     }
 }
