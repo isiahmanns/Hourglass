@@ -1,101 +1,6 @@
 import SwiftUI
 
-struct ContentView: View {
-    // TODO: - Move views into separate files
-    private let viewModel = ViewModel()
-
-    var body: some View {
-        ZStack {
-            AlertWrapper(viewModel: viewModel)
-
-            VStack(alignment: .center, spacing: 30.0) {
-                Logo(size: 40)
-
-                TimerGrid(viewModel: viewModel)
-
-                SettingsButton(viewModel: viewModel)
-            }
-            .padding([.top, .bottom], 40)
-            .padding([.leading, .trailing], 60)
-            .background(Color.background)
-        }
-    }
-}
-
-private struct AlertWrapper: View {
-    @StateObject var viewModel: ViewModel
-    
-    var body: some View {
-        Color.clear
-            .frame(width: 0, height: 0)
-            .confirmationDialog("Are you sure you want to start a new timer?",
-                                isPresented: $viewModel.viewState.showStartNewTimerDialog) {
-                Button("Start timer", role: .none) {
-                    viewModel.didReceiveStartNewTimerDialog(response: .yes)
-                }
-                Button("Cancel", role: .cancel) {
-                    viewModel.didReceiveStartNewTimerDialog(response: .no)
-                }
-            }
-            .alert("Time's up", isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
-            .alert("Timer has been reset.", isPresented: $viewModel.viewState.showTimerResetAlert) {}
-    }
-}
-
-private struct TimerGrid: View {
-    let viewModel: ViewModel
-    let ySpacing = 20.0
-    let xSpacing = 26.0
-
-    var body: some View {
-        HStack(alignment: .center, spacing: xSpacing) {
-            VStack(alignment: .center, spacing: ySpacing) {
-                Header(content: "Focus")
-
-                ForEach(viewModel.timerModels.filterByCategory(.focus)) { model in
-                    TimerButton(model: model) {
-                        viewModel.didTapTimer(from: model)
-                    }
-                }
-            }
-
-            VStack(alignment: .center, spacing: ySpacing) {
-                Header(content: "Break")
-
-                ForEach(viewModel.timerModels.filterByCategory(.rest)) { model in
-                    TimerButton(model: model) {
-                        viewModel.didTapTimer(from: model)
-                    }
-                }
-            }
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("timer-grid")
-    }
-}
-
-struct Logo: View {
-    let size: Double
-
-    var body: some View {
-        Image("hourglassLogo")
-            .resizable()
-            .scaledToFit()
-            .frame(width: size, height: size)
-            .accessibilityIdentifier("hourglass-logo")
-    }
-}
-
-private struct Header: View {
-    let content: String
-
-    var body: some View {
-        Text(content)
-            .foregroundColor(Color.onBackgroundPrimary)
-    }
-}
-
-private struct SettingsButton: View {
+struct SettingsMenu: View {
     let viewModel: ViewModel
 
     /**
@@ -218,12 +123,5 @@ private struct SettingsButton: View {
     private func handleTimerPresetSelection(_ length: Int, for timerModel: Timer.Model) {
         viewModel.cancelTimerIfNeeded(timerModel)
         timerModel.length = length
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-            .font(Font.poppins)
     }
 }
