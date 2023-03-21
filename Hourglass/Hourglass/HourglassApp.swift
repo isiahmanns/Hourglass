@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct HourglassApp: App {
-    let timerManager = TimerManager.shared
+    @StateObject var timerManager = TimerManager.shared
     let userNotificationManager = UserNotificationManager.shared
     let settingsManager = SettingsManager.shared
 
@@ -16,8 +16,15 @@ struct HourglassApp: App {
                 .font(Font.poppins)
         } label: {
             HStack {
+                // TODO: - Make logo into symbol
                 Image(systemName: "hourglass")
-                Text("<timestamp>")
+
+                let timeStamp = timerManager.timeStamp
+                if timeStamp != Constants.timeStampZero {
+                    Text(timeStamp)
+                        // TODO: - This modifier doesn't seem to work. Switch to UIKit startup for custom menu bar label.
+                        .monospacedDigit()
+                }
             }
             .accessibilityElement(children: .ignore)
             .accessibilityIdentifier("menu-bar-select")

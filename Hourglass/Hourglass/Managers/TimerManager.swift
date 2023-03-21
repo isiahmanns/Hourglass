@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-class TimerManager {
+class TimerManager: ObservableObject {
     static let shared: TimerManager = {
         let publisher = Foundation.Timer.publish(every: 1, on: .main, in: .common)
         return TimerManager(timerPublisher: publisher)
@@ -12,11 +12,10 @@ class TimerManager {
     private var count: Int = 0 {
         didSet {
             let (minutes, seconds) = count.asSeconds.toMinutesSeconds
-            timeStamp = "\(minutes):\(seconds)"
-            // TODO: - format string to display 2-digit integers
+            timeStamp = String(format: "%02d:%02d", minutes, seconds)
         }
     }
-    @Published var timeStamp: String = "00:00"
+    @Published private(set) var timeStamp: String = Constants.timeStampZero
     var activeTimerModelId: Timer.Model.ID?
     var isTimerActive: Bool {
         !timerCancellables.isEmpty
@@ -27,7 +26,7 @@ class TimerManager {
     }
     
     func startTimer(length: Int, activeTimerModelId: Timer.Model.ID, action: @escaping () -> Void) {
-        self.count = length // * 60
+        self.count = length * Constants.countdownFactor
         self.activeTimerModelId = activeTimerModelId
 
         timerPublisher

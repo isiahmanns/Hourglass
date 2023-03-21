@@ -95,7 +95,7 @@ final class HourglassUITests: XCTestCase {
         timerGridButtons[3].tap()
         timerGridButtons[3].tap()
 
-        // TODO: Assert time is at 00:00 using timer display in menu bar (#13)
+        XCTAssertEqual(app.statusItems["menu-bar-select"].title, "")
     }
 
     func testStartNewTimerFlowConfirm() {
@@ -103,9 +103,9 @@ final class HourglassUITests: XCTestCase {
         app.launchMenu()
 
         let (_, timerGridButtons) = timerGrid
-        timerGridButtons[3].tap()
-        sleep(1)
         timerGridButtons[4].tap()
+        //sleep(1)
+        timerGridButtons[5].tap()
 
         let alert = app.sheets.matching(identifier: "alert").element
         XCTAssertTrue(alert.waitForExistence(timeout: 4))
@@ -118,8 +118,7 @@ final class HourglassUITests: XCTestCase {
         }
 
         affirmButton.tap()
-        // TODO: Assert time == new time using timer display in menu bar (#13)
-
+        XCTAssertEqual(app.statusItems["menu-bar-select"].title, "00:20")
     }
 
     func testStartNewTimerFlowDeny() {
@@ -127,9 +126,9 @@ final class HourglassUITests: XCTestCase {
         app.launchMenu()
 
         let (_, timerGridButtons) = timerGrid
-        timerGridButtons[3].tap()
-        sleep(1)
         timerGridButtons[4].tap()
+        //sleep(1)
+        timerGridButtons[5].tap()
 
         let alert = app.sheets.matching(identifier: "alert").element
         XCTAssertTrue(alert.waitForExistence(timeout: 4))
@@ -142,7 +141,8 @@ final class HourglassUITests: XCTestCase {
         }
 
         denyButton.tap()
-        // TODO: Assert time < prev. selected time using timer display in menu bar (#13)
+        // Note: - Assuming execution will be the same on each run could mean a flaky test.
+        XCTAssertEqual(app.statusItems["menu-bar-select"].title, "00:07")
     }
 }
 

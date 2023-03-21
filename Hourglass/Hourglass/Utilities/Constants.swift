@@ -20,4 +20,14 @@ enum Constants {
 
     // Window Ids
     static let aboutWindowId = UUID().uuidString
+
+    // Timestamp default
+    static let timeStampZero = "00:00"
+
+    // Timer length multiplier
+#if RELEASE
+    static let countdownFactor = 60
+#elseif DEBUG || CITESTING
+    static let countdownFactor = 1
+#endif
 }

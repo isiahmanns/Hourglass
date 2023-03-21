@@ -17,19 +17,19 @@ final class TimerManagerTests: XCTestCase {
         assertTimerDefault()
 
         timerManager.startTimer(length: 3, activeTimerModelId: timerID) {}
-        XCTAssertEqual(timerManager.timeStamp, "0:3")
+        XCTAssertEqual(timerManager.timeStamp, "00:03")
         assertTimerInProgress()
 
         timerPublisher.send(now)
-        XCTAssertEqual(timerManager.timeStamp, "0:2")
+        XCTAssertEqual(timerManager.timeStamp, "00:02")
         assertTimerInProgress()
 
         timerPublisher.send(now + 1)
-        XCTAssertEqual(timerManager.timeStamp, "0:1")
+        XCTAssertEqual(timerManager.timeStamp, "00:01")
         assertTimerInProgress()
 
         timerPublisher.send(now + 2)
-        XCTAssertEqual(timerManager.timeStamp, "0:0")
+        XCTAssertEqual(timerManager.timeStamp, "00:00")
         assertTimerDefault()
     }
 
@@ -37,11 +37,11 @@ final class TimerManagerTests: XCTestCase {
         assertTimerDefault()
 
         timerManager.startTimer(length: 3, activeTimerModelId: timerID) {}
-        XCTAssertEqual(timerManager.timeStamp, "0:3")
+        XCTAssertEqual(timerManager.timeStamp, "00:03")
         assertTimerInProgress()
 
         timerManager.stopTimer()
-        XCTAssertEqual(timerManager.timeStamp, "0:0")
+        XCTAssertEqual(timerManager.timeStamp, "00:00")
         assertTimerDefault()
     }
 
