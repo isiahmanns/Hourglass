@@ -30,4 +30,10 @@ enum Constants {
 #elseif DEBUG || CITESTING
     static let countdownFactor = 1
 #endif
+
+    // Strings
+    enum Strings {
+        static let focusHeader = "Focus"
+        static let restHeader = "Rest"
+    }
 }

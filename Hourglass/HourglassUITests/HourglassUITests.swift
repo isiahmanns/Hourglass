@@ -29,7 +29,7 @@ final class HourglassUITests: XCTestCase {
         app.launchMenu()
 
         XCTAssertTrue(app.staticTexts["Focus"].exists)
-        XCTAssertTrue(app.staticTexts["Break"].exists)
+        XCTAssertTrue(app.staticTexts["Rest"].exists)
 
         let (timerGrid, timerGridButtons) = timerGrid
         XCTAssertTrue(timerGrid.exists)
@@ -95,7 +95,7 @@ final class HourglassUITests: XCTestCase {
         timerGridButtons[3].tap()
         timerGridButtons[3].tap()
 
-        XCTAssertEqual(app.statusItems["menu-bar-select"].title, "")
+        XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:00")
     }
 
     func testStartNewTimerFlowConfirm() {
@@ -118,7 +118,8 @@ final class HourglassUITests: XCTestCase {
         }
 
         affirmButton.tap()
-        XCTAssertEqual(app.statusItems["menu-bar-select"].title, "00:20")
+        app.log()
+        XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:20")
     }
 
     func testStartNewTimerFlowDeny() {
@@ -142,7 +143,7 @@ final class HourglassUITests: XCTestCase {
 
         denyButton.tap()
         // Note: - Assuming execution will be the same on each run could mean a flaky test.
-        XCTAssertEqual(app.statusItems["menu-bar-select"].title, "00:07")
+        XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:07")
     }
 }
 
@@ -152,7 +153,7 @@ extension XCUIApplication {
         launch()
         // Note: - Locally, menu bar must be "always visible" or mouse should hover on menu bar for tests to work.
         // NSStatusBar.system
-        statusItems["menu-bar-select"].tap()
+        statusItems["menu-bar-button"].tap()
     }
 
     func log() {

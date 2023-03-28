@@ -18,7 +18,7 @@ struct TimerButton: View {
 
 extension TimerButton {
     private struct Style: ButtonStyle {
-        let size: Double = 60
+        let size: Double = 56
         let state: Timer.State
 
         @ViewBuilder

@@ -7,7 +7,7 @@ struct ContentView: View {
         ZStack {
             AlertWrapper(viewModel: viewModel)
 
-            VStack(alignment: .center, spacing: 30.0) {
+            VStack(alignment: .center, spacing: 18.0) {
                 Logo(size: 40)
 
                 TimerGrid(viewModel: viewModel)
@@ -15,7 +15,7 @@ struct ContentView: View {
                 SettingsMenu(viewModel: viewModel)
             }
             .padding([.top, .bottom], 40)
-            .padding([.leading, .trailing], 60)
+            .padding([.leading, .trailing], 50)
             .background(Color.background)
         }
     }
