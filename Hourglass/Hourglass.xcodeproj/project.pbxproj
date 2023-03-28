@@ -14,7 +14,7 @@
 		2507BB5129C91BF9004478BE /* AlertWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB5029C91BF9004478BE /* AlertWrapper.swift */; };
 		2507BB5329C91C2E004478BE /* SettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB5229C91C2E004478BE /* SettingsMenu.swift */; };
 		2507BB5929C925FF004478BE /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4629C7A77F004478BE /* SettingsKeys.swift */; };
-		253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DD29A5D88C007BD118 /* HourglassApp.swift */; };
+		253816DE29A5D88C007BD118 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DD29A5D88C007BD118 /* AppDelegate.swift */; };
 		253816E029A5D88C007BD118 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DF29A5D88C007BD118 /* ContentView.swift */; };
 		253816E229A5D88C007BD118 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E129A5D88C007BD118 /* Assets.xcassets */; };
 		253816E529A5D88C007BD118 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 253816E429A5D88C007BD118 /* Preview Assets.xcassets */; };
@@ -64,7 +64,7 @@
 		2507BB5029C91BF9004478BE /* AlertWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWrapper.swift; sourceTree = "<group>"; };
 		2507BB5229C91C2E004478BE /* SettingsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenu.swift; sourceTree = "<group>"; };
 		253816DA29A5D88C007BD118 /* Hourglass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hourglass.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		253816DD29A5D88C007BD118 /* HourglassApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassApp.swift; sourceTree = "<group>"; };
+		253816DD29A5D88C007BD118 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		253816DF29A5D88C007BD118 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		253816E129A5D88C007BD118 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		253816E429A5D88C007BD118 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 			children = (
 				25EB6D7029AAE24B005BC143 /* Info.plist */,
 				25C97C8F29CC98AF001A8CAD /* main.swift */,
-				253816DD29A5D88C007BD118 /* HourglassApp.swift */,
+				253816DD29A5D88C007BD118 /* AppDelegate.swift */,
 				25EB6DAB29B027AB005BC143 /* ViewModel.swift */,
 				2507BB5529C91D95004478BE /* Views */,
 				2507BB5729C92054004478BE /* Managers */,
@@ -413,7 +413,7 @@
 				2507BB4729C7A77F004478BE /* SettingsKeys.swift in Sources */,
 				25458EE129C6A69F00A118C0 /* Constants.swift in Sources */,
 				25EB6DAE29B04BC3005BC143 /* TimerManager.swift in Sources */,
-				253816DE29A5D88C007BD118 /* HourglassApp.swift in Sources */,
+				253816DE29A5D88C007BD118 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

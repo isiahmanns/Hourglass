@@ -5,6 +5,7 @@ class ViewModel: ObservableObject {
     private let timerManager: TimerManager
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
+    weak var appDelegate: AppDelegate?
 
     var activeTimerModel: Timer.Model? {
         timerModels.filter({$0.id == timerManager.activeTimerModelId}).first
@@ -116,6 +117,7 @@ class ViewModel: ObservableObject {
                                                              soundIsEnabled: true)
                 }
                 viewState.showTimerCompleteAlert = true
+                appDelegate?.showPopoverIfNeeded()
             }
         }
     }

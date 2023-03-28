@@ -3,7 +3,6 @@ import Combine
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     // TODO: - Show about window
-    // TODO: - Alert doesn't actively toggle popup, double-click to dismiss.
 
     private struct Dependencies {
         static let timerManager = TimerManager.shared
@@ -48,11 +47,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    @objc private func togglePopover(_ sender: AnyObject?) {
-        if popover.isShown {
-            popover.performClose(sender)
-        } else if let button = statusItem.button {
+    private func hidePopover() {
+        popover.performClose(nil)
+    }
+
+    private func showPopover() {
+        if let button = statusItem.button {
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .maxY)
+        }
+    }
+
+    @objc private func togglePopover() {
+        if popover.isShown {
+            hidePopover()
+        } else {
+            showPopover()
+        }
+    }
+
+    func showPopoverIfNeeded() {
+        if !popover.isShown {
+            showPopover()
         }
     }
 
@@ -67,6 +82,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let viewModel = ViewModel(timerManager: Dependencies.timerManager,
                                   userNotificationManager: Dependencies.userNotificationManager,
                                   settingsManager: Dependencies.settingsManager)
+        viewModel.appDelegate = self
+
         return ContentView(viewModel: viewModel)
             .font(.poppins)
     }
