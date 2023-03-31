@@ -56,9 +56,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupPopover(with view: some View) {
         popover = NSPopover()
         popover.behavior = .transient
-        popover.contentViewController = NSHostingController(rootView: view)
+        //popover.contentViewController = NSHostingController(rootView: view)
+        //popover.contentViewController = DummyViewController()
+        popover.contentViewController = NSHostingController(rootView: DummyView())
         // TODO: - Troubleshoot extra hairline spacing
-        //popover.contentViewController?.view.layer?.backgroundColor = CGColor.black
+        //popover.contentViewController!.view.layer!.backgroundColor = NSColor.green.cgColor
     }
 
     private func setupContentView() -> some View {
@@ -110,5 +112,29 @@ extension AppDelegate: WindowCoordinator {
         if !popover.isShown {
             showPopover()
         }
+    }
+}
+
+class DummyViewController: NSViewController {
+    override func loadView() {
+        view = NSView(frame: NSMakeRect(0.0, 0.0, 200, 200))
+        view.wantsLayer = true
+        view.layer!.backgroundColor = NSColor.blue.cgColor
+    }
+}
+
+struct DummyView: View {
+    var body: some View {
+        VStack {
+            Text("asdf")
+            Text("asdf")
+            Text("asdf")
+            Text("asdf")
+            Text("asdf")
+            Text("asdf")
+        }
+        //.fixedSize()
+        .padding(80) // changing this value indeterminately bleeds to bg coolor into the popover arrow when fixedSize is off (80, 90 100)
+        .background(.orange)
     }
 }
