@@ -5,7 +5,7 @@ class ViewModel: ObservableObject {
     private let timerManager: TimerManager
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
-    weak var appDelegate: AppDelegate?
+    weak private var windowCoordinator: WindowCoordinator?
 
     var activeTimerModel: Timer.Model? {
         timerModels.filter({$0.id == timerManager.activeTimerModelId}).first
@@ -17,10 +17,12 @@ class ViewModel: ObservableObject {
     init(timerModels: [Timer.Model]? = nil,
          timerManager: TimerManager,
          userNotificationManager: NotificationManager,
-         settingsManager: SettingsManager) {
+         settingsManager: SettingsManager,
+         windowCoordinator: WindowCoordinator? = nil) {
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager
         self.settingsManager = settingsManager
+        self.windowCoordinator = windowCoordinator
         self.timerModels = timerModels ?? [
             Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall),
                         category: .focus,
@@ -82,6 +84,10 @@ class ViewModel: ObservableObject {
         }
     }
 
+    func showAboutWindow() {
+        windowCoordinator?.showAboutWindow()
+    }
+
     private func stopTimer(for model: Timer.Model) {
         timerManager.stopTimer()
         model.state = .inactive
@@ -117,7 +123,7 @@ class ViewModel: ObservableObject {
                                                              soundIsEnabled: true)
                 }
                 viewState.showTimerCompleteAlert = true
-                appDelegate?.showPopoverIfNeeded()
+                windowCoordinator?.showPopoverIfNeeded()
             }
         }
     }
