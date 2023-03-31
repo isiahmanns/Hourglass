@@ -34,13 +34,11 @@ struct SettingsMenu: View {
     @AppStorage(SettingsKeys.TimerSetting.timerRestLarge.rawValue)
     var timerRestLargePreset: Int = Constants.timerRestLargeDefault
 
-    @Environment(\.openWindow) var openWindow
-
     var body: some View {
         Menu {
             Section {
                 Button("About Hourglass") {
-                    openWindow(id: Constants.aboutWindowId)
+                    viewModel.showAboutWindow()
                 }
             }
             Section {

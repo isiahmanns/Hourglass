@@ -1,9 +1,12 @@
 import SwiftUI
 import Combine
 
-class AppDelegate: NSObject, NSApplicationDelegate {
-    // TODO: - Show about window
+protocol WindowCoordinator: AnyObject {
+    func showAboutWindow()
+    func showPopoverIfNeeded()
+}
 
+class AppDelegate: NSObject, NSApplicationDelegate {
     private struct Dependencies {
         static let timerManager = TimerManager.shared
         static let userNotificationManager = UserNotificationManager.shared
@@ -13,12 +16,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBar: NSStatusBar = NSStatusBar.system
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
+    private var aboutWindow: NSWindow!
 
     private var cancellables: Set<AnyCancellable> = []
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         setupStatusItem()
-        setupPopover()
+        let view = setupContentView()
+        setupPopover(with: view)
+        setupAboutWindow()
     }
 
     private func setupStatusItem() {
@@ -47,6 +53,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    private func setupPopover(with view: some View) {
+        popover = NSPopover()
+        popover.behavior = .transient
+        popover.contentViewController = NSHostingController(rootView: view)
+        // TODO: - Troubleshoot extra hairline spacing
+        //popover.contentViewController?.view.layer?.backgroundColor = CGColor.black
+    }
+
+    private func setupContentView() -> some View {
+        let viewModel = ViewModel(timerManager: Dependencies.timerManager,
+                                  userNotificationManager: Dependencies.userNotificationManager,
+                                  settingsManager: Dependencies.settingsManager,
+                                  windowCoordinator: self)
+
+        return ContentView(viewModel: viewModel)
+            .font(.poppins)
+    }
+
+    private func setupAboutWindow() {
+        let aboutViewController = NSHostingController(rootView: AboutView())
+        aboutWindow = NSWindow(contentViewController: aboutViewController)
+        aboutWindow.styleMask = [.titled, .closable, .fullSizeContentView]
+        aboutWindow.titleVisibility = .hidden
+        aboutWindow.titlebarAppearsTransparent = true
+        aboutWindow.setContentSize(aboutViewController.view.fittingSize)
+    }
+}
+
+extension AppDelegate {
+    @objc private func togglePopover() {
+        if popover.isShown {
+            hidePopover()
+        } else {
+            showPopover()
+        }
+    }
+
     private func hidePopover() {
         popover.performClose(nil)
     }
@@ -56,35 +99,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .maxY)
         }
     }
+}
 
-    @objc private func togglePopover() {
-        if popover.isShown {
-            hidePopover()
-        } else {
-            showPopover()
-        }
+extension AppDelegate: WindowCoordinator {
+    func showAboutWindow() {
+        aboutWindow.makeKeyAndOrderFront(nil)
     }
 
     func showPopoverIfNeeded() {
         if !popover.isShown {
             showPopover()
         }
-    }
-
-    private func setupPopover() {
-        popover = NSPopover()
-        popover.behavior = .transient
-        let contentView = setupContentView()
-        popover.contentViewController = NSHostingController(rootView: contentView)
-    }
-
-    private func setupContentView() -> some View {
-        let viewModel = ViewModel(timerManager: Dependencies.timerManager,
-                                  userNotificationManager: Dependencies.userNotificationManager,
-                                  settingsManager: Dependencies.settingsManager)
-        viewModel.appDelegate = self
-
-        return ContentView(viewModel: viewModel)
-            .font(.poppins)
     }
 }
