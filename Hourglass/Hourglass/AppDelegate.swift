@@ -56,9 +56,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupPopover(with view: some View) {
         popover = NSPopover()
         popover.behavior = .transient
-        popover.contentViewController = NSHostingController(rootView: view)
-        // TODO: - Troubleshoot extra hairline spacing
-        //popover.contentViewController?.view.layer?.backgroundColor = CGColor.black
+        let hostingController = NSHostingController(rootView: view)
+        popover.contentViewController = hostingController
+        hostingController.view.layer!.backgroundColor = NSColor(Color.background).cgColor
     }
 
     private func setupContentView() -> some View {

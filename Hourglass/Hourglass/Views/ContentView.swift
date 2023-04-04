@@ -14,6 +14,7 @@ struct ContentView: View {
 
                 SettingsMenu(viewModel: viewModel)
             }
+            .fixedSize()
             .padding([.top, .bottom], 40)
             .padding([.leading, .trailing], 50)
             .background(Color.background)
