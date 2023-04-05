@@ -56,9 +56,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupPopover(with view: some View) {
         popover = NSPopover()
         popover.behavior = .transient
-        let hostingController = NSHostingController(rootView: view)
-        popover.contentViewController = hostingController
-        hostingController.view.layer!.backgroundColor = NSColor(Color.background).cgColor
+        popover.contentViewController = PopoverViewController()
     }
 
     private func setupContentView() -> some View {
@@ -112,3 +110,32 @@ extension AppDelegate: WindowCoordinator {
         }
     }
 }
+
+class PopoverViewController: NSViewController {
+    override func loadView() {
+        let view = PopoverView()//frame: .init(x: 0, y: 0, width: 200, height: 500))
+        self.view = view
+    }
+}
+
+class PopoverView: NSView {
+//    override func draw(_ dirtyRect: NSRect) {
+//        print(dirtyRect)
+//    }
+
+    override func viewDidMoveToSuperview() {
+        if let popoverFrame = self.superview { // NSPopoverFrame <- NSVisualEffectView <- NSView
+            let backgroundView = NSView(frame: popoverFrame.frame)
+            backgroundView.wantsLayer = true
+            backgroundView.layer?.backgroundColor = NSColor.orange.cgColor
+            backgroundView.autoresizingMask = NSView.AutoresizingMask([.width, .height])
+            // TODO: - could also use constraints to stretch it to the superview???
+            popoverFrame.addSubview(backgroundView, positioned: .below, relativeTo: self)
+        }
+
+        // colors the content view minus the arrow
+        self.wantsLayer = true
+        self.layer!.backgroundColor = NSColor.green.cgColor
+    }
+}
+
