@@ -1,15 +1,17 @@
 workflows:
-  build-run-tests:
-    name: Build and run all tests
+  build-and-test:
+    name: Build and test
     instance_type: mac_mini_m1
     environment:
       xcode: 14.2
     triggering:
       events:
         - push
-      cancel_previous_builds: false
+        - pull_request
+        - tag
+      cancel_previous_builds: true
     working_directory: Hourglass
-    max_build_duration: 5
+    max_build_duration: 4
     scripts:
         - name: Show Xcode version
           script: xcode-select -p
@@ -17,7 +19,7 @@ workflows:
           script: xcodebuild -project 'Hourglass.xcodeproj' -scheme 'Hourglass' -showdestinations
         - name: Show SDKs
           script: xcodebuild -showsdks
-        - name: Build and run all tests on device
+        - name: Build and test on device
           script: >
             xcodebuild clean test
             -project 'Hourglass.xcodeproj'
