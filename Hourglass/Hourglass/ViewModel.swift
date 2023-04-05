@@ -123,7 +123,6 @@ class ViewModel: ObservableObject {
                                                              soundIsEnabled: true)
                 }
                 viewState.showTimerCompleteAlert = true
-                windowCoordinator?.showPopoverIfNeeded()
             }
         }
     }

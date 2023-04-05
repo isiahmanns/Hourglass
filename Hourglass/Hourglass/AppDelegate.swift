@@ -3,7 +3,6 @@ import Combine
 
 protocol WindowCoordinator: AnyObject {
     func showAboutWindow()
-    func showPopoverIfNeeded()
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -15,15 +14,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var statusBar: NSStatusBar = NSStatusBar.system
     private var statusItem: NSStatusItem!
-    private var popover: NSPopover!
     private var aboutWindow: NSWindow!
+    private var appWindow: NSWindow!
 
     private var cancellables: Set<AnyCancellable> = []
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         setupStatusItem()
         let view = setupContentView()
-        setupPopover(with: view)
+        setupAppWindow(with: view)
         setupAboutWindow()
     }
 
@@ -42,7 +41,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 timestampNSView.centerYAnchor.constraint(equalTo: button.centerYAnchor)
             ])
 
-            button.action = #selector(togglePopover)
+            button.action = #selector(toggleAppWindow)
             button.setAccessibilityIdentifier("menu-bar-button")
 
             Dependencies.timerManager.$timeStamp
@@ -53,12 +52,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func setupPopover(with view: some View) {
-        popover = NSPopover()
-        popover.behavior = .transient
-        let hostingController = NSHostingController(rootView: view)
-        popover.contentViewController = hostingController
-        hostingController.view.layer!.backgroundColor = NSColor(Color.background).cgColor
+    private func setupAppWindow(with view: some View) {
+        // let hostingController = NSHostingController(rootView: view)
+        let hostingView = NSHostingView(rootView: view)
+        //hostingController.view.layer?.backgroundColor = .black
+        appWindow = NSWindow(
+            contentRect: NSRect(origin: .zero, size: hostingView.fittingSize),
+            styleMask: [.borderless],
+            backing: .buffered,
+            defer: true)
+        appWindow.level = .statusBar //.floating
+        appWindow.backgroundColor = NSColor.red //.clear
+
+        // TODO: - Figure out x position of status item button relative to screen
+        //appWindow.setFrameOrigin(.zero)
+        appWindow.orderFrontRegardless()
+        //appWindow.makeKeyAndOrderFront(nil)
+        //appWindow.isReleasedWhenClosed = false
     }
 
     private func setupContentView() -> some View {
@@ -82,22 +92,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 extension AppDelegate {
-    @objc private func togglePopover() {
-        if popover.isShown {
-            hidePopover()
+    @objc private func toggleAppWindow() {
+        if appWindow.isVisible {
+            hideAppWindow()
         } else {
-            showPopover()
+            showAppWindow()
         }
     }
 
-    private func hidePopover() {
-        popover.performClose(nil)
+    private func hideAppWindow() {
+        appWindow.orderOut(nil)
+        //appWindow.close()
     }
 
-    private func showPopover() {
-        if let button = statusItem.button {
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .maxY)
-        }
+    private func showAppWindow() {
+        //appWindow.setIsVisible(true)
+        appWindow.makeKeyAndOrderFront(nil)
+        //appWindow.makeMain()
     }
 }
 
@@ -105,10 +116,16 @@ extension AppDelegate: WindowCoordinator {
     func showAboutWindow() {
         aboutWindow.makeKeyAndOrderFront(nil)
     }
-
-    func showPopoverIfNeeded() {
-        if !popover.isShown {
-            showPopover()
-        }
-    }
 }
+
+//class AppPanel: NSPanel {
+//    init() {
+//        super.init(contentRect: .init(x: 0, y: 0, width: 800, height: 200),
+//                   styleMask: [.nonactivatingPanel], // the only style that works
+//                   backing: .buffered,
+//                   defer: true)
+//
+//        self.contentView?.wantsLayer = true
+//        self.contentView!.layer!.backgroundColor = NSColor.gray.cgColor
+//    }
+//}
