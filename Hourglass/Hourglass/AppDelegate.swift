@@ -56,9 +56,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupPopover(with view: some View) {
         popover = NSPopover()
         popover.behavior = .transient
-        let hostingController = NSHostingController(rootView: view)
-        popover.contentViewController = hostingController
-        hostingController.view.layer!.backgroundColor = NSColor(Color.background).cgColor
+        popover.contentViewController = PopoverViewController(with: view)
     }
 
     private func setupContentView() -> some View {
@@ -96,7 +94,7 @@ extension AppDelegate {
 
     private func showPopover() {
         if let button = statusItem.button {
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .maxY)
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
         }
     }
 }
