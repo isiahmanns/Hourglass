@@ -21,9 +21,6 @@ enum Constants {
     // Timer alert dialog
     static let timerCompleteAlert = "Time's up"
 
-    // Window Ids
-    static let aboutWindowId = UUID().uuidString
-
     // Timestamp default
     static let timeStampZero = "00:00"
 

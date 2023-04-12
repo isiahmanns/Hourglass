@@ -18,7 +18,7 @@ class UserNotificationManager: NSObject, NotificationManager {
     private func requestAuthorizationIfNeeded() {
         userNotificationCenter.getNotificationSettings { settings in
             if settings.authorizationStatus == .notDetermined {
-                self.userNotificationCenter.requestAuthorization(options: [.sound])
+                self.userNotificationCenter.requestAuthorization(options: [.sound, .alert])
                 { granted, error in }
             }
         }
@@ -29,7 +29,7 @@ class UserNotificationManager: NSObject, NotificationManager {
         let notificationContent = notification.contentBase
             .sound(soundIsEnabled ? .default : nil)
 
-        let request = UNNotificationRequest(identifier: "",
+        let request = UNNotificationRequest(identifier: notification.id,
                                             content: notificationContent,
                                             trigger: nil)
 

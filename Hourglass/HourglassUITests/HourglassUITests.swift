@@ -65,7 +65,15 @@ final class HourglassUITests: XCTestCase {
         okButton.tap()
     }
 
-    // Note: - Locally, notifications must be visible (DND off).
+    /**
+     Test local notification via UNUserNotificationCenter on timer complete.
+
+     For this test to work:
+     - Locally, notifications must be visible (DND off)
+     - System settings notifications enabled for app,  style is alert (not banner)
+        - For some reason, when banner is elected, the notification appears quietly in Notification Center during testing
+     - Menu bar is not hidden (Desktop and Dock system settings)
+     */
     func testStartTimerToCompletionBanner() {
         app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.banner)
