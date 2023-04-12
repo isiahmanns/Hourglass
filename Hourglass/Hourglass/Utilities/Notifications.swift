@@ -1,14 +1,22 @@
 import UserNotifications
 
 enum HourglassNotification: String {
-    // TODO: - Centralize string constants in separate file
-    case timerCompleteBanner = "Time's up"
-    case noBanner = ""
+    case timerCompleteBanner
+    case noBanner
 
     var contentBase: UNMutableNotificationContent {
         let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = self.rawValue
+        notificationContent.title = title
         notificationContent.interruptionLevel = .active
         return notificationContent
+    }
+
+    var title: String {
+        switch self {
+        case .timerCompleteBanner:
+            return Constants.timerCompleteAlert
+        case .noBanner:
+            return ""
+        }
     }
 }
