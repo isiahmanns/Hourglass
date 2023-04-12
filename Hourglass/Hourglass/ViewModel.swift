@@ -119,7 +119,7 @@ class ViewModel: ObservableObject {
                                                          soundIsEnabled: soundIsEnabled)
             case .popup:
                 if soundIsEnabled {
-                    userNotificationManager.fireNotification(.noBanner,
+                    userNotificationManager.fireNotification(.timerCompleteNoBanner,
                                                              soundIsEnabled: true)
                 }
                 viewState.showTimerCompleteAlert = true
