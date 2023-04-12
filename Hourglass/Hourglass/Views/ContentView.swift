@@ -5,7 +5,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            AlertWrapper(viewModel: viewModel)
+            AlertView(viewModel: viewModel)
 
             VStack(alignment: .center, spacing: 18.0) {
                 Logo(size: 40)

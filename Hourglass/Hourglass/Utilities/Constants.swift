@@ -18,6 +18,9 @@ enum Constants {
     static let timerRestMediumDefault = 10
     static let timerRestLargeDefault = 20
 
+    // Timer alert dialog
+    static let timerCompleteAlert = "Time's up"
+
     // Window Ids
     static let aboutWindowId = UUID().uuidString
 
@@ -30,10 +33,4 @@ enum Constants {
 #elseif DEBUG || CITESTING
     static let countdownFactor = 1
 #endif
-
-    // Strings
-    enum Strings {
-        static let focusHeader = "Focus"
-        static let restHeader = "Rest"
-    }
 }

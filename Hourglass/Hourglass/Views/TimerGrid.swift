@@ -8,7 +8,7 @@ struct TimerGrid: View {
     var body: some View {
         HStack(alignment: .center, spacing: xSpacing) {
             VStack(alignment: .center, spacing: ySpacing) {
-                Header(content: Constants.Strings.focusHeader)
+                Header(content: Copy.focusHeader)
 
                 ForEach(viewModel.timerModels.filterByCategory(.focus)) { model in
                     TimerButton(model: model) {
@@ -18,7 +18,7 @@ struct TimerGrid: View {
             }
 
             VStack(alignment: .center, spacing: ySpacing) {
-                Header(content: Constants.Strings.restHeader)
+                Header(content: Copy.restHeader)
 
                 ForEach(viewModel.timerModels.filterByCategory(.rest)) { model in
                     TimerButton(model: model) {
@@ -29,6 +29,13 @@ struct TimerGrid: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("timer-grid")
+    }
+}
+
+private extension TimerGrid {
+    enum Copy {
+        static let focusHeader = "Focus"
+        static let restHeader = "Rest"
     }
 }
 
