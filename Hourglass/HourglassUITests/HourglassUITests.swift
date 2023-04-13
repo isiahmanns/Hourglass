@@ -107,7 +107,6 @@ final class HourglassUITests: XCTestCase {
     }
 
     func testStartNewTimerFlowConfirm() {
-        app.setNotificationStyle(.popup)
         app.launchMenu()
 
         let (_, timerGridButtons) = timerGrid
@@ -131,7 +130,6 @@ final class HourglassUITests: XCTestCase {
     }
 
     func testStartNewTimerFlowDeny() {
-        app.setNotificationStyle(.popup)
         app.launchMenu()
 
         let (_, timerGridButtons) = timerGrid
