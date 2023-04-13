@@ -151,6 +151,35 @@ final class HourglassUITests: XCTestCase {
         // Note: - Assuming execution will be the same on each run could mean a flaky test.
         XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:07")
     }
+
+    func testSetTimerLengthWhileInProgressFlow() {
+        app.setNotificationStyle(.popup)
+        app.launchMenu()
+
+        let (_, timerGridButtons) = timerGrid
+        timerGridButtons[4].tap()
+
+        let settingsButton = app.popUpButtons["settings-button"]
+        settingsButton.tap()
+
+        let timerSetting = app.menuItems["Rest Timers"].menuItems["15"]
+        timerSetting.tap()
+
+        let alert = app.sheets.matching(identifier: "alert").element
+        XCTAssertTrue(alert.waitForExistence(timeout: 1))
+
+        let alertTitle = alert.staticTexts["Timer has been reset"]
+        let okButton = alert.buttons["OK"]
+        [alertTitle, okButton].forEach { element in
+            XCTAssertTrue(element.exists)
+        }
+
+        okButton.tap()
+
+        // Cleanup
+        settingsButton.tap()
+        app.menuItems["Rest Timers"].menuItems["10"].tap()
+    }
 }
 
 // App utility helpers
