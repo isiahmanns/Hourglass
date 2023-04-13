@@ -45,7 +45,7 @@ final class HourglassUITests: XCTestCase {
     }
 
     func testStartTimerToCompletionPopup() {
-        app.setTimerLength(2, for: .timerRestSmall)
+        // app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.popup)
         app.launchMenu()
 
@@ -75,7 +75,7 @@ final class HourglassUITests: XCTestCase {
      - Menu bar is not hidden (Desktop and Dock system settings)
      */
     func testStartTimerToCompletionBanner() {
-        app.setTimerLength(2, for: .timerRestSmall)
+        // app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.banner)
         app.launchMenu()
 
@@ -98,7 +98,6 @@ final class HourglassUITests: XCTestCase {
     func testStopTimer() {
         app.launchMenu()
 
-        // Tap 3s timer
         let (_, timerGridButtons) = timerGrid
         timerGridButtons[3].tap()
         timerGridButtons[3].tap()
@@ -153,7 +152,6 @@ final class HourglassUITests: XCTestCase {
     }
 
     func testSetTimerLengthWhileInProgressFlow() {
-        app.setNotificationStyle(.popup)
         app.launchMenu()
 
         let (_, timerGridButtons) = timerGrid
