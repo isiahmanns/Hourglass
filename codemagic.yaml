@@ -6,8 +6,13 @@ workflows:
       xcode: 14.2
     triggering:
       events:
+        - push
         - pull_request
         - tag
+      branch_patterns:
+        - pattern: '{develop,main}'
+          include: true
+          source: false
       cancel_previous_builds: true
     working_directory: Hourglass
     max_build_duration: 4
