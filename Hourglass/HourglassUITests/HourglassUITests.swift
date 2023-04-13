@@ -175,6 +175,10 @@ final class HourglassUITests: XCTestCase {
         }
 
         okButton.tap()
+
+        // Cleanup
+        settingsButton.tap()
+        app.menuItems["Rest Timers"].menuItems["10"].tap()
     }
 }
 
