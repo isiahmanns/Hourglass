@@ -12,7 +12,7 @@ struct TimerButton: View {
             Text(String(model.length))
         }
         .buttonStyle(TimerButton.Style(for: model.state))
-        .accessibilityIdentifier("\(model.length)s-timer-button")
+        .accessibilityIdentifier("\(model.length)m-timer-button-\(model.category)-\(model.size)")
     }
 }
 
