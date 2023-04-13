@@ -6,7 +6,6 @@ workflows:
       xcode: 14.2
     triggering:
       events:
-        - push
         - pull_request
         - tag
       cancel_previous_builds: true
