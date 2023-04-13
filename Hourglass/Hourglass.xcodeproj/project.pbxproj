@@ -11,7 +11,7 @@
 		2507BB4B29C805BD004478BE /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4A29C805BD004478BE /* AboutView.swift */; };
 		2507BB4D29C91AFD004478BE /* Logo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4C29C91AFD004478BE /* Logo.swift */; };
 		2507BB4F29C91BBB004478BE /* TimerGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4E29C91BBB004478BE /* TimerGrid.swift */; };
-		2507BB5129C91BF9004478BE /* AlertWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB5029C91BF9004478BE /* AlertWrapper.swift */; };
+		2507BB5129C91BF9004478BE /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB5029C91BF9004478BE /* AlertView.swift */; };
 		2507BB5329C91C2E004478BE /* SettingsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB5229C91C2E004478BE /* SettingsMenu.swift */; };
 		2507BB5929C925FF004478BE /* SettingsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2507BB4629C7A77F004478BE /* SettingsKeys.swift */; };
 		253816DE29A5D88C007BD118 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816DD29A5D88C007BD118 /* AppDelegate.swift */; };
@@ -62,7 +62,7 @@
 		2507BB4A29C805BD004478BE /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		2507BB4C29C91AFD004478BE /* Logo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logo.swift; sourceTree = "<group>"; };
 		2507BB4E29C91BBB004478BE /* TimerGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerGrid.swift; sourceTree = "<group>"; };
-		2507BB5029C91BF9004478BE /* AlertWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertWrapper.swift; sourceTree = "<group>"; };
+		2507BB5029C91BF9004478BE /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		2507BB5229C91C2E004478BE /* SettingsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenu.swift; sourceTree = "<group>"; };
 		253816DA29A5D88C007BD118 /* Hourglass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hourglass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		253816DD29A5D88C007BD118 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -130,7 +130,7 @@
 				25EB6D6829A67985005BC143 /* TimerButton.swift */,
 				25C97C9229D2A2C9001A8CAD /* TimestampView.swift */,
 				2507BB5229C91C2E004478BE /* SettingsMenu.swift */,
-				2507BB5029C91BF9004478BE /* AlertWrapper.swift */,
+				2507BB5029C91BF9004478BE /* AlertView.swift */,
 				2507BB4A29C805BD004478BE /* AboutView.swift */,
 			);
 			path = Views;
@@ -400,7 +400,7 @@
 				25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */,
 				25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */,
 				25EB6D7229AAE32C005BC143 /* Font.swift in Sources */,
-				2507BB5129C91BF9004478BE /* AlertWrapper.swift in Sources */,
+				2507BB5129C91BF9004478BE /* AlertView.swift in Sources */,
 				253816E029A5D88C007BD118 /* ContentView.swift in Sources */,
 				258302EE29C36A0000D37115 /* Notifications.swift in Sources */,
 				25C97C9029CC98AF001A8CAD /* main.swift in Sources */,
