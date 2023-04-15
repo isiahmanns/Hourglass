@@ -2,14 +2,13 @@ import Foundation
 
 enum Timer {
     class Model: Identifiable, ObservableObject {
-        let id: UUID
+        let id: UUID = UUID()
         @Published var length: Int
         @Published var state: State
         let category: Category
         let size: Size
 
-        init(id: UUID = UUID(), length: Int, state: State = .inactive, category: Category, size: Size) {
-            self.id = id
+        init(length: Int, state: State = .inactive, category: Category, size: Size) {
             self.length = length
             self.state = state
             self.category = category
@@ -22,6 +21,11 @@ extension Timer {
     enum State {
         case active
         case inactive
+        case disabled
+
+        var isEnabled: Bool {
+            self != .disabled
+        }
     }
 
     enum Category {

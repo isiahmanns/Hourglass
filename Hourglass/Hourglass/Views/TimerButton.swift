@@ -21,17 +21,6 @@ extension TimerButton {
         let size: Double = 56
         let state: Timer.State
 
-        @ViewBuilder
-        var overlayProvider: some View {
-            switch state {
-            case .inactive:
-                EmptyView()
-            case .active:
-                Circle()
-                    .stroke(Color.accent, lineWidth: 4.0)
-            }
-        }
-
         init(for state: Timer.State) {
             self.state = state
         }
@@ -43,8 +32,30 @@ extension TimerButton {
                 .foregroundColor(Color.onSurface)
                 .clipShape(Circle())
                 .contentShape(Circle())
-                .opacity(configuration.isPressed ? 0.8 : 1.0)
+                .opacity(opacityProvider(configuration.isPressed))
                 .overlay(overlayProvider)
+        }
+
+        @ViewBuilder
+        private var overlayProvider: some View {
+            switch state {
+            case .inactive:
+                EmptyView()
+            case .active:
+                Circle()
+                    .stroke(Color.accent, lineWidth: 4.0)
+            case .disabled:
+                Circle()
+                    .fill(Color.black.opacity(0.6))
+            }
+        }
+
+        private func opacityProvider(_ isPressed: Bool) -> Double {
+            if isPressed && state.isEnabled {
+                return 0.8
+            } else {
+                return 1.0
+            }
         }
     }
 }
