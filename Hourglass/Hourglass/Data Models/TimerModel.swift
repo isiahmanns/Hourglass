@@ -48,4 +48,12 @@ extension [Timer.Model] {
             }
             .sorted(by: {$0.length < $1.length})
     }
+
+    // TODO: - Store timer models as a dictionary [UUID: Timer.Model]
+    func filterById(_ uuid: UUID) -> Timer.Model? {
+        self
+            .first(where: { timerModel in
+                timerModel.id == uuid
+            })
+    }
 }

@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 
 class ViewModel: ObservableObject {
@@ -8,12 +9,16 @@ class ViewModel: ObservableObject {
     weak private var windowCoordinator: WindowCoordinator?
 
     var activeTimerModel: Timer.Model? {
-        timerModels.filter({$0.id == timerManager.activeTimerModelId}).first
+        guard let activeTimerModelId = timerManager.activeTimerModelId else { return nil }
+        return timerModels.filterById(activeTimerModelId)
     }
 
     private var pendingTimerModel: Timer.Model?
     @Published var viewState = ViewState()
+    private var cancellables: Set<AnyCancellable> = []
 
+    // TODO: - Make init param non-optional and use mock for in testing init
+    // TODO: - Configure TimerModels in DataManager outside of init
     init(timerModels: [Timer.Model]? = nil,
          timerManager: TimerManager,
          userNotificationManager: NotificationManager,
@@ -43,6 +48,7 @@ class ViewModel: ObservableObject {
                         category: .rest,
                         size: .large)
         ]
+        configureEventSubscriptions()
     }
 
     func didTapTimer(from model: Timer.Model) -> Void {
@@ -50,7 +56,7 @@ class ViewModel: ObservableObject {
 
         if timerManager.isTimerActive {
             if model.id == timerManager.activeTimerModelId {
-                stopTimer(for: model)
+                cancelTimer(for: model)
             } else {
                 promptStartNewTimer(for: model)
             }
@@ -65,7 +71,7 @@ class ViewModel: ObservableObject {
             break
         case .yes:
             if let activeTimerModel {
-                stopTimer(for: activeTimerModel)
+                cancelTimer(for: activeTimerModel)
             }
 
             guard let pendingTimerModel else {
@@ -79,9 +85,9 @@ class ViewModel: ObservableObject {
         pendingTimerModel = nil
     }
 
-    func cancelTimerIfNeeded(_ timerModel: Timer.Model) {
+    func didChangeTimerPreset(for timerModel: Timer.Model) {
         if activeTimerModel === timerModel {
-            stopTimer(for: timerModel)
+            cancelTimer(for: timerModel)
             viewState.showTimerResetAlert = true
         }
     }
@@ -90,18 +96,13 @@ class ViewModel: ObservableObject {
         windowCoordinator?.showAboutWindow()
     }
 
-    private func stopTimer(for model: Timer.Model) {
-        timerManager.stopTimer()
+    private func cancelTimer(for model: Timer.Model) {
+        timerManager.cancelTimer()
         model.state = .inactive
     }
 
     private func startTimer(for model: Timer.Model) {
-        timerManager.startTimer(length: model.length,
-                                activeTimerModelId: model.id) { [weak self] in
-            // TODO: - Save completed time block via data manager
-            model.state = .inactive
-            self?.notifyUser(.timerCompleted)
-        }
+        timerManager.startTimer(length: model.length, activeTimerModelId: model.id)
         model.state = .active
     }
 
@@ -110,9 +111,9 @@ class ViewModel: ObservableObject {
         viewState.showStartNewTimerDialog = true
     }
 
-    private func notifyUser(_ event: HourglassEvent) {
+    private func notifyUser(_ event: HourglassEvent.Timer) {
         switch event {
-        case .timerCompleted:
+        case .timerDidComplete:
             let soundIsEnabled = settingsManager.getSoundIsEnabled()
 
             switch settingsManager.getNotificationStyle() {
@@ -127,7 +128,23 @@ class ViewModel: ObservableObject {
                 viewState.showTimerCompleteAlert = true
                 windowCoordinator?.showPopoverIfNeeded()
             }
+        default:
+            break
         }
+    }
+
+    private func configureEventSubscriptions() {
+        // TODO: - Could also subscribe to other events to modify model state
+
+        timerManager.events[.timerDidComplete]?
+            .sink { [weak self] timerModelId in
+                guard let self else { return }
+                let timerModel = timerModels.filterById(timerModelId)
+                timerModel?.state = .inactive
+                notifyUser(.timerDidComplete)
+                // TODO: - Save completed time block via data manager
+            }
+            .store(in: &cancellables)
     }
 }
 

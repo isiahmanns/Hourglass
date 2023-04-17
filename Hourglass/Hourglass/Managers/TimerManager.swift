@@ -16,26 +16,36 @@ class TimerManager: ObservableObject {
         }
     }
     @Published private(set) var timeStamp: String = Constants.timeStampZero
-    var activeTimerModelId: Timer.Model.ID?
+    private(set) var activeTimerModelId: Timer.Model.ID?
     var isTimerActive: Bool {
         !timerCancellables.isEmpty
     }
+
+    typealias Event<G> = PassthroughSubject<G, Never>
+    let events: [HourglassEvent.Timer: Event<Timer.Model.ID>] = [
+        .timerDidStart: .init(),
+        .timerDidTick: .init(),
+        .timerDidComplete: .init(),
+        .timerWasCancelled: .init()
+    ]
 
     fileprivate init(timerPublisher: some ConnectablePublisher<Date, Never>) {
         self.timerPublisher = timerPublisher
     }
     
-    func startTimer(length: Int, activeTimerModelId: Timer.Model.ID, action: @escaping () -> Void) {
+    func startTimer(length: Int, activeTimerModelId: Timer.Model.ID) {
         self.count = length * Constants.countdownFactor
         self.activeTimerModelId = activeTimerModelId
+        events[.timerDidStart]?.send(activeTimerModelId)
 
         timerPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
                 self.count -= 1
+                events[.timerDidTick]?.send(activeTimerModelId)
 
                 if self.count == 0 {
-                    action()
+                    events[.timerDidComplete]?.send(activeTimerModelId)
                     self.stopTimer()
                 }
             }
@@ -46,7 +56,13 @@ class TimerManager: ObservableObject {
             .store(in: &timerCancellables)
     }
 
-    func stopTimer() {
+    func cancelTimer() {
+        guard let activeTimerModelId else { fatalError() }
+        events[.timerWasCancelled]?.send(activeTimerModelId)
+        stopTimer()
+    }
+
+    private func stopTimer() {
         timerCancellables.removeAll()
         activeTimerModelId = nil
         count = 0

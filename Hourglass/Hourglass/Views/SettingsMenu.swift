@@ -119,7 +119,7 @@ struct SettingsMenu: View {
     }
 
     private func handleTimerPresetSelection(_ length: Int, for timerModel: Timer.Model) {
-        viewModel.cancelTimerIfNeeded(timerModel)
+        viewModel.didChangeTimerPreset(for: timerModel)
         timerModel.length = length
     }
 }
