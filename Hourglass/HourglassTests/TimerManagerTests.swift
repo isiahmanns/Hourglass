@@ -16,7 +16,7 @@ final class TimerManagerTests: XCTestCase {
     func testTimerCountdown() {
         assertTimerDefault()
 
-        timerManager.startTimer(length: 3, activeTimerModelId: timerID) {}
+        timerManager.startTimer(length: 3, activeTimerModelId: timerID)
         XCTAssertEqual(timerManager.timeStamp, "00:03")
         assertTimerInProgress()
 
@@ -36,11 +36,11 @@ final class TimerManagerTests: XCTestCase {
     func testTimerCountdownCancel() {
         assertTimerDefault()
 
-        timerManager.startTimer(length: 3, activeTimerModelId: timerID) {}
+        timerManager.startTimer(length: 3, activeTimerModelId: timerID)
         XCTAssertEqual(timerManager.timeStamp, "00:03")
         assertTimerInProgress()
 
-        timerManager.stopTimer()
+        timerManager.cancelTimer()
         XCTAssertEqual(timerManager.timeStamp, "00:00")
         assertTimerDefault()
     }
