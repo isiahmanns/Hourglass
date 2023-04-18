@@ -26,7 +26,8 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = ViewModel(timerManager: TimerManager.shared,
                                   userNotificationManager: UserNotificationManager.shared,
-                                  settingsManager: SettingsManager.shared)
+                                  settingsManager: SettingsManager.shared,
+                                  windowCoordinator: NSApplication.shared.delegate as! WindowCoordinator)
         ContentView(viewModel: viewModel)
             .font(Font.poppins)
     }

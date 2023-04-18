@@ -3,8 +3,10 @@ import Foundation
 @testable import Hourglass
 
 struct UnitTestProviders {
-    static var fakeTimerManager: (PassthroughSubject<Date, Never>, TimerManager) {
-        let stubTimerPublisher = PassthroughSubject<Date, Never>()
+    typealias TimerPublisher = PassthroughSubject<Date, Never>
+
+    static var fakeTimerManager: (TimerPublisher, TimerManager) {
+        let stubTimerPublisher = TimerPublisher()
         let fakeTimerManager = TimerManagerFake(timerPublisher: stubTimerPublisher)
         return (stubTimerPublisher, fakeTimerManager)
     }
@@ -14,25 +16,23 @@ struct UnitTestProviders {
          Timer.Model(length: 5, category: .rest, size: .medium)]
     }
 
-    static var mockUserNotificationManager: UserNotificationManagerMock {
-        return UserNotificationManagerMock()
-    }
-
-    static var fakeViewModel: (PassthroughSubject<Date, Never>,
+    static var fakeViewModel: (TimerPublisher,
                                ViewModel,
                                UserNotificationManagerMock,
                                SettingsManager) {
 
         let stubTimerModels = stubTimerModels
-        let (timerPublisher, fakeTimerManager) = fakeTimerManager
-        let mockUserNotificationManager = mockUserNotificationManager
+        let (stubTimerPublisher, fakeTimerManager) = fakeTimerManager
+        let mockUserNotificationManager = UserNotificationManagerMock()
         let settingsManager = SettingsManager.shared
+        let mockWindowCoordinator = WindowCoordinatorMock()
 
         let viewModel = ViewModel(timerModels: stubTimerModels,
                                   timerManager: fakeTimerManager,
                                   userNotificationManager: mockUserNotificationManager,
-                                  settingsManager: settingsManager)
-        return (timerPublisher,
+                                  settingsManager: settingsManager,
+                                  windowCoordinator: mockWindowCoordinator)
+        return (stubTimerPublisher,
                 viewModel,
                 mockUserNotificationManager,
                 settingsManager)

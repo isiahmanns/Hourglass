@@ -110,3 +110,8 @@ extension AppDelegate: WindowCoordinator {
         }
     }
 }
+
+class WindowCoordinatorMock: WindowCoordinator {
+    func showAboutWindow() {}
+    func showPopoverIfNeeded() {}
+}
