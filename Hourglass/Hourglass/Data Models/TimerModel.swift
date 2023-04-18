@@ -2,7 +2,6 @@ import Foundation
 
 enum Timer {
     class Model: Identifiable, ObservableObject {
-        let id: UUID = UUID()
         @Published var length: Int
         @Published var state: State
         let category: Category
@@ -40,20 +39,12 @@ extension Timer {
     }
 }
 
-extension [Timer.Model] {
+extension Dictionary<Timer.Model.ID, Timer.Model> {
     func filterByCategory(_ category: Timer.Category) -> [Timer.Model] {
-        self
+        self.values
             .filter { timerModel in
                 timerModel.category == category
             }
             .sorted(by: {$0.length < $1.length})
-    }
-
-    // TODO: - Store timer models as a dictionary [UUID: Timer.Model]
-    func filterById(_ uuid: UUID) -> Timer.Model? {
-        self
-            .first(where: { timerModel in
-                timerModel.id == uuid
-            })
     }
 }

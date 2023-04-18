@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 class ViewModel: ObservableObject {
-    private(set) var timerModels: [Timer.Model]
+    private(set) var timerModels: [Timer.Model.ID: Timer.Model]
     private let timerManager: TimerManager
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
@@ -10,7 +10,7 @@ class ViewModel: ObservableObject {
 
     var activeTimerModel: Timer.Model? {
         guard let activeTimerModelId = timerManager.activeTimerModelId else { return nil }
-        return timerModels.filterById(activeTimerModelId)
+        return timerModels[activeTimerModelId]
     }
 
     private var pendingTimerModel: Timer.Model?
@@ -116,24 +116,21 @@ class ViewModel: ObservableObject {
     private func configureEventSubscriptions() {
         timerManager.events[.timerDidStart]?
             .sink { [weak self] timerModelId in
-                let timerModel = self?.timerModels.filterById(timerModelId)
-                timerModel?.state = .active
+                self?.timerModels[timerModelId]?.state = .active
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerDidComplete]?
             .sink { [weak self] timerModelId in
                 guard let self else { return }
-                let timerModel = timerModels.filterById(timerModelId)
-                timerModel?.state = .inactive
+                timerModels[timerModelId]?.state = .inactive
                 notifyUser(.timerDidComplete)
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerWasCancelled]?
             .sink { [weak self] timerModelId in
-                let timerModel = self?.timerModels.filterById(timerModelId)
-                timerModel?.state = .inactive
+                self?.timerModels[timerModelId]?.state = .inactive
             }
             .store(in: &cancellables)
     }
