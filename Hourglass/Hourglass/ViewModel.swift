@@ -17,13 +17,12 @@ class ViewModel: ObservableObject {
     @Published var viewState = ViewState()
     private var cancellables: Set<AnyCancellable> = []
 
-    // TODO: - Make init param non-optional and use mock for in testing init
     // TODO: - Configure TimerModels in DataManager outside of init
     init(timerModels: [Timer.Model]? = nil,
          timerManager: TimerManager,
          userNotificationManager: NotificationManager,
          settingsManager: SettingsManager,
-         windowCoordinator: WindowCoordinator? = nil) {
+         windowCoordinator: WindowCoordinator) {
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager
         self.settingsManager = settingsManager
