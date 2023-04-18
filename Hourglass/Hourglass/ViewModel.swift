@@ -17,36 +17,17 @@ class ViewModel: ObservableObject {
     @Published var viewState = ViewState()
     private var cancellables: Set<AnyCancellable> = []
 
-    // TODO: - Configure TimerModels in DataManager outside of init
-    init(timerModels: [Timer.Model]? = nil,
+    init(dataManager: DataManaging,
          timerManager: TimerManager,
          userNotificationManager: NotificationManager,
          settingsManager: SettingsManager,
          windowCoordinator: WindowCoordinator) {
+
+        self.timerModels = dataManager.loadTimerModels()
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager
         self.settingsManager = settingsManager
         self.windowCoordinator = windowCoordinator
-        self.timerModels = timerModels ?? [
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall),
-                        category: .focus,
-                        size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusMedium),
-                        category: .focus,
-                        size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusLarge),
-                        category: .focus,
-                        size: .large),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestSmall),
-                        category: .rest,
-                        size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestMedium),
-                        category: .rest,
-                        size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestLarge),
-                        category: .rest,
-                        size: .large)
-        ]
         configureEventSubscriptions()
     }
 
@@ -130,6 +111,8 @@ class ViewModel: ObservableObject {
         }
     }
 
+    // TODO: - Use VM as central point for ordering of state mutation between VM and TimeTrackingManager
+    // TODO: - Make events static
     private func configureEventSubscriptions() {
         timerManager.events[.timerDidStart]?
             .sink { [weak self] timerModelId in
@@ -144,7 +127,6 @@ class ViewModel: ObservableObject {
                 let timerModel = timerModels.filterById(timerModelId)
                 timerModel?.state = .inactive
                 notifyUser(.timerDidComplete)
-                // TODO: - Save completed time block via data manager
             }
             .store(in: &cancellables)
 

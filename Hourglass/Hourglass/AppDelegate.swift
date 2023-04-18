@@ -8,6 +8,7 @@ protocol WindowCoordinator: AnyObject {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     private struct Dependencies {
+        static let dataManager = DataManager.shared
         static let timerManager = TimerManager.shared
         static let userNotificationManager = UserNotificationManager.shared
         static let settingsManager = SettingsManager.shared
@@ -60,7 +61,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupContentView() -> some View {
-        let viewModel = ViewModel(timerManager: Dependencies.timerManager,
+        let viewModel = ViewModel(dataManager: Dependencies.dataManager,
+                                  timerManager: Dependencies.timerManager,
                                   userNotificationManager: Dependencies.userNotificationManager,
                                   settingsManager: Dependencies.settingsManager,
                                   windowCoordinator: self)
