@@ -4,7 +4,7 @@ import XCTest
 final class TimerManagerTests: XCTestCase {
 
     let (timerPublisher, timerManager) = UnitTestProviders.fakeTimerManager
-    let timerID = UUID()
+    let timerID = ObjectIdentifier(Timer.Model)
     let now = Date.now
 
     override func setUpWithError() throws {
