@@ -8,7 +8,7 @@ class TimerManager: ObservableObject {
     }()
 
     private let timerPublisher: any ConnectablePublisher<Date, Never>
-    private var timerCancellables: Set<AnyCancellable> = []
+    private(set) var timerCancellables: Set<AnyCancellable> = []
     private var count: Int = 0 {
         didSet {
             let (minutes, seconds) = count.asSeconds.toMinutesSeconds
@@ -17,9 +17,6 @@ class TimerManager: ObservableObject {
     }
     @Published private(set) var timeStamp: String = Constants.timeStampZero
     private(set) var activeTimerModelId: Timer.Model.ID?
-    var isTimerActive: Bool {
-        !timerCancellables.isEmpty
-    }
 
     typealias Event<G> = PassthroughSubject<G, Never>
     let events: [HourglassEvent.Timer: Event<Timer.Model.ID>] = [
@@ -58,8 +55,8 @@ class TimerManager: ObservableObject {
 
     func cancelTimer() {
         guard let activeTimerModelId else { fatalError() }
-        events[.timerWasCancelled]?.send(activeTimerModelId)
         stopTimer()
+        events[.timerWasCancelled]?.send(activeTimerModelId)
     }
 
     private func stopTimer() {
