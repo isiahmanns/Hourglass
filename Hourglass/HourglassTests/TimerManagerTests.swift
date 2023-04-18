@@ -46,12 +46,12 @@ final class TimerManagerTests: XCTestCase {
     }
 
     private func assertTimerInProgress() {
-        XCTAssertTrue(timerManager.isTimerActive)
+        XCTAssertFalse(timerManager.timerCancellables.isEmpty)
         XCTAssertEqual(timerManager.activeTimerModelId, timerID)
     }
 
     private func assertTimerDefault() {
-        XCTAssertFalse(timerManager.isTimerActive)
+        XCTAssertTrue(timerManager.timerCancellables.isEmpty)
         XCTAssertNil(timerManager.activeTimerModelId)
     }
 }

@@ -54,9 +54,9 @@ class ViewModel: ObservableObject {
     func didTapTimer(from model: Timer.Model) -> Void {
         guard model.state.isEnabled else { return }
 
-        if timerManager.isTimerActive {
-            if model.id == timerManager.activeTimerModelId {
-                cancelTimer(for: model)
+        if let activeTimerModel {
+            if model === activeTimerModel {
+                cancelTimer()
             } else {
                 promptStartNewTimer(for: model)
             }
@@ -70,8 +70,8 @@ class ViewModel: ObservableObject {
         case .no:
             break
         case .yes:
-            if let activeTimerModel {
-                cancelTimer(for: activeTimerModel)
+            if activeTimerModel != nil {
+                cancelTimer()
             }
 
             guard let pendingTimerModel else {
@@ -87,7 +87,7 @@ class ViewModel: ObservableObject {
 
     func didChangeTimerPreset(for timerModel: Timer.Model) {
         if activeTimerModel === timerModel {
-            cancelTimer(for: timerModel)
+            cancelTimer()
             viewState.showTimerResetAlert = true
         }
     }
@@ -96,14 +96,12 @@ class ViewModel: ObservableObject {
         windowCoordinator?.showAboutWindow()
     }
 
-    private func cancelTimer(for model: Timer.Model) {
+    private func cancelTimer() {
         timerManager.cancelTimer()
-        model.state = .inactive
     }
 
     private func startTimer(for model: Timer.Model) {
         timerManager.startTimer(length: model.length, activeTimerModelId: model.id)
-        model.state = .active
     }
 
     private func promptStartNewTimer(for model: Timer.Model) {
@@ -134,7 +132,12 @@ class ViewModel: ObservableObject {
     }
 
     private func configureEventSubscriptions() {
-        // TODO: - Could also subscribe to other events to modify model state
+        timerManager.events[.timerDidStart]?
+            .sink { [weak self] timerModelId in
+                let timerModel = self?.timerModels.filterById(timerModelId)
+                timerModel?.state = .active
+            }
+            .store(in: &cancellables)
 
         timerManager.events[.timerDidComplete]?
             .sink { [weak self] timerModelId in
@@ -143,6 +146,13 @@ class ViewModel: ObservableObject {
                 timerModel?.state = .inactive
                 notifyUser(.timerDidComplete)
                 // TODO: - Save completed time block via data manager
+            }
+            .store(in: &cancellables)
+
+        timerManager.events[.timerWasCancelled]?
+            .sink { [weak self] timerModelId in
+                let timerModel = self?.timerModels.filterById(timerModelId)
+                timerModel?.state = .inactive
             }
             .store(in: &cancellables)
     }
