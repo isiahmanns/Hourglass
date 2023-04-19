@@ -29,9 +29,9 @@ struct UnitTestProviders {
         let mockWindowCoordinator = WindowCoordinatorMock()
 
         let viewModel = ViewModel(dataManager: mockDataManager,
+                                  settingsManager: settingsManager,
                                   timerManager: fakeTimerManager,
                                   userNotificationManager: mockUserNotificationManager,
-                                  settingsManager: settingsManager,
                                   windowCoordinator: mockWindowCoordinator)
         return (stubTimerPublisher,
                 viewModel,

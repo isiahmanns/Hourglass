@@ -1,17 +1,13 @@
 protocol DataManaging {
-    func loadTimerModels() -> [Timer.Model.ID: Timer.Model]
+    func getTimerModels() -> [Timer.Model.ID: Timer.Model]
 }
 
-struct DataManager: DataManaging {
+class DataManager: DataManaging {
     static let shared = DataManager(settingsManager: SettingsManager.shared)
-    let settingsManager: SettingsManager
+    let timerModels: [Timer.Model]
 
     private init(settingsManager: SettingsManager) {
-        self.settingsManager = settingsManager
-    }
-
-    func loadTimerModels() -> [Timer.Model.ID: Timer.Model] {
-        let timerModels = [
+        self.timerModels = [
             Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall),
                         category: .focus,
                         size: .small),
@@ -31,7 +27,9 @@ struct DataManager: DataManaging {
                         category: .rest,
                         size: .large)
         ]
+    }
 
+    func getTimerModels() -> [Timer.Model.ID: Timer.Model] {
         return Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
     }
 }
@@ -39,7 +37,7 @@ struct DataManager: DataManaging {
 struct DataManagerMock: DataManaging {
     let timerModels: [Timer.Model]
 
-    func loadTimerModels() -> [Timer.Model.ID: Timer.Model] {
+    func getTimerModels() -> [Timer.Model.ID: Timer.Model] {
         return Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
     }
 }

@@ -1,7 +1,13 @@
 import Foundation
 import Combine
 
-class TimerManager: ObservableObject {
+typealias TimerEvent = PassthroughSubject<Timer.Model.ID, Never>
+
+protocol TimerEventProviding {
+    var events: [HourglassEventKey.Timer: TimerEvent] { get }
+}
+
+class TimerManager: ObservableObject, TimerEventProviding {
     static let shared: TimerManager = {
         let publisher = Foundation.Timer.publish(every: 1, on: .main, in: .common)
         return TimerManager(timerPublisher: publisher)
@@ -18,8 +24,7 @@ class TimerManager: ObservableObject {
     @Published private(set) var timeStamp: String = Constants.timeStampZero
     private(set) var activeTimerModelId: Timer.Model.ID?
 
-    typealias Event<G> = PassthroughSubject<G, Never>
-    let events: [HourglassEvent.Timer: Event<Timer.Model.ID>] = [
+    let events: [HourglassEventKey.Timer: TimerEvent] = [
         .timerDidStart: .init(),
         .timerDidTick: .init(),
         .timerDidComplete: .init(),
