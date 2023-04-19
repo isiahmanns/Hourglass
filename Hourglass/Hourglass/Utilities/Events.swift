@@ -1,4 +1,4 @@
-enum HourglassEvent {
+enum HourglassEventKey {
     enum Timer {
         case timerDidStart
         case timerDidTick

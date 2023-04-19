@@ -2,7 +2,8 @@ import Combine
 import Foundation
 
 class ViewModel: ObservableObject {
-    private(set) var timerModels: [Timer.Model.ID: Timer.Model]
+    let timerModels: [Timer.Model.ID: Timer.Model]
+    private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let timerManager: TimerManager
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
@@ -17,16 +18,18 @@ class ViewModel: ObservableObject {
     @Published var viewState = ViewState()
     private var cancellables: Set<AnyCancellable> = []
 
+    // TODO: - Inject ProgressTrackingManager
     init(dataManager: DataManaging,
+         settingsManager: SettingsManager,
          timerManager: TimerManager,
          userNotificationManager: NotificationManager,
-         settingsManager: SettingsManager,
          windowCoordinator: WindowCoordinator) {
 
-        self.timerModels = dataManager.loadTimerModels()
+        self.timerModels = dataManager.getTimerModels()
+        self.settingsManager = settingsManager
+        self.timerEvents = timerManager.events
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager
-        self.settingsManager = settingsManager
         self.windowCoordinator = windowCoordinator
         configureEventSubscriptions()
     }
@@ -89,7 +92,7 @@ class ViewModel: ObservableObject {
         viewState.showStartNewTimerDialog = true
     }
 
-    private func notifyUser(_ event: HourglassEvent.Timer) {
+    private func notifyUser(_ event: HourglassEventKey.Timer) {
         switch event {
         case .timerDidComplete:
             let soundIsEnabled = settingsManager.getSoundIsEnabled()
@@ -111,24 +114,24 @@ class ViewModel: ObservableObject {
         }
     }
 
-    // TODO: - Use VM as central point for ordering of state mutation between VM and TimeTrackingManager
-    // TODO: - Make events static
+    // TODO: - Use VM as central point for ordering of state mutation between VM and ProgressTrackingManager
     private func configureEventSubscriptions() {
-        timerManager.events[.timerDidStart]?
+        timerEvents[.timerDidStart]?
             .sink { [weak self] timerModelId in
                 self?.timerModels[timerModelId]?.state = .active
             }
             .store(in: &cancellables)
 
-        timerManager.events[.timerDidComplete]?
+        timerEvents[.timerDidComplete]?
             .sink { [weak self] timerModelId in
                 guard let self else { return }
                 timerModels[timerModelId]?.state = .inactive
                 notifyUser(.timerDidComplete)
+                // TODO: - forward message to ProgressTrackingManager
             }
             .store(in: &cancellables)
 
-        timerManager.events[.timerWasCancelled]?
+        timerEvents[.timerWasCancelled]?
             .sink { [weak self] timerModelId in
                 self?.timerModels[timerModelId]?.state = .inactive
             }

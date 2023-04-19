@@ -9,9 +9,11 @@ protocol WindowCoordinator: AnyObject {
 class AppDelegate: NSObject, NSApplicationDelegate {
     private struct Dependencies {
         static let dataManager = DataManager.shared
+        static let progressTrackingManager = ProgressTrackingManager.shared
+        static let settingsManager = SettingsManager.shared
+        static let timerEventProvider = TimerManager.shared
         static let timerManager = TimerManager.shared
         static let userNotificationManager = UserNotificationManager.shared
-        static let settingsManager = SettingsManager.shared
     }
 
     private var statusBar: NSStatusBar = NSStatusBar.system
@@ -62,9 +64,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupContentView() -> some View {
         let viewModel = ViewModel(dataManager: Dependencies.dataManager,
+                                  settingsManager: Dependencies.settingsManager,
                                   timerManager: Dependencies.timerManager,
                                   userNotificationManager: Dependencies.userNotificationManager,
-                                  settingsManager: Dependencies.settingsManager,
                                   windowCoordinator: self)
 
         return ContentView(viewModel: viewModel)
