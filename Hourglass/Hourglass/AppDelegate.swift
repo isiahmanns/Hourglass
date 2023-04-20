@@ -65,6 +65,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupContentView() -> some View {
         let viewModel = ViewModel(dataManager: Dependencies.dataManager,
                                   settingsManager: Dependencies.settingsManager,
+                                  timerEventForwarder: Dependencies.progressTrackingManager,
                                   timerManager: Dependencies.timerManager,
                                   userNotificationManager: Dependencies.userNotificationManager,
                                   windowCoordinator: self)

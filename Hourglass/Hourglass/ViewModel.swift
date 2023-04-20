@@ -5,6 +5,7 @@ class ViewModel: ObservableObject {
     let timerModels: [Timer.Model.ID: Timer.Model]
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let timerManager: TimerManager
+    private let timerEventForwarder: TimerEventForwarding
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
     weak private var windowCoordinator: WindowCoordinator?
@@ -18,9 +19,9 @@ class ViewModel: ObservableObject {
     @Published var viewState = ViewState()
     private var cancellables: Set<AnyCancellable> = []
 
-    // TODO: - Inject ProgressTrackingManager
     init(dataManager: DataManaging,
          settingsManager: SettingsManager,
+         timerEventForwarder: TimerEventForwarding,
          timerManager: TimerManager,
          userNotificationManager: NotificationManager,
          windowCoordinator: WindowCoordinator) {
@@ -29,6 +30,7 @@ class ViewModel: ObservableObject {
         self.settingsManager = settingsManager
         self.timerEvents = timerManager.events
         self.timerManager = timerManager
+        self.timerEventForwarder = timerEventForwarder
         self.userNotificationManager = userNotificationManager
         self.windowCoordinator = windowCoordinator
         configureEventSubscriptions()
@@ -114,7 +116,6 @@ class ViewModel: ObservableObject {
         }
     }
 
-    // TODO: - Use VM as central point for ordering of state mutation between VM and ProgressTrackingManager
     private func configureEventSubscriptions() {
         timerEvents[.timerDidStart]?
             .sink { [weak self] timerModelId in
@@ -125,15 +126,19 @@ class ViewModel: ObservableObject {
         timerEvents[.timerDidComplete]?
             .sink { [weak self] timerModelId in
                 guard let self else { return }
-                timerModels[timerModelId]?.state = .inactive
-                notifyUser(.timerDidComplete)
-                // TODO: - forward message to ProgressTrackingManager
+                if let timerModel = timerModels[timerModelId] {
+                    timerModel.state = .inactive
+                    notifyUser(.timerDidComplete)
+                    timerEventForwarder.forwardEvent(.timerDidComplete, timerModelId: timerModelId)
+                }
             }
             .store(in: &cancellables)
 
         timerEvents[.timerWasCancelled]?
             .sink { [weak self] timerModelId in
-                self?.timerModels[timerModelId]?.state = .inactive
+                guard let self else { return }
+                timerModels[timerModelId]?.state = .inactive
+                timerEventForwarder.forwardEvent(.timerWasCancelled, timerModelId: timerModelId)
             }
             .store(in: &cancellables)
     }
