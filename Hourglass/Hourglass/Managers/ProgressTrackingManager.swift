@@ -1,6 +1,10 @@
 import Combine
 
-struct ProgressTrackingManager {
+protocol TimerEventForwarding {
+    func forwardEvent(_ event: HourglassEventKey.Timer, timerModelId: Timer.Model.ID)
+}
+
+class ProgressTrackingManager {
     static let shared = ProgressTrackingManager(dataManager: DataManager.shared,
                                                 settingsManager: SettingsManager.shared,
                                                 timerEventProvider: TimerManager.shared)
@@ -8,6 +12,13 @@ struct ProgressTrackingManager {
     let timerModels: [Timer.Model.ID: Timer.Model]
     let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     let settingsManager: SettingsManager
+    // TODO: - Delegate call for showing alerts
+
+    private(set) var activeTimerModelId: Timer.Model.ID?
+    var activeTimerModel: Timer.Model? {
+        guard let activeTimerModelId else { return nil }
+        return timerModels[activeTimerModelId]
+    }
 
     var restWarningThreshold: Int {
         // TODO: - Read value from cache
@@ -19,9 +30,7 @@ struct ProgressTrackingManager {
         10
     }
 
-    var forceRestIsEnabled: Bool = false
     private var focusStride: Int = 0
-    private var restStride: Int = 0
     private var cancellables: Set<AnyCancellable> = []
 
     private init(dataManager: DataManaging,
@@ -33,28 +42,85 @@ struct ProgressTrackingManager {
         configureEventSubscriptions()
     }
 
-    // TODO: - Handle start (set active timer) and tick events
     private func configureEventSubscriptions() {
-        // timerEvents
+        timerEvents[.timerDidStart]?
+            .sink { [weak self] timerModelId in
+                self?.activeTimerModelId = timerModelId
+            }
+            .store(in: &cancellables)
+
+        timerEvents[.timerDidTick]?
+            .sink { [weak self] timerModelId in
+                guard let self else { return }
+                guard let activeTimerModel, timerModelId == activeTimerModel.id else {
+                    // TODO: - Analytics, invalid state
+                    fatalError()
+                }
+
+                switch activeTimerModel.category {
+                case .focus:
+                    focusStride += 1
+                    showRestWarningIfNeeded()
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
     }
 
-    // TODO: - Forward cancel and complete events to sequence model state mutation
+    private func showRestWarningIfNeeded() {
+        if focusStride == restWarningThreshold {
+            // TODO: - Delegate call to show alert
+            print("showing rest warning")
+        }
+    }
+
+    private func enforceRestIfNeeded() {
+        if focusStride >= forceRestThreshold {
+            setTimers(category: .focus, state: .disabled)
+        }
+    }
+
+    private func deEnforceRest() {
+        setTimers(category: .focus, state: .inactive)
+    }
+
+    private func setTimers(category: Timer.Category, state: Timer.State) {
+        timerModels.filterByCategory(category)
+            .forEach { timerModel in
+                timerModel.state = state
+            }
+    }
+}
+
+extension ProgressTrackingManager: TimerEventForwarding {
     func forwardEvent(_ event: HourglassEventKey.Timer, timerModelId: Timer.Model.ID) {
+        guard let activeTimerModel, timerModelId == activeTimerModel.id else {
+            // TODO: - Analytics, invalid state
+            fatalError()
+        }
+
         switch event {
         case .timerDidComplete:
-            // Check if event timer is a focus timer
-            if forceRestIsEnabled {
-                timerModels.filterByCategory(.focus)
-                    .forEach { focusTimerModel in
-                        focusTimerModel.state = .disabled
-                    }
-                return
+            switch activeTimerModel.category {
+            case .focus:
+                enforceRestIfNeeded()
+            case .rest:
+                deEnforceRest()
+                focusStride = 0
+                // TODO: - Disable rest timers based on "Get back to work after rest" setting
             }
 
-            // TODO: - Reset active timer to nil, or use timerManager like in view model
+            activeTimerModelId = nil
+        case .timerWasCancelled:
+            switch activeTimerModel.category {
+            case .focus:
+                enforceRestIfNeeded()
+            default:
+                break
+            }
 
-
-            break
+            activeTimerModelId = nil
         default:
             break
         }

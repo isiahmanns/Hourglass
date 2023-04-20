@@ -59,7 +59,10 @@ class TimerManager: ObservableObject, TimerEventProviding {
     }
 
     func cancelTimer() {
-        guard let activeTimerModelId else { fatalError() }
+        guard let activeTimerModelId else {
+            // TODO: - Analytics, invalid state
+            fatalError()
+        }
         stopTimer()
         events[.timerWasCancelled]?.send(activeTimerModelId)
     }
