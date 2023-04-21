@@ -1,14 +1,16 @@
 import Combine
 import Foundation
 
+protocol TimerModelStateNotifying: AnyObject {
+    func notifyUser(_ event: HourglassEventKey.Timer)
+}
+
 class ViewModel: ObservableObject {
     let timerModels: [Timer.Model.ID: Timer.Model]
-    private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let timerManager: TimerManager
-    private let timerEventForwarder: TimerEventForwarding
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
-    weak private var windowCoordinator: WindowCoordinator?
+    weak var windowCoordinator: WindowCoordinator?
 
     var activeTimerModel: Timer.Model? {
         guard let activeTimerModelId = timerManager.activeTimerModelId else { return nil }
@@ -17,23 +19,16 @@ class ViewModel: ObservableObject {
 
     private var pendingTimerModel: Timer.Model?
     @Published var viewState = ViewState()
-    private var cancellables: Set<AnyCancellable> = []
 
     init(dataManager: DataManaging,
          settingsManager: SettingsManager,
-         timerEventForwarder: TimerEventForwarding,
          timerManager: TimerManager,
-         userNotificationManager: NotificationManager,
-         windowCoordinator: WindowCoordinator) {
+         userNotificationManager: NotificationManager) {
 
         self.timerModels = dataManager.getTimerModels()
         self.settingsManager = settingsManager
-        self.timerEvents = timerManager.events
         self.timerManager = timerManager
-        self.timerEventForwarder = timerEventForwarder
         self.userNotificationManager = userNotificationManager
-        self.windowCoordinator = windowCoordinator
-        configureEventSubscriptions()
     }
 
     func didTapTimer(from model: Timer.Model) -> Void {
@@ -93,8 +88,10 @@ class ViewModel: ObservableObject {
         pendingTimerModel = model
         viewState.showStartNewTimerDialog = true
     }
+}
 
-    private func notifyUser(_ event: HourglassEventKey.Timer) {
+extension ViewModel: TimerModelStateNotifying {
+    func notifyUser(_ event: HourglassEventKey.Timer) {
         switch event {
         case .timerDidComplete:
             let soundIsEnabled = settingsManager.getSoundIsEnabled()
@@ -114,33 +111,6 @@ class ViewModel: ObservableObject {
         default:
             break
         }
-    }
-
-    private func configureEventSubscriptions() {
-        timerEvents[.timerDidStart]?
-            .sink { [weak self] timerModelId in
-                self?.timerModels[timerModelId]?.state = .active
-            }
-            .store(in: &cancellables)
-
-        timerEvents[.timerDidComplete]?
-            .sink { [weak self] timerModelId in
-                guard let self else { return }
-                if let timerModel = timerModels[timerModelId] {
-                    timerModel.state = .inactive
-                    notifyUser(.timerDidComplete)
-                    timerEventForwarder.forwardEvent(.timerDidComplete, timerModelId: timerModelId)
-                }
-            }
-            .store(in: &cancellables)
-
-        timerEvents[.timerWasCancelled]?
-            .sink { [weak self] timerModelId in
-                guard let self else { return }
-                timerModels[timerModelId]?.state = .inactive
-                timerEventForwarder.forwardEvent(.timerWasCancelled, timerModelId: timerModelId)
-            }
-            .store(in: &cancellables)
     }
 }
 

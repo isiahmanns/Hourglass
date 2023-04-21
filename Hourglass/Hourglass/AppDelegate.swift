@@ -6,28 +6,40 @@ protocol WindowCoordinator: AnyObject {
     func showPopoverIfNeeded()
 }
 
-class AppDelegate: NSObject, NSApplicationDelegate {
-    private struct Dependencies {
-        static let dataManager = DataManager.shared
-        static let progressTrackingManager = ProgressTrackingManager.shared
-        static let settingsManager = SettingsManager.shared
-        static let timerEventProvider = TimerManager.shared
-        static let timerManager = TimerManager.shared
-        static let userNotificationManager = UserNotificationManager.shared
-    }
+private struct Dependencies {
+    static let dataManager = DataManager.shared
+    static let settingsManager = SettingsManager.shared
+    static let timerManager = TimerManager.shared
+    static let timerModelStateManager = TimerModelStateManager.shared
+    static let userNotificationManager = UserNotificationManager.shared
+}
 
+class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBar: NSStatusBar = NSStatusBar.system
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var aboutWindow: NSWindow!
 
+    // Root Dependencies
+    private var timerModelStateManager = Dependencies.timerModelStateManager
+    private var viewModel = ViewModel(dataManager: Dependencies.dataManager,
+                                      settingsManager: Dependencies.settingsManager,
+                                      timerManager: Dependencies.timerManager,
+                                      userNotificationManager: Dependencies.userNotificationManager)
+
     private var cancellables: Set<AnyCancellable> = []
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        setupDelegates()
         setupStatusItem()
         let view = setupContentView()
         setupPopover(with: view)
         setupAboutWindow()
+    }
+
+    private func setupDelegates() {
+        viewModel.windowCoordinator = self
+        timerModelStateManager.delegate = viewModel
     }
 
     private func setupStatusItem() {
@@ -63,13 +75,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupContentView() -> some View {
-        let viewModel = ViewModel(dataManager: Dependencies.dataManager,
-                                  settingsManager: Dependencies.settingsManager,
-                                  timerEventForwarder: Dependencies.progressTrackingManager,
-                                  timerManager: Dependencies.timerManager,
-                                  userNotificationManager: Dependencies.userNotificationManager,
-                                  windowCoordinator: self)
-
         return ContentView(viewModel: viewModel)
             .font(.poppins)
     }
@@ -110,13 +115,9 @@ extension AppDelegate: WindowCoordinator {
     }
 
     func showPopoverIfNeeded() {
+        // Note: Fixes bug where tapping the status item wouldn't close the popover on the first time after an alert popup.
         if !popover.isShown {
             showPopover()
         }
     }
-}
-
-class WindowCoordinatorMock: WindowCoordinator {
-    func showAboutWindow() {}
-    func showPopoverIfNeeded() {}
 }
