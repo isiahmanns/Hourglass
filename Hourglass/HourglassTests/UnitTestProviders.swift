@@ -17,8 +17,9 @@ struct UnitTestProviders {
         return DataManagerMock(timerModels: stubTimerModels)
     }
 
-    static var fakeViewModel: (TimerPublisher,
-                               ViewModel,
+    static var fakeViewModel: (ViewModel,
+                               TimerModelStateManager,
+                               TimerPublisher,
                                UserNotificationManagerMock,
                                SettingsManager) {
 
@@ -26,15 +27,21 @@ struct UnitTestProviders {
         let (stubTimerPublisher, fakeTimerManager) = fakeTimerManager
         let mockUserNotificationManager = UserNotificationManagerMock()
         let settingsManager = SettingsManager.shared
-        let mockWindowCoordinator = WindowCoordinatorMock()
 
         let viewModel = ViewModel(dataManager: mockDataManager,
                                   settingsManager: settingsManager,
                                   timerManager: fakeTimerManager,
-                                  userNotificationManager: mockUserNotificationManager,
-                                  windowCoordinator: mockWindowCoordinator)
-        return (stubTimerPublisher,
-                viewModel,
+                                  userNotificationManager: mockUserNotificationManager)
+
+        let fakeTimerModelStateManager =
+        TimerModelStateManagerFake(dataManager: mockDataManager,
+                                   settingsManager: settingsManager,
+                                   timerEventProvider: fakeTimerManager)
+        fakeTimerModelStateManager.delegate = viewModel
+
+        return (viewModel,
+                fakeTimerModelStateManager,
+                stubTimerPublisher,
                 mockUserNotificationManager,
                 settingsManager)
     }

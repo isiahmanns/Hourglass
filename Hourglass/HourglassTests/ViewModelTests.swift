@@ -5,8 +5,9 @@ import XCTest
 
 final class ViewModelTests: XCTestCase {
 
-    let (timerPublisher,
-         viewModel,
+    let (viewModel,
+         timerModelStateManager,
+         timerPublisher,
          userNotificationManager,
          settingsManager) = UnitTestProviders.fakeViewModel
     let now = Date.now
