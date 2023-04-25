@@ -17,11 +17,17 @@ class TimerModelStateManager {
     }
 
     private var restWarningThreshold: Int? {
-        settingsManager.getRestWarningThreshold()
+        let restWarningThreshold = settingsManager.getRestWarningThreshold()
+        return restWarningThreshold > 0 ? restWarningThreshold : nil
     }
 
     private var enforceRestThreshold: Int? {
-        settingsManager.getEnforceRestThreshold()
+        let enforceRestThreshold = settingsManager.getEnforceRestThreshold()
+        return enforceRestThreshold > 0 ? enforceRestThreshold : nil
+    }
+
+    private var getBackToWorkIsEnabled: Bool {
+        settingsManager.getGetBackToWorkIsEnabled()
     }
 
     private var focusStride: Int = 0
@@ -74,13 +80,14 @@ class TimerModelStateManager {
                 activeTimerModel.state = .inactive
                 delegate?.notifyUser(.timerDidComplete)
 
+                setDefaultTimerStates()
+
                 switch activeTimerModel.category {
                 case .focus:
                     enforceRestIfNeeded()
                 case .rest:
-                    deEnforceRest()
                     focusStride = 0
-                    // TODO: - Disable rest timers based on "Get back to work after rest" setting
+                    enforceFocusIfNeeded()
                 }
 
                 activeTimerModelId = nil
@@ -122,7 +129,14 @@ class TimerModelStateManager {
         }
     }
 
-    private func deEnforceRest() {
+    private func enforceFocusIfNeeded() {
+        if getBackToWorkIsEnabled {
+            setTimers(category: .rest, state: .disabled)
+        }
+    }
+
+    private func setDefaultTimerStates() {
+        setTimers(category: .rest, state: .inactive)
         setTimers(category: .focus, state: .inactive)
     }
 

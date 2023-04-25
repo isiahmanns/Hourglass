@@ -40,6 +40,9 @@ struct SettingsMenu: View {
     @AppStorage(SettingsKeys.enforceRestThreshold.rawValue)
     var enforceRestThreshold: Int = Constants.enforceRestThresholdDefault
 
+    @AppStorage(SettingsKeys.getBackToWork.rawValue)
+    var getBackToWorkIsEnabled: Bool = Constants.getBackToWorkIsEnabled
+
     var body: some View {
         Menu {
             Section {
@@ -128,6 +131,7 @@ struct SettingsMenu: View {
                         Text("50").tag(50)
                         Text("60").tag(60)
                     }
+                    Toggle("Get Back to Work", isOn: $getBackToWorkIsEnabled)
                 }
             }
             Section {

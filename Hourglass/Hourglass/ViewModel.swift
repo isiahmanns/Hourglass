@@ -117,6 +117,7 @@ extension ViewModel: TimerModelStateNotifying {
     func notifyUser(_ event: HourglassEventKey.Progress) {
         switch event {
         case .restWarningThresholdMet:
+            // TOOD: - Either make this a silent user notification, or just make it a simple alert
             let soundIsEnabled = settingsManager.getSoundIsEnabled()
 
             switch settingsManager.getNotificationStyle() {
