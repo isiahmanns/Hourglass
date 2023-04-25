@@ -10,7 +10,7 @@ struct TimerGrid: View {
             VStack(alignment: .center, spacing: ySpacing) {
                 Header(content: Copy.focusHeader)
 
-                ForEach(viewModel.timerModels.filterByCategory(.focus)) { model in
+                ForEach(viewModel.timerModels.filterByCategory(.focus).sortByLength()) { model in
                     TimerButton(model: model) {
                         viewModel.didTapTimer(from: model)
                     }
@@ -20,7 +20,7 @@ struct TimerGrid: View {
             VStack(alignment: .center, spacing: ySpacing) {
                 Header(content: Copy.restHeader)
 
-                ForEach(viewModel.timerModels.filterByCategory(.rest)) { model in
+                ForEach(viewModel.timerModels.filterByCategory(.rest).sortByLength()) { model in
                     TimerButton(model: model) {
                         viewModel.didTapTimer(from: model)
                     }

@@ -63,8 +63,8 @@ struct SettingsMenu: View {
                     Toggle("Fullscreen on Rest", isOn: .constant(true))
                 }
                 Section("Timer Presets") {
-                    let focusTimerModels = viewModel.timerModels.filterByCategory(.focus)
-                    let restTimerModels = viewModel.timerModels.filterByCategory(.rest)
+                    let focusTimerModels = viewModel.timerModels.filterByCategory(.focus).sortByLength()
+                    let restTimerModels = viewModel.timerModels.filterByCategory(.rest).sortByLength()
 
                     Menu("Focus Timers") {
                         Picker("Small", selection: $timerFocusSmallPreset) {

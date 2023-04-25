@@ -77,10 +77,8 @@ class TimerModelStateManager {
                     fatalError()
                 }
 
-                activeTimerModel.state = .inactive
+                setTimers(state: .inactive)
                 delegate?.notifyUser(.timerDidComplete)
-
-                setDefaultTimerStates()
 
                 switch activeTimerModel.category {
                 case .focus:
@@ -135,9 +133,11 @@ class TimerModelStateManager {
         }
     }
 
-    private func setDefaultTimerStates() {
-        setTimers(category: .rest, state: .inactive)
-        setTimers(category: .focus, state: .inactive)
+    private func setTimers(state: Timer.State) {
+        timerModels
+            .forEach { id, timerModel in
+                timerModel.state = state
+            }
     }
 
     private func setTimers(category: Timer.Category, state: Timer.State) {
