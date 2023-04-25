@@ -41,6 +41,44 @@ struct SettingsManager {
         }
     }
 
+    // Rest Warning Threshold
+    func setRestWarningThreshold(_ value: Int) {
+        store.set(value, forKey: SettingsKeys.restWarningThreshold.rawValue)
+    }
+
+    func getRestWarningThreshold() -> Int? {
+        let value = store.object(forKey: SettingsKeys.restWarningThreshold.rawValue)
+
+        guard let value = value as? Int else {
+            return Constants.restWarningThresholdDefault
+        }
+
+        guard value > 0 else {
+            return nil
+        }
+
+        return value
+    }
+
+    // Enforce Rest Threshold
+    func setEnforceRestThreshold(_ value: Int) {
+        store.set(value, forKey: SettingsKeys.enforceRestThreshold.rawValue)
+    }
+
+    func getEnforceRestThreshold() -> Int? {
+        let value = store.object(forKey: SettingsKeys.enforceRestThreshold.rawValue)
+
+        guard let value = value as? Int else {
+            return Constants.enforceRestThresholdDefault
+        }
+
+        guard value > 0 else {
+            return nil
+        }
+
+        return value
+    }
+
     // Sound
     func setSound(isEnabled: Bool) {
         store.set(isEnabled, forKey: SettingsKeys.soundIsEnabled.rawValue)

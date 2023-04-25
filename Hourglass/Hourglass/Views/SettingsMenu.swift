@@ -34,6 +34,12 @@ struct SettingsMenu: View {
     @AppStorage(SettingsKeys.TimerSetting.timerRestLarge.rawValue)
     var timerRestLargePreset: Int = Constants.timerRestLargeDefault
 
+    @AppStorage(SettingsKeys.restWarningThreshold.rawValue)
+    var restWarningThreshold: Int = Constants.restWarningThresholdDefault
+
+    @AppStorage(SettingsKeys.enforceRestThreshold.rawValue)
+    var enforceRestThreshold: Int = Constants.enforceRestThresholdDefault
+
     var body: some View {
         Menu {
             Section {
@@ -102,6 +108,26 @@ struct SettingsMenu: View {
                         }
                     }
                     .pickerStyle(.inline)
+                }
+                Section("Reminders") {
+                    Picker("Rest Warning", selection: $restWarningThreshold) {
+                        Text("Off").tag(0)
+                        Text("15").tag(15)
+                        Text("20").tag(20)
+                        Text("30").tag(30)
+                        Text("40").tag(40)
+                        Text("50").tag(50)
+                        Text("60").tag(60)
+                    }
+                    Picker("Enforce Rest", selection: $enforceRestThreshold) {
+                        Text("Off").tag(0)
+                        Text("15").tag(15)
+                        Text("20").tag(20)
+                        Text("30").tag(30)
+                        Text("40").tag(40)
+                        Text("50").tag(50)
+                        Text("60").tag(60)
+                    }
                 }
             }
             Section {

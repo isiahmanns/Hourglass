@@ -18,6 +18,11 @@ enum Constants {
     static let timerRestMediumDefault = 10
     static let timerRestLargeDefault = 20
 
+    // Timer threshold defaults
+    // TODO: - Decide these values!
+    static let restWarningThresholdDefault: Int = 15
+    static let enforceRestThresholdDefault: Int = 0
+
     // Timer alert dialog
     static let timerCompleteAlert = "Time's up"
     static let restWarningAlert = "Take a rest, soon."

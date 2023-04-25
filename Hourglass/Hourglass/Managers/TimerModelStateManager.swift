@@ -17,13 +17,11 @@ class TimerModelStateManager {
     }
 
     private var restWarningThreshold: Int? {
-        // TODO: - Read value from cache
-        nil//5
+        settingsManager.getRestWarningThreshold()
     }
 
     private var enforceRestThreshold: Int? {
-        // TODO: - Read value from cache
-        nil//10
+        settingsManager.getEnforceRestThreshold()
     }
 
     private var focusStride: Int = 0

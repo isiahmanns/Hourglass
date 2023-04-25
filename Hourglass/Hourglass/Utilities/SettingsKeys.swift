@@ -10,6 +10,8 @@ enum SettingsKeys: String {
     case soundIsEnabled
     case fullScreenOnBreak
     case notificationStyle
+    case restWarningThreshold
+    case enforceRestThreshold
 }
 
 enum NotificationStyle: Int {
