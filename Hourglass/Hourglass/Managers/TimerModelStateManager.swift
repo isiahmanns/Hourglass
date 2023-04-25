@@ -11,17 +11,17 @@ class TimerModelStateManager {
     weak var delegate: TimerModelStateNotifying?
 
     private(set) var activeTimerModelId: Timer.Model.ID?
-    var activeTimerModel: Timer.Model? {
+    private var activeTimerModel: Timer.Model? {
         guard let activeTimerModelId else { return nil }
         return timerModels[activeTimerModelId]
     }
 
-    var restWarningThreshold: Int? {
+    private var restWarningThreshold: Int? {
         // TODO: - Read value from cache
         nil//5
     }
 
-    var forceRestThreshold: Int? {
+    private var enforceRestThreshold: Int? {
         // TODO: - Read value from cache
         nil//10
     }
@@ -113,15 +113,14 @@ class TimerModelStateManager {
 
     private func showRestWarningIfNeeded() {
         if let restWarningThreshold, focusStride == restWarningThreshold {
-            // TODO: - Delegate call to show alert
-            print("showing rest warning")
+            delegate?.notifyUser(.restWarningThresholdMet)
         }
     }
 
     private func enforceRestIfNeeded() {
-        if let forceRestThreshold, focusStride >= forceRestThreshold {
+        if let enforceRestThreshold, focusStride >= enforceRestThreshold {
             setTimers(category: .focus, state: .disabled)
-            // TODO: - Delegate call to show alert "It's time to take a rest."
+            delegate?.notifyUser(.enforceRestThresholdMet)
         }
     }
 

@@ -5,4 +5,9 @@ enum HourglassEventKey {
         case timerDidComplete
         case timerWasCancelled
     }
+
+    enum Progress {
+        case restWarningThresholdMet
+        case enforceRestThresholdMet
+    }
 }

@@ -17,6 +17,8 @@ struct AlertView: View {
             }
             .alert(Copy.timerCompleteAlert, isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
             .alert(Copy.timerResetAlert, isPresented: $viewModel.viewState.showTimerResetAlert) {}
+            .alert(Copy.restWarningAlert, isPresented: $viewModel.viewState.showRestWarningAlert) {}
+            .alert(Copy.enforceRestAlert, isPresented: $viewModel.viewState.showEnforceRestAlert) {}
     }
 }
 
@@ -27,5 +29,7 @@ private extension AlertView {
         static let startNewTimerDialogCancel = "Cancel"
         static let timerCompleteAlert = Constants.timerCompleteAlert
         static let timerResetAlert = "Timer has been reset"
+        static let restWarningAlert = Constants.restWarningAlert
+        static let enforceRestAlert = "You've been focused for a while now. Let your mind rest."
     }
 }

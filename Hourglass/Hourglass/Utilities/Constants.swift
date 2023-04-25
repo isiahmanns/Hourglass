@@ -20,6 +20,7 @@ enum Constants {
 
     // Timer alert dialog
     static let timerCompleteAlert = "Time's up"
+    static let restWarningAlert = "Take a rest, soon."
 
     // Timestamp default
     static let timeStampZero = "00:00"

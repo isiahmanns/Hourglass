@@ -2,7 +2,8 @@ import UserNotifications
 
 enum HourglassNotification: String {
     case timerCompleteBanner
-    case timerCompleteNoBanner
+    case restWarningThresholdMetBanner
+    case soundOnly
 
     var contentBase: UNMutableNotificationContent {
         let notificationContent = UNMutableNotificationContent()
@@ -15,7 +16,9 @@ enum HourglassNotification: String {
         switch self {
         case .timerCompleteBanner:
             return Constants.timerCompleteAlert
-        case .timerCompleteNoBanner:
+        case .restWarningThresholdMetBanner:
+            return Constants.restWarningAlert
+        case .soundOnly:
             return ""
         }
     }

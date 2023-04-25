@@ -3,6 +3,7 @@ import Foundation
 
 protocol TimerModelStateNotifying: AnyObject {
     func notifyUser(_ event: HourglassEventKey.Timer)
+    func notifyUser(_ event: HourglassEventKey.Progress)
 }
 
 class ViewModel: ObservableObject {
@@ -12,7 +13,7 @@ class ViewModel: ObservableObject {
     private let settingsManager: SettingsManager
     weak var windowCoordinator: WindowCoordinator?
 
-    var activeTimerModel: Timer.Model? {
+    private var activeTimerModel: Timer.Model? {
         guard let activeTimerModelId = timerManager.activeTimerModelId else { return nil }
         return timerModels[activeTimerModelId]
     }
@@ -102,7 +103,7 @@ extension ViewModel: TimerModelStateNotifying {
                                                          soundIsEnabled: soundIsEnabled)
             case .popup:
                 if soundIsEnabled {
-                    userNotificationManager.fireNotification(.timerCompleteNoBanner,
+                    userNotificationManager.fireNotification(.soundOnly,
                                                              soundIsEnabled: true)
                 }
                 viewState.showTimerCompleteAlert = true
@@ -112,6 +113,29 @@ extension ViewModel: TimerModelStateNotifying {
             break
         }
     }
+
+    func notifyUser(_ event: HourglassEventKey.Progress) {
+        switch event {
+        case .restWarningThresholdMet:
+            let soundIsEnabled = settingsManager.getSoundIsEnabled()
+
+            switch settingsManager.getNotificationStyle() {
+            case .banner:
+                userNotificationManager.fireNotification(.restWarningThresholdMetBanner,
+                                                         soundIsEnabled: soundIsEnabled)
+            case .popup:
+                if soundIsEnabled {
+                    userNotificationManager.fireNotification(.soundOnly,
+                                                             soundIsEnabled: true)
+                }
+                viewState.showRestWarningAlert = true
+                windowCoordinator?.showPopoverIfNeeded()
+            }
+        case .enforceRestThresholdMet:
+            viewState.showEnforceRestAlert = true
+            windowCoordinator?.showPopoverIfNeeded()
+        }
+    }
 }
 
 extension ViewModel {
@@ -119,6 +143,8 @@ extension ViewModel {
         var showStartNewTimerDialog: Bool = false
         var showTimerCompleteAlert: Bool = false
         var showTimerResetAlert: Bool = false
+        var showRestWarningAlert: Bool = false
+        var showEnforceRestAlert: Bool = false
     }
 
     enum StartNewTimerDialogResponse {
