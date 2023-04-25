@@ -13,8 +13,7 @@ final class ViewModelTests: XCTestCase {
     let now = Date.now
 
     var viewModelTimerModels: [Hourglass.Timer.Model] {
-        viewModel.timerModels.values
-            .sorted(by: { $0.length < $1.length })
+        Array(viewModel.timerModels.values).sortByLength()
     }
 
     override func setUpWithError() throws {

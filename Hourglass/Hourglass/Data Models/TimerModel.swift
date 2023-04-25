@@ -45,6 +45,11 @@ extension Dictionary<Timer.Model.ID, Timer.Model> {
             .filter { timerModel in
                 timerModel.category == category
             }
-            .sorted(by: {$0.length < $1.length})
+    }
+}
+
+extension Array<Timer.Model> {
+    func sortByLength() -> [Timer.Model] {
+        self.sorted(by: {$0.length < $1.length})
     }
 }
