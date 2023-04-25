@@ -16,24 +16,28 @@ final class TimerManagerTests: XCTestCase {
     override func setUpWithError() throws {
         timerManager.events[.timerDidStart]?
             .sink { [weak self] timerModelID in
+                XCTAssertEqual(self?.timerID, timerModelID)
                 self?.eventTriggerCount.timerDidStart += 1
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerDidTick]?
             .sink { [weak self] timerModelID in
+                XCTAssertEqual(self?.timerID, timerModelID)
                 self?.eventTriggerCount.timerDidTick += 1
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerDidComplete]?
             .sink { [weak self] timerModelID in
+                XCTAssertEqual(self?.timerID, timerModelID)
                 self?.eventTriggerCount.timerDidComplete += 1
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerWasCancelled]?
             .sink { [weak self] timerModelID in
+                XCTAssertEqual(self?.timerID, timerModelID)
                 self?.eventTriggerCount.timerWasCancelled += 1
             }
             .store(in: &cancellables)
