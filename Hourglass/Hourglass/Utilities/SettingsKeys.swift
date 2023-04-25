@@ -12,6 +12,7 @@ enum SettingsKeys: String {
     case notificationStyle
     case restWarningThreshold
     case enforceRestThreshold
+    case getBackToWork
 }
 
 enum NotificationStyle: Int {
