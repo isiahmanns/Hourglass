@@ -168,15 +168,14 @@ final class ViewModelTests: XCTestCase {
                                      soundIsEnabled: Bool) {
         XCTAssertEqual(timerModel.state, .inactive)
 
-        switch (notificationStyle, soundIsEnabled) {
-        case (.banner, _):
+        switch (notificationStyle) {
+        case (.banner):
             XCTAssertTrue(userNotificationManager.didFireNotification)
             XCTAssertFalse(viewModel.viewState.showTimerCompleteAlert)
-        case (.popup, true):
-            XCTAssertTrue(userNotificationManager.didFireNotification)
-            XCTAssertTrue(viewModel.viewState.showTimerCompleteAlert)
-        case (.popup, false):
-            XCTAssertFalse(userNotificationManager.didFireNotification)
+        case (.popup):
+            soundIsEnabled
+            ? XCTAssertTrue(userNotificationManager.didFireNotification)
+            : XCTAssertFalse(userNotificationManager.didFireNotification)
             XCTAssertTrue(viewModel.viewState.showTimerCompleteAlert)
         }
     }
