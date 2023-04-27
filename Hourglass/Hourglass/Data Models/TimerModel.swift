@@ -21,10 +21,6 @@ extension Timer {
         case active
         case inactive
         case disabled
-
-        var isEnabled: Bool {
-            self != .disabled
-        }
     }
 
     enum Category {

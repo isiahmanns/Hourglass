@@ -33,8 +33,6 @@ class ViewModel: ObservableObject {
     }
 
     func didTapTimer(from model: Timer.Model) -> Void {
-        guard model.state.isEnabled else { return }
-
         if let activeTimerModel {
             if model === activeTimerModel {
                 cancelTimer()
