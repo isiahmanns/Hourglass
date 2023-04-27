@@ -17,9 +17,16 @@ final class ViewModelTests: XCTestCase {
     }
 
     override func setUpWithError() throws {
+        verifyTimerButtonInitialStates()
     }
 
     override func tearDownWithError() throws {
+    }
+
+    private func verifyTimerButtonInitialStates() {
+        viewModel.timerModels.values.forEach { timerModel in
+            XCTAssertEqual(timerModel.state, .inactive)
+        }
     }
 
     /**
