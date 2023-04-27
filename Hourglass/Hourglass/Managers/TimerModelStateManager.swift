@@ -10,7 +10,7 @@ class TimerModelStateManager {
     private let settingsManager: SettingsManager
     weak var delegate: TimerModelStateNotifying?
 
-    private(set) var activeTimerModelId: Timer.Model.ID?
+    private var activeTimerModelId: Timer.Model.ID?
     private var activeTimerModel: Timer.Model? {
         guard let activeTimerModelId else { return nil }
         return timerModels[activeTimerModelId]
