@@ -57,7 +57,7 @@ final class HourglassUITests: XCTestCase {
         let alert = app.sheets.matching(identifier: "alert").element
         XCTAssertTrue(alert.waitForExistence(timeout: 4))
 
-        let alertTitle = alert.staticTexts["Time's up"]
+        let alertTitle = alert.staticTexts["Time's up."]
         let okButton = alert.buttons["OK"]
         [alertTitle, okButton].forEach { element in
             XCTAssertTrue(element.exists)
@@ -89,7 +89,7 @@ final class HourglassUITests: XCTestCase {
 
         XCTAssertTrue(macosNotification.waitForExistence(timeout: 5))
         let notificationTitle = macosNotification.staticTexts["Hourglass"]
-        let notificationSubtitle = macosNotification.staticTexts["Time's up"]
+        let notificationSubtitle = macosNotification.staticTexts["Time's up."]
         [notificationTitle, notificationSubtitle].forEach { element in
             XCTAssert(element.exists)
         }
@@ -167,7 +167,7 @@ final class HourglassUITests: XCTestCase {
         let alert = app.sheets.matching(identifier: "alert").element
         XCTAssertTrue(alert.waitForExistence(timeout: 1))
 
-        let alertTitle = alert.staticTexts["Timer has been reset"]
+        let alertTitle = alert.staticTexts["Timer has been reset."]
         let okButton = alert.buttons["OK"]
         [alertTitle, okButton].forEach { element in
             XCTAssertTrue(element.exists)
