@@ -12,6 +12,7 @@ struct TimerButton: View {
             Text(String(model.length))
         }
         .buttonStyle(TimerButton.Style(for: model.state))
+        .disabled(model.state == .disabled)
         .accessibilityIdentifier("\(model.length)m-timer-button-\(model.category)-\(model.size)")
     }
 }
@@ -51,7 +52,7 @@ extension TimerButton {
         }
 
         private func opacityProvider(_ isPressed: Bool) -> Double {
-            if isPressed && state.isEnabled {
+            if isPressed {
                 return 0.8
             } else {
                 return 1.0
