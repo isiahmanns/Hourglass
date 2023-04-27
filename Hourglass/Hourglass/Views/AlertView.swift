@@ -19,6 +19,7 @@ struct AlertView: View {
             .alert(Copy.timerResetAlert, isPresented: $viewModel.viewState.showTimerResetAlert) {}
             .alert(Copy.restWarningAlert, isPresented: $viewModel.viewState.showRestWarningAlert) {}
             .alert(Copy.enforceRestAlert, isPresented: $viewModel.viewState.showEnforceRestAlert) {}
+        // TODO: - Reorder alerts
     }
 }
 
