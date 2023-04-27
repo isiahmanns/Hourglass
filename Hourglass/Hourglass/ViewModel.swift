@@ -95,20 +95,7 @@ extension ViewModel: TimerModelStateNotifying {
     func notifyUser(_ event: HourglassEventKey.Timer) {
         switch event {
         case .timerDidComplete:
-            let soundIsEnabled = settingsManager.getSoundIsEnabled()
-
-            switch settingsManager.getNotificationStyle() {
-            case .banner:
-                userNotificationManager.fireNotification(.timerCompleteBanner,
-                                                         soundIsEnabled: soundIsEnabled)
-            case .popup:
-                if soundIsEnabled {
-                    userNotificationManager.fireNotification(.soundOnly,
-                                                             soundIsEnabled: true)
-                }
-                viewState.showTimerCompleteAlert = true
-                windowCoordinator?.showPopoverIfNeeded()
-            }
+            notifyUser(.timerCompleteBanner, alertFlag: &viewState.showTimerCompleteAlert)
         default:
             break
         }
@@ -117,23 +104,25 @@ extension ViewModel: TimerModelStateNotifying {
     func notifyUser(_ event: HourglassEventKey.Progress) {
         switch event {
         case .restWarningThresholdMet:
-            // TOOD: - Either make this a silent user notification, or just make it a simple alert
-            let soundIsEnabled = settingsManager.getSoundIsEnabled()
-
-            switch settingsManager.getNotificationStyle() {
-            case .banner:
-                userNotificationManager.fireNotification(.restWarningThresholdMetBanner,
-                                                         soundIsEnabled: soundIsEnabled)
-            case .popup:
-                if soundIsEnabled {
-                    userNotificationManager.fireNotification(.soundOnly,
-                                                             soundIsEnabled: true)
-                }
-                viewState.showRestWarningAlert = true
-                windowCoordinator?.showPopoverIfNeeded()
-            }
+            // TODO: - Either make this a silent/alt-sound user notification, or just make it a simple alert
+            notifyUser(.restWarningThresholdMetBanner, alertFlag: &viewState.showRestWarningAlert)
         case .enforceRestThresholdMet:
             viewState.showEnforceRestAlert = true
+            windowCoordinator?.showPopoverIfNeeded()
+        }
+    }
+
+    private func notifyUser(_ notification: HourglassNotification, alertFlag: inout Bool) {
+        let soundIsEnabled = settingsManager.getSoundIsEnabled()
+
+        switch settingsManager.getNotificationStyle() {
+        case .banner:
+            userNotificationManager.fireNotification(notification, soundIsEnabled: soundIsEnabled)
+        case .popup:
+            if soundIsEnabled {
+                userNotificationManager.fireNotification(.soundOnly, soundIsEnabled: true)
+            }
+            alertFlag = true
             windowCoordinator?.showPopoverIfNeeded()
         }
     }
