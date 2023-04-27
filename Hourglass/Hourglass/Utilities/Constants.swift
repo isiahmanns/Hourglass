@@ -25,7 +25,7 @@ enum Constants {
     static let getBackToWorkIsEnabled: Bool = false
 
     // Timer alert dialog
-    static let timerCompleteAlert = "Time's up"
+    static let timerCompleteAlert = "Time's up."
     static let restWarningAlert = "Take a rest, soon."
 
     // Timestamp default
