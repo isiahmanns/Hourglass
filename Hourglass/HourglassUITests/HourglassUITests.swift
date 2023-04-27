@@ -1,5 +1,6 @@
 import XCTest
 
+// TODO: - Use a flag to provide default data set for UI testing instead of relying on production default values.
 final class HourglassUITests: XCTestCase {
     let app = XCUIApplication()
 
