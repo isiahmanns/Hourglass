@@ -1,8 +1,10 @@
 import Foundation
 
+// TODO: - Refactor to interface with UserDefaults computed properties
+// TODO: - Allow observability with NSObject publisher from UserDefaults
 struct SettingsManager {
     static let shared = SettingsManager(store: UserDefaults.standard)
-    let store: UserDefaults
+    private let store: UserDefaults
 
     private init(store: UserDefaults) {
         self.store = store
