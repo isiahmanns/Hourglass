@@ -52,11 +52,7 @@ extension TimerButton {
         }
 
         private func opacityProvider(_ isPressed: Bool) -> Double {
-            if isPressed {
-                return 0.8
-            } else {
-                return 1.0
-            }
+            isPressed ? 0.8 : 1.0
         }
     }
 }
