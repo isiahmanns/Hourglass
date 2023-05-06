@@ -3,7 +3,7 @@ workflows:
     name: Build and test
     instance_type: mac_mini_m1
     environment:
-      xcode: 14.2
+      xcode: 14.3
     triggering:
       events:
         - push
@@ -29,7 +29,7 @@ workflows:
             -project 'Hourglass.xcodeproj'
             -scheme 'HourglassCITesting'
             -destination 'platform=macOS,arch=x86_64'
-            -sdk 'macosx13.1'
+            -sdk 'macosx13.3'
             -parallel-testing-enabled NO
             -skip-testing:HourglassUITests/HourglassUITests/testStartTimerToCompletionBanner
             | xcpretty && exit ${PIPESTATUS[0]}
