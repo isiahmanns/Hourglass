@@ -8,6 +8,7 @@ final class ViewModelTests: XCTestCase {
     let (viewModel,
          timerModelStateManager,
          timerPublisher,
+         timerManager,
          settingsManager) = UnitTestProviders.fakeViewModel
     let now = Date.now
 
@@ -38,7 +39,7 @@ final class ViewModelTests: XCTestCase {
         assertUserNotification(.timerDidComplete, count: 0)
 
         viewModel.didTapTimer(from: timerModel)
-        // TODO: - Assert activeTimerModelId on TimerManager
+        assertTimerManager(activeTimerId: timerModel.id)
         assertTimer(timerModel, state: .active)
         assertUserNotification(.timerDidComplete, count: 0)
 
@@ -51,7 +52,7 @@ final class ViewModelTests: XCTestCase {
         assertUserNotification(.timerDidComplete, count: 0)
 
         timerPublisher.send(now + 2)
-        // TODO: - Assert activeTimerModelId on TimerManager
+        assertTimerManager(activeTimerId: nil)
         assertTimer(timerModel, state: .inactive)
         assertUserNotification(.timerDidComplete, count: 1)
     }
@@ -65,14 +66,14 @@ final class ViewModelTests: XCTestCase {
         assertUserNotification(.timerDidComplete, count: 0)
 
         viewModel.didTapTimer(from: timerModel)
-        // TOOD: - Assert activeTimerModelId on TimerManager
+        assertTimerManager(activeTimerId: timerModel.id)
         assertTimer(timerModel, state: .active)
 
         timerPublisher.send(now)
         assertTimer(timerModel, state: .active)
 
         viewModel.didTapTimer(from: timerModel)
-        // TOOD: - Assert activeTimerModelId on TimerManager
+        assertTimerManager(activeTimerId: nil)
         assertTimer(timerModel, state: .inactive)
         assertUserNotification(.timerDidComplete, count: 0)
     }
@@ -489,6 +490,10 @@ final class ViewModelTests: XCTestCase {
     private func assertTimer(_ timerModel: Hourglass.Timer.Model,
                              state: Hourglass.Timer.State) {
         XCTAssertEqual(timerModel.state, state)
+    }
+
+    private func assertTimerManager(activeTimerId: Hourglass.Timer.Model.ID?) {
+        XCTAssertEqual(timerManager.activeTimerModelId, activeTimerId)
     }
 
     private func assertStartNewTimer(_ newTimer: Hourglass.Timer.Model,
