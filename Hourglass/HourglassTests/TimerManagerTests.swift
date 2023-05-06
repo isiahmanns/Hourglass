@@ -5,7 +5,7 @@ import XCTest
 final class TimerManagerTests: XCTestCase {
 
     let (timerPublisher, timerManager) = UnitTestProviders.fakeTimerManager
-    let timerID = ObjectIdentifier(Timer.Model)
+    let timerID = Timer.Model(length: 5, category: .focus, size: .small).id
     let now = Date.now
     var cancellables: Set<AnyCancellable> = []
     var eventTriggerCount = (timerDidStart: 0,
