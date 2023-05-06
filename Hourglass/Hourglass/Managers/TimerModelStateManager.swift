@@ -1,5 +1,8 @@
 import Combine
 
+/**
+ A manager object that subscribes to timer events and handles associated `Timer.Model` state mutation.
+ */
 class TimerModelStateManager {
     static let shared = TimerModelStateManager(dataManager: DataManager.shared,
                                                settingsManager: SettingsManager.shared,
@@ -16,11 +19,21 @@ class TimerModelStateManager {
         return timerModels[activeTimerModelId]
     }
 
+    /**
+     An amount of focus time that when met, the user is notified to take a rest soon.
+
+     This setting is triggered immediately, on the tick of the timer.
+     */
     private var restWarningThreshold: Int? {
         let restWarningThreshold = settingsManager.getRestWarningThreshold()
         return restWarningThreshold > 0 ? restWarningThreshold : nil
     }
 
+    /**
+     An amount of focus time that when met or surpassed, the user is forced to take a rest.
+
+     This setting is triggered when a timer is cancelled or completed.
+     */
     private var enforceRestThreshold: Int? {
         let enforceRestThreshold = settingsManager.getEnforceRestThreshold()
         return enforceRestThreshold > 0 ? enforceRestThreshold : nil
@@ -30,6 +43,12 @@ class TimerModelStateManager {
         settingsManager.getGetBackToWorkIsEnabled()
     }
 
+    /**
+     The accumulating time-span that is represented by ticking focus timers.
+
+     This value is incremented as a focus timer ticks and used as a gate to trigger the user's rest settings.
+     This is an ever-incrementing value (even through timer cancellations) and is only reset when a rest timer is completed.
+     */
     private var focusStride: Int = 0
     private var cancellables: Set<AnyCancellable> = []
 
@@ -78,7 +97,7 @@ class TimerModelStateManager {
                 }
 
                 setTimers(state: .inactive)
-                delegate?.notifyUser(.timerDidComplete)
+                delegate?.notifyUser(timerEvent: .timerDidComplete)
 
                 switch activeTimerModel.category {
                 case .focus:
@@ -116,14 +135,14 @@ class TimerModelStateManager {
 
     private func showRestWarningIfNeeded() {
         if let restWarningThreshold, focusStride == restWarningThreshold {
-            delegate?.notifyUser(.restWarningThresholdMet)
+            delegate?.notifyUser(progressEvent: .restWarningThresholdMet)
         }
     }
 
     private func enforceRestIfNeeded() {
         if let enforceRestThreshold, focusStride >= enforceRestThreshold {
             setTimers(category: .focus, state: .disabled)
-            delegate?.notifyUser(.enforceRestThresholdMet)
+            delegate?.notifyUser(progressEvent: .enforceRestThresholdMet)
         }
     }
 
@@ -157,12 +176,3 @@ class TimerModelStateManagerFake: TimerModelStateManager {
                    timerEventProvider: timerEventProvider)
     }
 }
-
-/**
- TODO:
- Decide whether to force break immediately and cancel timer, or let remainder of timer finish and then force break
- Does DataManager log only completed time intervals.... YES.
- Tracking partial focus periods (cancelling) can result in user initiated bugs where they spam the cancel function and have fake tracked progress.
- So it makes better sense to force the break after the remainder of the timer. Or if the timer is cancelled.
- The latter case will result in the partial work period not being tracked.
- */
