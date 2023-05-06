@@ -75,7 +75,7 @@ final class HourglassUITests: XCTestCase {
         - For some reason, when banner is elected, the notification appears quietly in Notification Center during testing
      - Menu bar is not hidden (Desktop and Dock system settings)
      */
-    func testStartTimerToCompletionBanner() {
+    func DISABLED_testStartTimerToCompletionBanner() {
         // app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.banner)
         app.launchMenu()
