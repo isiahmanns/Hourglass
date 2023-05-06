@@ -2,8 +2,8 @@ import Combine
 import Foundation
 
 protocol TimerModelStateNotifying: AnyObject {
-    func notifyUser(_ event: HourglassEventKey.Timer)
-    func notifyUser(_ event: HourglassEventKey.Progress)
+    func notifyUser(timerEvent: HourglassEventKey.Timer)
+    func notifyUser(progressEvent: HourglassEventKey.Progress)
 }
 
 class ViewModel: ObservableObject {
@@ -90,8 +90,8 @@ class ViewModel: ObservableObject {
 }
 
 extension ViewModel: TimerModelStateNotifying {
-    func notifyUser(_ event: HourglassEventKey.Timer) {
-        switch event {
+    @objc func notifyUser(timerEvent: HourglassEventKey.Timer) {
+        switch timerEvent {
         case .timerDidComplete:
             notifyUser(.timerCompleteBanner, alertFlag: &viewState.showTimerCompleteAlert)
         default:
@@ -99,8 +99,8 @@ extension ViewModel: TimerModelStateNotifying {
         }
     }
 
-    func notifyUser(_ event: HourglassEventKey.Progress) {
-        switch event {
+    @objc func notifyUser(progressEvent: HourglassEventKey.Progress) {
+        switch progressEvent {
         case .restWarningThresholdMet:
             // TODO: - Either make this a silent/alt-sound user notification, or just make it a simple alert
             notifyUser(.restWarningThresholdMetBanner, alertFlag: &viewState.showRestWarningAlert)
@@ -138,5 +138,18 @@ extension ViewModel {
     enum StartNewTimerDialogResponse {
         case yes
         case no
+    }
+}
+
+class ViewModelMock: ViewModel {
+    var notificationCount = (timerEvents: [HourglassEventKey.Timer: Int](),
+                             progressEvents: [HourglassEventKey.Progress: Int]())
+
+    override func notifyUser(timerEvent: HourglassEventKey.Timer) {
+        notificationCount.timerEvents[timerEvent, default: 0] += 1
+    }
+
+    override func notifyUser(progressEvent: HourglassEventKey.Progress) {
+        notificationCount.progressEvents[progressEvent, default: 0] += 1
     }
 }

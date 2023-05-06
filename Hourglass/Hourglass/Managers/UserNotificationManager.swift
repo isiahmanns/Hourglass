@@ -47,13 +47,6 @@ extension UserNotificationManager: UNUserNotificationCenterDelegate {
     }
 }
 
-class UserNotificationManagerMock: NotificationManager {
-    var didFireNotification: Bool = false
-    func fireNotification(_: HourglassNotification, soundIsEnabled: Bool) {
-        didFireNotification = true
-    }
-}
-
 extension UNMutableNotificationContent {
     func sound(_ value: UNNotificationSound?) -> Self {
         self.sound = value

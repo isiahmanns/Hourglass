@@ -1,12 +1,12 @@
 enum HourglassEventKey {
-    enum Timer {
+    @objc enum Timer: Int {
         case timerDidStart
         case timerDidTick
         case timerDidComplete
         case timerWasCancelled
     }
 
-    enum Progress {
+    @objc enum Progress: Int {
         case restWarningThresholdMet
         case enforceRestThresholdMet
     }
