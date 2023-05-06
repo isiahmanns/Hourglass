@@ -11,9 +11,9 @@ final class ViewModelTests: XCTestCase {
          settingsManager) = UnitTestProviders.fakeViewModel
     let now = Date.now
 
-    lazy var viewModelTimerModels: [Hourglass.Timer.Model] = {
-        // TODO: - Separate by category, then sort by length; access with .`category`.first!
-        Array(viewModel.timerModels.values).sortByLength()
+    lazy var timerModels: [Hourglass.Timer.Category: [Hourglass.Timer.Model]] = {
+        Dictionary(grouping: Array(viewModel.timerModels.values).sortByLength(),
+                   by: { $0.category })
     }()
 
     override func setUpWithError() throws {
@@ -33,7 +33,7 @@ final class ViewModelTests: XCTestCase {
      Test starting timer while inactive.
      */
     func testStartTimerToCompletion() {
-        let timerModel = viewModelTimerModels[0]
+        let timerModel = timerModels[.focus]![0]
 
         assertUserNotification(.timerDidComplete, count: 0)
 
@@ -60,7 +60,7 @@ final class ViewModelTests: XCTestCase {
      Test stopping timer while active.
      */
     func testStopTimer() {
-        let timerModel = viewModelTimerModels[0]
+        let timerModel = timerModels[.focus]![0]
 
         assertUserNotification(.timerDidComplete, count: 0)
 
@@ -81,8 +81,8 @@ final class ViewModelTests: XCTestCase {
      Test accepting start-new-timer flow (starting a new timer while current timer is active via alert response).
      */
     func testStartNewTimerFlowConfirm () {
-        let timerModelA = viewModelTimerModels[0]
-        let timerModelB = viewModelTimerModels[1]
+        let timerModelA = timerModels[.focus]![0]
+        let timerModelB = timerModels[.rest]![0]
 
         viewModel.didTapTimer(from: timerModelA)
         viewModel.didTapTimer(from: timerModelB)
@@ -97,8 +97,8 @@ final class ViewModelTests: XCTestCase {
      Test cancelling start-new-timer flow.
      */
     func testStartNewTimerFlowDeny () {
-        let timerModelA = viewModelTimerModels[0]
-        let timerModelB = viewModelTimerModels[1]
+        let timerModelA = timerModels[.focus]![0]
+        let timerModelB = timerModels[.rest]![0]
 
         viewModel.didTapTimer(from: timerModelA)
         viewModel.didTapTimer(from: timerModelB)
@@ -110,7 +110,7 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testRestWarning() {
-        let timerModel = viewModelTimerModels[0]
+        let timerModel = timerModels[.focus]![0]
         settingsManager.setRestWarningThreshold(2)
 
         viewModel.didTapTimer(from: timerModel)
@@ -123,8 +123,8 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testRestWarningResetAfterCompletedRestBlock() {
-        let timerModel3sFocus = viewModelTimerModels[0]
-        let timerModel5sRest = viewModelTimerModels[1]
+        let timerModel3sFocus = timerModels[.focus]![0]
+        let timerModel5sRest = timerModels[.rest]![0]
         settingsManager.setRestWarningThreshold(5)
 
         // Complete 3s focus block
@@ -172,8 +172,8 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testRestWarningDoesNotResetAfterIncompleteRestBlock() {
-        let timerModel3sFocus = viewModelTimerModels[0]
-        let timerModel5sRest = viewModelTimerModels[1]
+        let timerModel3sFocus = timerModels[.focus]![0]
+        let timerModel5sRest = timerModels[.rest]![0]
         settingsManager.setRestWarningThreshold(2)
 
         // Run focus block
@@ -208,7 +208,7 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testRestWarningContinuesAfterCancelledFocusBlock() {
-        let timerModel3sFocus = viewModelTimerModels[0]
+        let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setRestWarningThreshold(5)
 
         // Start and cancel 3s focus block
@@ -233,7 +233,7 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testEnforceRestOnTimerComplete() {
-        let timerModel3sFocus = viewModelTimerModels[0]
+        let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setEnforceRestThreshold(5)
 
         // Complete 3s focus block
@@ -260,7 +260,7 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testEnforceRestOnTimerCancel() {
-        let timerModel3sFocus = viewModelTimerModels[0]
+        let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setEnforceRestThreshold(2)
 
         // Run focus block
@@ -278,8 +278,8 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testEnforceRestResetAfterCompletedRestBlock() {
-        let timerModel3sFocus = viewModelTimerModels[0]
-        let timerModel5sRest = viewModelTimerModels[1]
+        let timerModel3sFocus = timerModels[.focus]![0]
+        let timerModel5sRest = timerModels[.rest]![0]
         settingsManager.setEnforceRestThreshold(5)
 
         // Complete 2 focus blocks
@@ -325,8 +325,8 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testEnforceRestDoesNotResetAfterIncompleteRestBlock() {
-        let timerModel3sFocus = viewModelTimerModels[0]
-        let timerModel5sRest = viewModelTimerModels[1]
+        let timerModel3sFocus = timerModels[.focus]![0]
+        let timerModel5sRest = timerModels[.rest]![0]
         settingsManager.setEnforceRestThreshold(5)
 
         // Complete 2 focus blocks
@@ -358,7 +358,7 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testEnforceRestContinuesAfterCancelledFocusBlock() {
-        let timerModel3sFocus = viewModelTimerModels[0]
+        let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setEnforceRestThreshold(5)
 
         // Start and cancel focus block
@@ -389,7 +389,7 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testRestWarningWithEnforceRestHappyPath() {
-        let timerModel3sFocus = viewModelTimerModels[0]
+        let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setRestWarningThreshold(2)
         settingsManager.setEnforceRestThreshold(5)
 
@@ -422,7 +422,7 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testRestWarningAndEnforceRestOff() {
-        let timerModel3sFocus = viewModelTimerModels[0]
+        let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setRestWarningThreshold(0)
         settingsManager.setEnforceRestThreshold(0)
 
@@ -444,8 +444,8 @@ final class ViewModelTests: XCTestCase {
      Test that when getBackToWork is enabled, after completing a rest block, you cannot start another rest block until a focus block has been completed.
      */
     func testGetBackToWork() {
-        let timerModel3sFocus = viewModelTimerModels[0]
-        let timerModel5sRest = viewModelTimerModels[1]
+        let timerModel3sFocus = timerModels[.focus]![0]
+        let timerModel5sRest = timerModels[.rest]![0]
         settingsManager.setGetBackToWork(isEnabled: true)
 
         // Complete rest block
