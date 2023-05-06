@@ -5,7 +5,7 @@ import Foundation
 struct UnitTestProviders {
     typealias TimerPublisher = PassthroughSubject<Date, Never>
 
-    static var fakeTimerManager: (TimerPublisher, TimerManager) {
+    static var fakeTimerManager: (TimerPublisher, TimerManagerFake) {
         let stubTimerPublisher = TimerPublisher()
         let fakeTimerManager = TimerManagerFake(timerPublisher: stubTimerPublisher)
         return (stubTimerPublisher, fakeTimerManager)
@@ -20,6 +20,7 @@ struct UnitTestProviders {
     static var fakeViewModel: (ViewModelMock,
                                TimerModelStateManagerFake,
                                TimerPublisher,
+                               TimerManagerFake,
                                SettingsManager) {
 
         let mockDataManager = mockDataManager
@@ -41,6 +42,7 @@ struct UnitTestProviders {
         return (viewModel,
                 fakeTimerModelStateManager,
                 stubTimerPublisher,
+                fakeTimerManager,
                 settingsManager)
     }
 }
