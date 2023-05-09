@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 
 /**
@@ -7,7 +8,7 @@ import Foundation
  The computed property setters are used for unit testing.
  These properties are exposed to objc to support KVO.
  */
-private extension UserDefaults {
+extension UserDefaults {
     // MARK: - Timer Lengths
     @objc dynamic var timerFocusSmall: Int {
         set {
@@ -107,6 +108,16 @@ struct SettingsManager {
 
     private init(store: UserDefaults) {
         self.store = store
+    }
+
+    func observe<T>(_ keypath: KeyPath<UserDefaults, T>, handler: @escaping (T) -> Void) {
+        let subscriber = Subscribers.Sink<T, Never> { _ in
+        } receiveValue: { value in
+            handler(value)
+        }
+
+        store.publisher(for: keypath, options: [.new])
+            .subscribe(subscriber)
     }
 
     // Timer
