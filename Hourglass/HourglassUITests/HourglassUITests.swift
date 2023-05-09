@@ -1,6 +1,5 @@
 import XCTest
 
-// TODO: - Use a flag to provide default data set for UI testing instead of relying on production default values.
 final class HourglassUITests: XCTestCase {
     let app = XCUIApplication()
 
@@ -46,7 +45,6 @@ final class HourglassUITests: XCTestCase {
     }
 
     func testStartTimerToCompletionPopup() {
-        // app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.popup)
         app.launchMenu()
 
@@ -76,7 +74,6 @@ final class HourglassUITests: XCTestCase {
      - Menu bar is not hidden (Desktop and Dock system settings)
      */
     func DISABLED_testStartTimerToCompletionBanner() {
-        // app.setTimerLength(2, for: .timerRestSmall)
         app.setNotificationStyle(.banner)
         app.launchMenu()
 
@@ -195,13 +192,9 @@ extension XCUIApplication {
     }
 }
 
-// UserDefaults override helpers via launch args
+// Settings override helpers via launch environment
 extension XCUIApplication {
     func setNotificationStyle(_ style: NotificationStyle) {
-        launchArguments += ["-\(SettingsKeys.notificationStyle.rawValue)", "\(style.rawValue)"]
-    }
-
-    func setTimerLength(_ length: Int, for timerSetting: SettingsKeys.TimerSetting) {
-        launchArguments += ["-\(timerSetting.rawValue)", "\(length)"]
+        launchEnvironment[SettingsKeys.notificationStyle.rawValue] = String(style.rawValue)
     }
 }

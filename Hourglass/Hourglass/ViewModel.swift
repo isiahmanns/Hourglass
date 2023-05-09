@@ -64,6 +64,7 @@ class ViewModel: ObservableObject {
         pendingTimerModel = nil
     }
 
+    // TODO: - Experiment with KVO
     func didChangeTimerPreset(for timerModel: Timer.Model) {
         if activeTimerModel === timerModel {
             cancelTimer()
