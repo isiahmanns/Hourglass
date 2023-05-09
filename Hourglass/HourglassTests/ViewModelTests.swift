@@ -78,6 +78,8 @@ final class ViewModelTests: XCTestCase {
         assertUserNotification(.timerDidComplete, count: 0)
     }
 
+    // TODO: - Test set timer, verify that new length is respected
+
     /**
      Test accepting start-new-timer flow (starting a new timer while current timer is active via alert response).
      */

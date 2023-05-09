@@ -1,5 +1,106 @@
 import Foundation
 
+/**
+ Computed properties for app settings values in UserDefaults.
+
+ The UserDefaults values primarily get set via the SettingsMenu UI bindings.
+ The computed property setters are used for unit testing.
+ These properties are exposed to objc to support KVO.
+ */
+private extension UserDefaults {
+    // MARK: - Timer Lengths
+    @objc dynamic var timerFocusSmall: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
+            as? Int ?? Constants.timerFocusSmallDefault
+        }
+    }
+
+    @objc dynamic var timerFocusMedium: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
+            as? Int ?? Constants.timerFocusMediumDefault
+        }
+    }
+
+    @objc dynamic var timerFocusLarge: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
+            as? Int ?? Constants.timerFocusLargeDefault
+        }
+    }
+
+    @objc dynamic var timerRestSmall: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
+            as? Int ?? Constants.timerRestSmallDefault
+        }
+    }
+
+    @objc dynamic var timerRestMedium: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
+            as? Int ?? Constants.timerRestMediumDefault
+        }
+    }
+
+    @objc dynamic var timerRestLarge: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
+            as? Int ?? Constants.timerRestLargeDefault
+        }
+    }
+
+    // MARK: - Rest Settings
+    @objc dynamic var restWarningThreshold: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.restWarningThreshold.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.restWarningThreshold.rawValue)
+            as? Int ?? Constants.restWarningThresholdDefault
+        }
+    }
+
+    @objc dynamic var enforceRestThreshold: Int {
+        set {
+            set(newValue, forKey: SettingsKeys.enforceRestThreshold.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.enforceRestThreshold.rawValue)
+            as? Int ?? Constants.enforceRestThresholdDefault
+        }
+    }
+
+    @objc dynamic var getBackToWork: Bool {
+        set {
+            set(newValue, forKey: SettingsKeys.getBackToWork.rawValue)
+        }
+        get {
+            object(forKey: SettingsKeys.getBackToWork.rawValue)
+            as? Bool ?? Constants.getBackToWorkIsEnabled
+        }
+    }
+}
+
 struct SettingsManager {
     static let shared = SettingsManager(store: UserDefaults.standard)
     let store: UserDefaults
@@ -9,66 +110,65 @@ struct SettingsManager {
     }
 
     // Timer
-    func setTimer(length: Int, for key: SettingsKeys.TimerSetting) {
-        store.set(length, forKey: key.rawValue)
+    func setTimer(length: Int, for timerSetting: SettingsKeys.TimerSetting) {
+        switch timerSetting {
+        case .timerFocusSmall:
+            store.timerFocusSmall = length
+        case .timerFocusMedium:
+            store.timerFocusMedium = length
+        case .timerFocusLarge:
+            store.timerFocusLarge = length
+        case .timerRestSmall:
+            store.timerRestSmall = length
+        case .timerRestMedium:
+            store.timerRestMedium = length
+        case .timerRestLarge:
+            store.timerRestLarge = length
+        }
     }
 
     func getTimerLength(for timerSetting: SettingsKeys.TimerSetting) -> Int {
-        let value = store.object(forKey: timerSetting.rawValue)
-
-        if let intValue = value as? Int {
-            return intValue
-        }
-
-        // Note: This supports launch args in UI Testing
-        if let stringValue = value as? String {
-            return Int(stringValue)!
-        }
-
         switch timerSetting {
         case .timerFocusSmall:
-            return Constants.timerFocusSmallDefault
+            return store.timerFocusSmall
         case .timerFocusMedium:
-            return Constants.timerFocusMediumDefault
+            return store.timerFocusMedium
         case .timerFocusLarge:
-            return Constants.timerFocusLargeDefault
+            return store.timerFocusLarge
         case .timerRestSmall:
-            return Constants.timerRestSmallDefault
+            return store.timerRestSmall
         case .timerRestMedium:
-            return Constants.timerRestMediumDefault
+            return store.timerRestMedium
         case .timerRestLarge:
-            return Constants.timerRestLargeDefault
+            return store.timerRestLarge
         }
     }
 
     // Rest Warning Threshold
     func setRestWarningThreshold(_ value: Int) {
-        store.set(value, forKey: SettingsKeys.restWarningThreshold.rawValue)
+        store.restWarningThreshold = value
     }
 
     func getRestWarningThreshold() -> Int {
-        let value = store.object(forKey: SettingsKeys.restWarningThreshold.rawValue)
-        return value as? Int ?? Constants.restWarningThresholdDefault
+        store.restWarningThreshold
     }
 
     // Enforce Rest Threshold
     func setEnforceRestThreshold(_ value: Int) {
-        store.set(value, forKey: SettingsKeys.enforceRestThreshold.rawValue)
+        store.enforceRestThreshold = value
     }
 
     func getEnforceRestThreshold() -> Int {
-        let value = store.object(forKey: SettingsKeys.enforceRestThreshold.rawValue)
-        return value as? Int ?? Constants.enforceRestThresholdDefault
+        store.enforceRestThreshold
     }
 
     // Get Back to Work
     func setGetBackToWork(isEnabled: Bool) {
-        store.set(isEnabled, forKey: SettingsKeys.getBackToWork.rawValue)
+        store.getBackToWork = isEnabled
     }
 
     func getGetBackToWorkIsEnabled() -> Bool {
-        let value = store.object(forKey: SettingsKeys.getBackToWork.rawValue)
-        return value as? Bool ?? Constants.getBackToWorkIsEnabled
+        store.getBackToWork
     }
 
     // Sound
@@ -77,8 +177,8 @@ struct SettingsManager {
     }
 
     func getSoundIsEnabled() -> Bool {
-        let value = store.object(forKey: SettingsKeys.soundIsEnabled.rawValue)
-        return value as? Bool ?? Constants.soundIsEnabled
+        store.object(forKey: SettingsKeys.soundIsEnabled.rawValue)
+        as? Bool ?? Constants.soundIsEnabled
     }
 
     // Fullscreen Break
@@ -87,8 +187,8 @@ struct SettingsManager {
     }
 
     func getFullScreenOnBreakIsEnabled() -> Bool {
-        let value = store.object(forKey: SettingsKeys.fullScreenOnBreak.rawValue)
-        return value as? Bool ?? Constants.fullscreenOnBreak
+        store.object(forKey: SettingsKeys.fullScreenOnBreak.rawValue)
+        as? Bool ?? Constants.fullscreenOnBreak
     }
 
     // Notification Style
@@ -97,16 +197,14 @@ struct SettingsManager {
     }
 
     func getNotificationStyle() -> NotificationStyle {
+        #if DEBUG || CITESTING
+        if let overrideValue = ProcessInfo.processInfo.environment[SettingsKeys.notificationStyle.rawValue] {
+            return NotificationStyle(rawValue: Int(overrideValue)!)!
+        }
+        #endif
         let value = store.object(forKey: SettingsKeys.notificationStyle.rawValue)
+        as? Int ?? Constants.notificationStyle
 
-        if let intValue = value as? Int {
-            return NotificationStyle(rawValue: intValue)!
-        }
-
-        if let stringValue = value as? String {
-            return NotificationStyle(rawValue: Int(stringValue)!)!
-        }
-
-        return NotificationStyle(rawValue: Constants.notificationStyle)!
+        return NotificationStyle(rawValue: value)!
     }
 }

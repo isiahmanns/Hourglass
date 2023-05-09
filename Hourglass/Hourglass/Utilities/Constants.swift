@@ -1,5 +1,6 @@
 import Foundation
 
+// TODO: - Adjust naming
 enum Constants {
     // Notification style default
     static let notificationStyle = NotificationStyle.popup.rawValue
