@@ -113,9 +113,8 @@ struct SettingsMenu: View {
                     .pickerStyle(.inline)
                 }
                 Section("Reminders") {
-                    // TODO: - Use -1 to represent "Off"
                     Picker("Rest Warning", selection: $restWarningThreshold) {
-                        Text("Off").tag(0)
+                        Text("Off").tag(-1)
                         Text("15").tag(15)
                         Text("20").tag(20)
                         Text("30").tag(30)
@@ -124,7 +123,7 @@ struct SettingsMenu: View {
                         Text("60").tag(60)
                     }
                     Picker("Enforce Rest", selection: $enforceRestThreshold) {
-                        Text("Off").tag(0)
+                        Text("Off").tag(-1)
                         Text("15").tag(15)
                         Text("20").tag(20)
                         Text("30").tag(30)
