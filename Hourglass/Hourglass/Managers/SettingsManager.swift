@@ -90,16 +90,6 @@ extension UserDefaults {
             as? Int ?? Constants.enforceRestThresholdDefault
         }
     }
-
-    @objc dynamic var getBackToWork: Bool {
-        set {
-            set(newValue, forKey: SettingsKeys.getBackToWork.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.getBackToWork.rawValue)
-            as? Bool ?? Constants.getBackToWorkIsEnabled
-        }
-    }
 }
 
 struct SettingsManager {
@@ -175,11 +165,12 @@ struct SettingsManager {
 
     // Get Back to Work
     func setGetBackToWork(isEnabled: Bool) {
-        store.getBackToWork = isEnabled
+        store.set(isEnabled, forKey: SettingsKeys.getBackToWork.rawValue)
     }
 
     func getGetBackToWorkIsEnabled() -> Bool {
-        store.getBackToWork
+        store.object(forKey: SettingsKeys.getBackToWork.rawValue)
+        as? Bool ?? Constants.getBackToWorkIsEnabled
     }
 
     // Sound
