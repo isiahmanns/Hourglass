@@ -481,6 +481,64 @@ final class ViewModelTests: XCTestCase {
         assertTimer(timerModel5sRest, state: .inactive)
     }
 
+    /**
+     Test that when getBackToWork is enabled, after completing a rest block, you cannot start another rest block until enforceRestThreshold is met (via cancelled focus blocks).
+     */
+    func testGetBackToWorkAndEnforceRestOnCancelledFocusBlock() {
+        let timerModel3sFocus = timerModels[.focus]![0]
+        let timerModel5sRest = timerModels[.rest]![0]
+        settingsManager.setEnforceRestThreshold(3)
+        settingsManager.setGetBackToWork(isEnabled: true)
+
+        // Complete rest block
+        viewModel.didTapTimer(from: timerModel5sRest)
+        (0..<5).forEach { _ in
+            timerPublisher.send(now)
+        }
+        assertTimer(timerModel5sRest, state: .disabled)
+
+        // Run, cancel, and run focus block again
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        (0..<2).forEach { _ in
+            timerPublisher.send(now)
+        }
+        viewModel.didTapTimer(from: timerModel3sFocus)
+
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        timerPublisher.send(now)
+        viewModel.didTapTimer(from: timerModel3sFocus)
+
+        assertTimer(timerModel3sFocus, state: .disabled)
+        assertTimer(timerModel5sRest, state: .inactive)
+    }
+
+    /**
+     Test that when getBackToWork is enabled, after completing a rest block, you cannot start another rest block until enforceRestThreshold is met (via a completed focus block).
+     */
+    func testGetBackToWorkAndEnforceRestOnCompletedFocusBlock() {
+        let timerModel3sFocus = timerModels[.focus]![0]
+        let timerModel5sRest = timerModels[.rest]![0]
+        settingsManager.setEnforceRestThreshold(5)
+        settingsManager.setGetBackToWork(isEnabled: true)
+
+        // Complete rest block
+        viewModel.didTapTimer(from: timerModel5sRest)
+        (0..<5).forEach { _ in
+            timerPublisher.send(now)
+        }
+        assertTimer(timerModel5sRest, state: .disabled)
+
+        // Complete focus blocks
+        (0..<2).forEach { _ in
+            viewModel.didTapTimer(from: timerModel3sFocus)
+            (0..<3).forEach { _ in
+                timerPublisher.send(now)
+            }
+        }
+        assertTimer(timerModel3sFocus, state: .disabled)
+        assertTimer(timerModel5sRest, state: .inactive)
+    }
+
     private func assertUserNotification(_ event: HourglassEventKey.Timer, count: Int) {
         XCTAssertEqual(viewModel.notificationCount.timerEvents[event] ?? 0, count)
     }
