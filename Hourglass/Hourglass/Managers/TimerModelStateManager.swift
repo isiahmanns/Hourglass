@@ -59,6 +59,7 @@ class TimerModelStateManager {
         self.settingsManager = settingsManager
         self.timerEvents = timerEventProvider.events
         configureEventSubscriptions()
+        configureSettingsObservations()
     }
 
     private func configureEventSubscriptions() {
@@ -103,7 +104,7 @@ class TimerModelStateManager {
                 case .focus:
                     enforceRestIfNeeded()
                 case .rest:
-                    focusStride = 0
+                    resetFocusStride()
                     enforceFocusIfNeeded()
                 }
 
@@ -131,6 +132,20 @@ class TimerModelStateManager {
                 activeTimerModelId = nil
             }
             .store(in: &cancellables)
+    }
+
+    private func configureSettingsObservations() {
+        settingsManager.observe(\.restWarningThreshold) { _ in
+            self.resetFocusStride()
+        }
+
+        settingsManager.observe(\.enforceRestThreshold) { _ in
+            self.resetFocusStride()
+        }
+    }
+
+    private func resetFocusStride() {
+        focusStride = 0
     }
 
     private func showRestWarningIfNeeded() {
