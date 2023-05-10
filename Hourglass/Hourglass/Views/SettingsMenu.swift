@@ -17,28 +17,28 @@ struct SettingsMenu: View {
     var soundIsEnabled: Bool = Constants.soundIsEnabled
 
     @AppStorage(SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
-    var timerFocusSmallPreset: Int = Constants.timerFocusSmallDefault
+    var timerFocusSmallPreset: Int = Constants.timerFocusSmall
 
     @AppStorage(SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
-    var timerFocusMediumPreset: Int = Constants.timerFocusMediumDefault
+    var timerFocusMediumPreset: Int = Constants.timerFocusMedium
 
     @AppStorage(SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
-    var timerFocusLargePreset: Int = Constants.timerFocusLargeDefault
+    var timerFocusLargePreset: Int = Constants.timerFocusLarge
 
     @AppStorage(SettingsKeys.TimerSetting.timerRestSmall.rawValue)
-    var timerRestSmallPreset: Int = Constants.timerRestSmallDefault
+    var timerRestSmallPreset: Int = Constants.timerRestSmall
 
     @AppStorage(SettingsKeys.TimerSetting.timerRestMedium.rawValue)
-    var timerRestMediumPreset: Int = Constants.timerRestMediumDefault
+    var timerRestMediumPreset: Int = Constants.timerRestMedium
 
     @AppStorage(SettingsKeys.TimerSetting.timerRestLarge.rawValue)
-    var timerRestLargePreset: Int = Constants.timerRestLargeDefault
+    var timerRestLargePreset: Int = Constants.timerRestLarge
 
     @AppStorage(SettingsKeys.restWarningThreshold.rawValue)
-    var restWarningThreshold: Int = Constants.restWarningThresholdDefault
+    var restWarningThreshold: Int = Constants.restWarningThreshold
 
     @AppStorage(SettingsKeys.enforceRestThreshold.rawValue)
-    var enforceRestThreshold: Int = Constants.enforceRestThresholdDefault
+    var enforceRestThreshold: Int = Constants.enforceRestThreshold
 
     @AppStorage(SettingsKeys.getBackToWork.rawValue)
     var getBackToWorkIsEnabled: Bool = Constants.getBackToWorkIsEnabled
