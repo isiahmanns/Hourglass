@@ -520,6 +520,7 @@ final class ViewModelTests: XCTestCase {
         timerPublisher.send(now)
         viewModel.didTapTimer(from: timerModel3sFocus)
 
+        assertUserNotification(.enforceRestThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .disabled)
         assertTimer(timerModel5sRest, state: .inactive)
     }
@@ -547,6 +548,7 @@ final class ViewModelTests: XCTestCase {
                 timerPublisher.send(now)
             }
         }
+        assertUserNotification(.enforceRestThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .disabled)
         assertTimer(timerModel5sRest, state: .inactive)
     }
