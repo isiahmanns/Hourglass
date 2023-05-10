@@ -108,7 +108,7 @@ class ViewModel: ObservableObject {
         defer { timerModel.length = length }
         if activeTimerModel === timerModel {
             cancelTimer()
-            viewState.showTimerResetAlert = true
+            viewState.showTimerResetAlert.toggle()
         }
     }
 
@@ -122,7 +122,7 @@ class ViewModel: ObservableObject {
 
     private func promptStartNewTimer(for model: Timer.Model) {
         pendingTimerModel = model
-        viewState.showStartNewTimerDialog = true
+        viewState.showStartNewTimerDialog.toggle()
     }
 }
 
@@ -142,7 +142,7 @@ extension ViewModel: TimerModelStateNotifying {
             // TODO: - Either make this a silent/alt-sound user notification, or just make it a simple alert
             notifyUser(.restWarningThresholdMetBanner, alertFlag: &viewState.showRestWarningAlert)
         case .enforceRestThresholdMet:
-            viewState.showEnforceRestAlert = true
+            viewState.showEnforceRestAlert.toggle()
             windowCoordinator?.showPopoverIfNeeded()
         }
     }
@@ -157,7 +157,7 @@ extension ViewModel: TimerModelStateNotifying {
             if soundIsEnabled {
                 userNotificationManager.fireNotification(.soundOnly, soundIsEnabled: true)
             }
-            alertFlag = true
+            alertFlag.toggle()
             windowCoordinator?.showPopoverIfNeeded()
         }
     }
@@ -170,6 +170,7 @@ extension ViewModel {
         var showTimerResetAlert: Bool = false
         var showRestWarningAlert: Bool = false
         var showEnforceRestAlert: Bool = false
+        var showRestSettingsFlow: Bool = false
     }
 
     enum StartNewTimerDialogResponse {

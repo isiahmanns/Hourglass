@@ -21,7 +21,7 @@ enum Constants {
     // Timer threshold defaults
     // TODO: - Decide these values!
     static let restWarningThreshold: Int = 15
-    static let enforceRestThreshold: Int = 0
+    static let enforceRestThreshold: Int = -1
     static let getBackToWorkIsEnabled: Bool = false
 
     // Timer alert dialog
