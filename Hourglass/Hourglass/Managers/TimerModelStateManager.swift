@@ -176,8 +176,12 @@ class TimerModelStateManager {
             self.didChangeRestSettings()
         }
 
-        settingsManager.observe(\.getBackToWork) { _ in
-            self.didChangeRestSettings()
+        settingsManager.observe(\.getBackToWork) { [self] isEnabled in
+            if !isEnabled {
+                if timerModels.filterByCategory(.rest).allSatisfy({$0.state == .disabled}) {
+                    setTimers(category: .rest, state: .inactive)
+                }
+            }
         }
     }
 
