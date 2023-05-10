@@ -78,7 +78,19 @@ final class ViewModelTests: XCTestCase {
         assertUserNotification(.timerDidComplete, count: 0)
     }
 
-    // TODO: - Test set timer, verify that new length is respected
+    /**
+     Test set timer, verify that new length is respected.
+     */
+    func testSetTimerLength() {
+        let timerModel = timerModels[.focus]![0]
+
+        // Cleanup
+        let prevLength = timerModel.length
+        defer { settingsManager.setTimer(length: prevLength, for: .timerFocusSmall) }
+
+        settingsManager.setTimer(length: 10, for: .timerFocusSmall)
+        XCTAssertEqual(timerModel.length, 10)
+    }
 
     /**
      Test accepting start-new-timer flow (starting a new timer while current timer is active via alert response).

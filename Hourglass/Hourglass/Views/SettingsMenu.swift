@@ -63,51 +63,36 @@ struct SettingsMenu: View {
                     Toggle("Fullscreen on Rest", isOn: .constant(true))
                 }
                 Section("Timer Presets") {
-                    let focusTimerModels = viewModel.timerModels.filterByCategory(.focus).sortByLength()
-                    let restTimerModels = viewModel.timerModels.filterByCategory(.rest).sortByLength()
-
                     Menu("Focus Timers") {
                         Picker("Small", selection: $timerFocusSmallPreset) {
                             Text("15").tag(15)
                             Text("20").tag(20)
-                        }.onChange(of: timerFocusSmallPreset) { value in
-                            handleTimerPresetSelection(value, for: focusTimerModels[0])
                         }
 
                         Picker("Medium", selection: $timerFocusMediumPreset) {
                             Text("25").tag(25)
                             Text("30").tag(30)
-                        }.onChange(of: timerFocusMediumPreset) { value in
-                            handleTimerPresetSelection(value, for: focusTimerModels[1])
                         }
 
                         Picker("Large", selection: $timerFocusLargePreset) {
                             Text("35").tag(35)
                             Text("40").tag(40)
-                        }.onChange(of: timerFocusLargePreset) { value in
-                            handleTimerPresetSelection(value, for: focusTimerModels[2])
                         }
                     }.pickerStyle(.inline)
                     Menu("Rest Timers") {
                         Picker("Small", selection: $timerRestSmallPreset) {
                             Text("3").tag(3)
                             Text("5").tag(5)
-                        }.onChange(of: timerRestSmallPreset) { value in
-                            handleTimerPresetSelection(value, for: restTimerModels[0])
                         }
 
                         Picker("Medium", selection: $timerRestMediumPreset) {
                             Text("10").tag(10)
                             Text("15").tag(15)
-                        }.onChange(of: timerRestMediumPreset) { value in
-                            handleTimerPresetSelection(value, for: restTimerModels[1])
                         }
 
                         Picker("Large", selection: $timerRestLargePreset) {
                             Text("20").tag(20)
                             Text("25").tag(25)
-                        }.onChange(of: timerRestLargePreset) { value in
-                            handleTimerPresetSelection(value, for: restTimerModels[2])
                         }
                     }
                     .pickerStyle(.inline)
@@ -146,10 +131,5 @@ struct SettingsMenu: View {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("settings-button")
-    }
-
-    private func handleTimerPresetSelection(_ length: Int, for timerModel: Timer.Model) {
-        viewModel.didChangeTimerPreset(for: timerModel)
-        timerModel.length = length
     }
 }

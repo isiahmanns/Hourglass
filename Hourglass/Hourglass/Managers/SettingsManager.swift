@@ -94,7 +94,7 @@ extension UserDefaults {
 
 struct SettingsManager {
     static let shared = SettingsManager(store: UserDefaults.standard)
-    let store: UserDefaults
+    private let store: UserDefaults
 
     private init(store: UserDefaults) {
         self.store = store
