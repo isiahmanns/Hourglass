@@ -1,9 +1,14 @@
 import Combine
 import Foundation
 
-protocol TimerModelStateNotifying: AnyObject {
+protocol EventNotifying: AnyObject {
     func notifyUser(timerEvent: HourglassEventKey.Timer)
     func notifyUser(progressEvent: HourglassEventKey.Progress)
+}
+
+protocol TimerHandling: AnyObject {
+    func resetTimer(for timerModel: Timer.Model)
+    func resetActiveTimer()
 }
 
 class ViewModel: ObservableObject {
@@ -30,7 +35,6 @@ class ViewModel: ObservableObject {
         self.settingsManager = settingsManager
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager
-        configureSettingsObservations()
     }
 
     func didTapTimer(from model: Timer.Model) -> Void {
@@ -69,49 +73,6 @@ class ViewModel: ObservableObject {
         windowCoordinator?.showAboutWindow()
     }
 
-    private func configureSettingsObservations() {
-        let focusTimers = timerModels.filterByCategory(.focus)
-        let restTimers = timerModels.filterByCategory(.rest)
-
-        settingsManager.observe(\.timerFocusSmall) { length in
-            guard let timerModel = focusTimers.first(where: { $0.size == .small }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerFocusMedium) { length in
-            guard let timerModel = focusTimers.first(where: { $0.size == .medium }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerFocusLarge) { length in
-            guard let timerModel = focusTimers.first(where: { $0.size == .large }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerRestSmall) { length in
-            guard let timerModel = restTimers.first(where: { $0.size == .small }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerRestMedium) { length in
-            guard let timerModel = restTimers.first(where: { $0.size == .medium }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerRestLarge) { length in
-            guard let timerModel = restTimers.first(where: { $0.size == .large }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-    }
-
-    private func didChangeTimerPreset(for timerModel: Timer.Model, to length: Int) {
-        defer { timerModel.length = length }
-        if activeTimerModel === timerModel {
-            cancelTimer()
-            viewState.showTimerResetAlert.toggle()
-        }
-    }
-
     private func cancelTimer() {
         timerManager.cancelTimer()
     }
@@ -126,7 +87,26 @@ class ViewModel: ObservableObject {
     }
 }
 
-extension ViewModel: TimerModelStateNotifying {
+extension ViewModel: TimerHandling {
+    func resetTimer(for timerModel: Timer.Model) {
+        if activeTimerModel === timerModel {
+            resetTimer()
+        }
+    }
+
+    func resetActiveTimer() {
+        if activeTimerModel != nil {
+            resetTimer()
+        }
+    }
+
+    private func resetTimer() {
+        cancelTimer()
+        viewState.showTimerResetAlert.toggle()
+    }
+}
+
+extension ViewModel: EventNotifying {
     @objc func notifyUser(timerEvent: HourglassEventKey.Timer) {
         switch timerEvent {
         case .timerDidComplete:
