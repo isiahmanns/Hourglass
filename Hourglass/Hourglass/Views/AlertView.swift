@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AlertView: View {
     @StateObject var viewModel: ViewModel
+    let settingsManager: SettingsManager
 
     var body: some View {
         Color.clear
@@ -20,7 +21,7 @@ struct AlertView: View {
             .alert(Copy.restWarningAlert, isPresented: $viewModel.viewState.showRestWarningAlert) {}
             .alert(Copy.enforceRestAlert, isPresented: $viewModel.viewState.showEnforceRestAlert) {}
             .sheet(isPresented: $viewModel.viewState.showRestSettingsFlow) {
-                RestSettingsFlow(viewModel: viewModel)
+                RestSettingsFlow(viewModel: viewModel, settingsManager: settingsManager)
             }
         // TODO: - Reorder alerts
     }
