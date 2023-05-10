@@ -24,6 +24,9 @@ struct RestSettingsFlow: View {
                     Text("50").tag(50)
                     Text("60").tag(60)
                 }
+                .onChange(of: restWarningThreshold) { _ in
+                    if !dataIsValid { enforceRestThreshold = -1 }
+                }
                 .help(Copy.restReminderHelp)
 
                 Picker("Enforce Rest:", selection: $enforceRestThreshold) {
@@ -34,6 +37,9 @@ struct RestSettingsFlow: View {
                     Text("40").tag(40)
                     Text("50").tag(50)
                     Text("60").tag(60)
+                }
+                .onChange(of: enforceRestThreshold) { _ in
+                    if !dataIsValid { restWarningThreshold = -1 }
                 }
                 .help(Copy.enforceRestHelp)
 
@@ -53,6 +59,15 @@ struct RestSettingsFlow: View {
         .font(.system(.body))
         .padding([.leading, .top, .trailing], 20)
         .padding(.bottom, 10)
+    }
+
+    private var dataIsValid: Bool {
+        switch(restWarningThreshold, enforceRestThreshold) {
+        case let (a, b) where a > 0 && b > 0:
+            return a < b
+        default:
+            return true
+        }
     }
 }
 
