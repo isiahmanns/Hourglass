@@ -13,32 +13,54 @@ struct RestSettingsFlow: View {
     var getBackToWorkIsEnabled: Bool = Constants.getBackToWorkIsEnabled
 
     var body: some View {
-        Form {
-            Picker("Rest Reminder:", selection: $restWarningThreshold) {
-                Text("Off").tag(-1)
-                Text("15").tag(15)
-                Text("20").tag(20)
-                Text("30").tag(30)
-                Text("40").tag(40)
-                Text("50").tag(50)
-                Text("60").tag(60)
-            }
-            Picker("Enforce Rest:", selection: $enforceRestThreshold) {
-                Text("Off").tag(-1)
-                Text("15").tag(15)
-                Text("20").tag(20)
-                Text("30").tag(30)
-                Text("40").tag(40)
-                Text("50").tag(50)
-                Text("60").tag(60)
-            }
-            Toggle("Get Back to Work", isOn: $getBackToWorkIsEnabled)
+        VStack {
+            Form {
+                Picker("Rest Reminder:", selection: $restWarningThreshold) {
+                    Text("Off").tag(-1)
+                    Text("15").tag(15)
+                    Text("20").tag(20)
+                    Text("30").tag(30)
+                    Text("40").tag(40)
+                    Text("50").tag(50)
+                    Text("60").tag(60)
+                }
+                .help(Copy.restReminderHelp)
 
-            Button("Close") {
-                viewModel.viewState.showRestSettingsFlow.toggle()
+                Picker("Enforce Rest:", selection: $enforceRestThreshold) {
+                    Text("Off").tag(-1)
+                    Text("15").tag(15)
+                    Text("20").tag(20)
+                    Text("30").tag(30)
+                    Text("40").tag(40)
+                    Text("50").tag(50)
+                    Text("60").tag(60)
+                }
+                .help(Copy.enforceRestHelp)
+
+                Toggle("Get Back to Work", isOn: $getBackToWorkIsEnabled)
+                    .help(Copy.getBackToWorkHelp)
+
+                Button("Close") {
+                    viewModel.viewState.showRestSettingsFlow.toggle()
+                }
             }
+
+            Spacer(minLength: 10)
+
+            Text(Copy.footnote)
+                .font(.system(.footnote))
         }
-        .padding(20)
         .font(.system(.body))
+        .padding([.leading, .top, .trailing], 20)
+        .padding(.bottom, 10)
+    }
+}
+
+private extension RestSettingsFlow {
+    enum Copy {
+        static let restReminderHelp = "Reminds you to take a rest after (x) minutes of focus. Must be less than the enforce rest threshold."
+        static let enforceRestHelp = "Disables focus timers and forces you to take a rest. Must be greater than the rest reminder threshold."
+        static let getBackToWorkHelp = "Prohibits you from taking multiple rest blocks at a time."
+        static let footnote = "Note: Hover to see settings descriptions."
     }
 }
