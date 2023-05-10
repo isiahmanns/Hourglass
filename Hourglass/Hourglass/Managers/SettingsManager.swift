@@ -156,8 +156,14 @@ struct SettingsManager {
     }
 
     // Rest Warning Threshold
-    func setRestWarningThreshold(_ value: Int) {
-        store.restWarningThreshold = value
+    func setRestWarningThreshold(_ value: Int, conservatively: Bool = false) {
+        if conservatively {
+            if store.restWarningThreshold != value {
+                store.restWarningThreshold = value
+            }
+        } else {
+            store.restWarningThreshold = value
+        }
     }
 
     func getRestWarningThreshold() -> Int {
@@ -165,8 +171,14 @@ struct SettingsManager {
     }
 
     // Enforce Rest Threshold
-    func setEnforceRestThreshold(_ value: Int) {
-        store.enforceRestThreshold = value
+    func setEnforceRestThreshold(_ value: Int, conservatively: Bool = false) {
+        if conservatively {
+            if store.enforceRestThreshold != value {
+                store.enforceRestThreshold =  value
+            }
+        } else {
+            store.enforceRestThreshold = value
+        }
     }
 
     func getEnforceRestThreshold() -> Int {
@@ -174,8 +186,14 @@ struct SettingsManager {
     }
 
     // Get Back to Work
-    func setGetBackToWork(isEnabled: Bool) {
-        store.getBackToWork = isEnabled
+    func setGetBackToWork(isEnabled: Bool, conservatively: Bool = false) {
+        if conservatively {
+            if store.getBackToWork != isEnabled {
+                store.getBackToWork = isEnabled
+            }
+        } else {
+            store.getBackToWork = isEnabled
+        }
     }
 
     func getGetBackToWorkIsEnabled() -> Bool {

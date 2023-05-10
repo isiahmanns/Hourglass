@@ -2,15 +2,19 @@ import SwiftUI
 
 struct RestSettingsFlow: View {
     let viewModel: ViewModel
+    let settingsManager: SettingsManager
 
-    @AppStorage(SettingsKeys.restWarningThreshold.rawValue)
-    var restWarningThreshold: Int = Constants.restWarningThreshold
+    @State var restWarningThreshold: Int
+    @State var enforceRestThreshold: Int
+    @State var getBackToWorkIsEnabled: Bool
 
-    @AppStorage(SettingsKeys.enforceRestThreshold.rawValue)
-    var enforceRestThreshold: Int = Constants.enforceRestThreshold
-
-    @AppStorage(SettingsKeys.getBackToWork.rawValue)
-    var getBackToWorkIsEnabled: Bool = Constants.getBackToWorkIsEnabled
+    init(viewModel: ViewModel, settingsManager: SettingsManager) {
+        self.viewModel = viewModel
+        self.settingsManager = settingsManager
+        self.restWarningThreshold = settingsManager.getRestWarningThreshold()
+        self.enforceRestThreshold = settingsManager.getEnforceRestThreshold()
+        self.getBackToWorkIsEnabled = settingsManager.getGetBackToWorkIsEnabled()
+    }
 
     var body: some View {
         VStack {
@@ -47,6 +51,11 @@ struct RestSettingsFlow: View {
                     .help(Copy.getBackToWorkHelp)
 
                 Button("Close") {
+                    defer {
+                        settingsManager.setRestWarningThreshold(restWarningThreshold, conservatively: true)
+                        settingsManager.setEnforceRestThreshold(enforceRestThreshold, conservatively: true)
+                        settingsManager.setGetBackToWork(isEnabled: getBackToWorkIsEnabled, conservatively: true)
+                    }
                     viewModel.viewState.showRestSettingsFlow.toggle()
                 }
             }

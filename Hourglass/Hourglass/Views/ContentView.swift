@@ -2,10 +2,11 @@ import SwiftUI
 
 struct ContentView: View {
     let viewModel: ViewModel
+    let settingsManager: SettingsManager
 
     var body: some View {
         ZStack {
-            AlertView(viewModel: viewModel)
+            AlertView(viewModel: viewModel, settingsManager: settingsManager)
 
             VStack(alignment: .center, spacing: 18.0) {
                 Logo(size: 40)
@@ -28,7 +29,8 @@ struct ContentView_Previews: PreviewProvider {
                                   settingsManager: SettingsManager.shared,
                                   timerManager: TimerManager.shared,
                                   userNotificationManager: UserNotificationManager.shared)
-        ContentView(viewModel: viewModel)
+        let settingsManager = SettingsManager.shared
+        ContentView(viewModel: viewModel, settingsManager: settingsManager)
             .font(Font.poppins)
     }
 }
