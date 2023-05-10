@@ -11,7 +11,7 @@ class TimerModelStateManager {
     private let timerModels: [Timer.Model.ID: Timer.Model]
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let settingsManager: SettingsManager
-    weak var delegate: TimerModelStateNotifying?
+    weak var delegate: (EventNotifying & TimerHandling)?
 
     private var activeTimerModelId: Timer.Model.ID?
     private var activeTimerModel: Timer.Model? {
@@ -135,13 +135,61 @@ class TimerModelStateManager {
     }
 
     private func configureSettingsObservations() {
+        let focusTimers = timerModels.filterByCategory(.focus)
+        let restTimers = timerModels.filterByCategory(.rest)
+
+        settingsManager.observe(\.timerFocusSmall) { length in
+            guard let timerModel = focusTimers.first(where: { $0.size == .small }) else { return }
+            self.didChangeTimerPreset(for: timerModel, to: length)
+        }
+
+        settingsManager.observe(\.timerFocusMedium) { length in
+            guard let timerModel = focusTimers.first(where: { $0.size == .medium }) else { return }
+            self.didChangeTimerPreset(for: timerModel, to: length)
+        }
+
+        settingsManager.observe(\.timerFocusLarge) { length in
+            guard let timerModel = focusTimers.first(where: { $0.size == .large }) else { return }
+            self.didChangeTimerPreset(for: timerModel, to: length)
+        }
+
+        settingsManager.observe(\.timerRestSmall) { length in
+            guard let timerModel = restTimers.first(where: { $0.size == .small }) else { return }
+            self.didChangeTimerPreset(for: timerModel, to: length)
+        }
+
+        settingsManager.observe(\.timerRestMedium) { length in
+            guard let timerModel = restTimers.first(where: { $0.size == .medium }) else { return }
+            self.didChangeTimerPreset(for: timerModel, to: length)
+        }
+
+        settingsManager.observe(\.timerRestLarge) { length in
+            guard let timerModel = restTimers.first(where: { $0.size == .large }) else { return }
+            self.didChangeTimerPreset(for: timerModel, to: length)
+        }
+
         settingsManager.observe(\.restWarningThreshold) { _ in
-            self.resetFocusStride()
+            self.didChangeRestSettings()
         }
 
         settingsManager.observe(\.enforceRestThreshold) { _ in
-            self.resetFocusStride()
+            self.didChangeRestSettings()
         }
+
+        settingsManager.observe(\.getBackToWork) { _ in
+            self.didChangeRestSettings()
+        }
+    }
+
+    private func didChangeTimerPreset(for timerModel: Timer.Model, to length: Int) {
+        defer { timerModel.length = length }
+        delegate?.resetTimer(for: timerModel)
+    }
+
+    private func didChangeRestSettings() {
+        resetFocusStride()
+        delegate?.resetActiveTimer()
+        setTimers(state: .inactive)
     }
 
     private func resetFocusStride() {
