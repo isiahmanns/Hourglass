@@ -170,6 +170,7 @@ extension ViewModel {
         var showTimerResetAlert: Bool = false
         var showRestWarningAlert: Bool = false
         var showEnforceRestAlert: Bool = false
+        var showRestSettingsFlow: Bool = false
     }
 
     enum StartNewTimerDialogResponse {

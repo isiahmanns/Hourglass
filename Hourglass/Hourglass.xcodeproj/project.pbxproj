@@ -21,6 +21,7 @@
 		253816F029A5D88C007BD118 /* ViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816EF29A5D88C007BD118 /* ViewModelTests.swift */; };
 		253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816F929A5D88C007BD118 /* HourglassUITests.swift */; };
 		25458EE129C6A69F00A118C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25458EE029C6A69F00A118C0 /* Constants.swift */; };
+		2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */; };
 		258302EA29C331CC00D37115 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302E929C331CC00D37115 /* SettingsManager.swift */; };
 		258302EC29C369E400D37115 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302EB29C369E400D37115 /* Events.swift */; };
 		258302EE29C36A0000D37115 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302ED29C36A0000D37115 /* Notifications.swift */; };
@@ -77,6 +78,7 @@
 		253816F529A5D88C007BD118 /* HourglassUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HourglassUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		253816F929A5D88C007BD118 /* HourglassUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITests.swift; sourceTree = "<group>"; };
 		25458EE029C6A69F00A118C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSettingsFlow.swift; sourceTree = "<group>"; };
 		258302E929C331CC00D37115 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		258302EB29C369E400D37115 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		258302ED29C36A0000D37115 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				2507BB5229C91C2E004478BE /* SettingsMenu.swift */,
 				2507BB5029C91BF9004478BE /* AlertView.swift */,
 				2507BB4A29C805BD004478BE /* AboutView.swift */,
+				2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				25BE3D1629DE632A00278E02 /* PopoverViewController.swift in Sources */,
 				258CB4C529C2E4D800812DA4 /* UserNotificationManager.swift in Sources */,
 				2507BB4D29C91AFD004478BE /* Logo.swift in Sources */,
+				2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */,
 				258302EA29C331CC00D37115 /* SettingsManager.swift in Sources */,
 				2507BB4729C7A77F004478BE /* SettingsKeys.swift in Sources */,
 				25458EE129C6A69F00A118C0 /* Constants.swift in Sources */,

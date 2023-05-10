@@ -97,26 +97,19 @@ struct SettingsMenu: View {
                     }
                     .pickerStyle(.inline)
                 }
-                Section("Reminders") {
-                    Picker("Rest Warning", selection: $restWarningThreshold) {
-                        Text("Off").tag(-1)
-                        Text("15").tag(15)
-                        Text("20").tag(20)
-                        Text("30").tag(30)
-                        Text("40").tag(40)
-                        Text("50").tag(50)
-                        Text("60").tag(60)
+                Section("Rest Settings") {
+                    Button("Set Rest Thresholds") {
+                        viewModel.viewState.showRestSettingsFlow.toggle()
                     }
-                    Picker("Enforce Rest", selection: $enforceRestThreshold) {
-                        Text("Off").tag(-1)
-                        Text("15").tag(15)
-                        Text("20").tag(20)
-                        Text("30").tag(30)
-                        Text("40").tag(40)
-                        Text("50").tag(50)
-                        Text("60").tag(60)
-                    }
-                    Toggle("Get Back to Work", isOn: $getBackToWorkIsEnabled)
+
+                    let restWarningThreshold = restWarningThreshold > 0 ? "\(restWarningThreshold)m" : "Off"
+                    Text("Rest Reminder: \(restWarningThreshold)")
+
+                    let enforceRestThreshold = enforceRestThreshold > 0 ? "\(enforceRestThreshold)m" : "Off"
+                    Text("Enforce Rest: \(enforceRestThreshold)")
+
+                    let getBackToWorkIsEnabled = getBackToWorkIsEnabled ? "On" : "Off"
+                    Text("Get Back To Work: \(getBackToWorkIsEnabled)")
                 }
             }
             Section {
