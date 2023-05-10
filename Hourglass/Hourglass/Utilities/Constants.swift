@@ -1,6 +1,5 @@
 import Foundation
 
-// TODO: - Adjust naming
 enum Constants {
     // Notification style default
     static let notificationStyle = NotificationStyle.popup.rawValue
@@ -12,17 +11,17 @@ enum Constants {
     static let soundIsEnabled = true
 
     // Timer length defaults
-    static let timerFocusSmallDefault = 15
-    static let timerFocusMediumDefault = 25
-    static let timerFocusLargeDefault = 35
-    static let timerRestSmallDefault = 3
-    static let timerRestMediumDefault = 10
-    static let timerRestLargeDefault = 20
+    static let timerFocusSmall = 15
+    static let timerFocusMedium = 25
+    static let timerFocusLarge = 35
+    static let timerRestSmall = 3
+    static let timerRestMedium = 10
+    static let timerRestLarge = 20
 
     // Timer threshold defaults
     // TODO: - Decide these values!
-    static let restWarningThresholdDefault: Int = 15
-    static let enforceRestThresholdDefault: Int = 0
+    static let restWarningThreshold: Int = 15
+    static let enforceRestThreshold: Int = 0
     static let getBackToWorkIsEnabled: Bool = false
 
     // Timer alert dialog

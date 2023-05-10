@@ -16,7 +16,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
-            as? Int ?? Constants.timerFocusSmallDefault
+            as? Int ?? Constants.timerFocusSmall
         }
     }
 
@@ -26,7 +26,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
-            as? Int ?? Constants.timerFocusMediumDefault
+            as? Int ?? Constants.timerFocusMedium
         }
     }
 
@@ -36,7 +36,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
-            as? Int ?? Constants.timerFocusLargeDefault
+            as? Int ?? Constants.timerFocusLarge
         }
     }
 
@@ -46,7 +46,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
-            as? Int ?? Constants.timerRestSmallDefault
+            as? Int ?? Constants.timerRestSmall
         }
     }
 
@@ -56,7 +56,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
-            as? Int ?? Constants.timerRestMediumDefault
+            as? Int ?? Constants.timerRestMedium
         }
     }
 
@@ -66,7 +66,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
-            as? Int ?? Constants.timerRestLargeDefault
+            as? Int ?? Constants.timerRestLarge
         }
     }
 
@@ -77,7 +77,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.restWarningThreshold.rawValue)
-            as? Int ?? Constants.restWarningThresholdDefault
+            as? Int ?? Constants.restWarningThreshold
         }
     }
 
@@ -87,7 +87,7 @@ extension UserDefaults {
         }
         get {
             object(forKey: SettingsKeys.enforceRestThreshold.rawValue)
-            as? Int ?? Constants.enforceRestThresholdDefault
+            as? Int ?? Constants.enforceRestThreshold
         }
     }
 }
