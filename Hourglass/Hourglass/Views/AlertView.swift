@@ -16,14 +16,13 @@ struct AlertView: View {
                     viewModel.didReceiveStartNewTimerDialog(response: .no)
                 }
             }
-            .alert(Copy.timerCompleteAlert, isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
             .alert(Copy.timerResetAlert, isPresented: $viewModel.viewState.showTimerResetAlert) {}
-            .alert(Copy.restWarningAlert, isPresented: $viewModel.viewState.showRestWarningAlert) {}
             .alert(Copy.enforceRestAlert, isPresented: $viewModel.viewState.showEnforceRestAlert) {}
+            .alert(Copy.restWarningAlert, isPresented: $viewModel.viewState.showRestWarningAlert) {}
+            .alert(Copy.timerCompleteAlert, isPresented: $viewModel.viewState.showTimerCompleteAlert) {}
             .sheet(isPresented: $viewModel.viewState.showRestSettingsFlow) {
                 RestSettingsFlow(viewModel: viewModel, settingsManager: settingsManager)
             }
-        // TODO: - Reorder alerts
     }
 }
 
