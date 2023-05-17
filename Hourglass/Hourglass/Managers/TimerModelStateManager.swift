@@ -55,7 +55,7 @@ class TimerModelStateManager {
     fileprivate init(dataManager: DataManaging,
                      settingsManager: SettingsManager,
                      timerEventProvider: TimerEventProviding) {
-        self.timerModels = dataManager.getTimerModels()
+        self.timerModels = dataManager.timerModels
         self.settingsManager = settingsManager
         self.timerEvents = timerEventProvider.events
         configureEventSubscriptions()

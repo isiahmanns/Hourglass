@@ -1,13 +1,19 @@
+import Combine
+
 protocol DataManaging {
-    func getTimerModels() -> [Timer.Model.ID: Timer.Model]
+    var timerModels: [Timer.Model.ID: Timer.Model] { get }
 }
 
 class DataManager: DataManaging {
-    static let shared = DataManager(settingsManager: SettingsManager.shared)
-    let timerModels: [Timer.Model]
+    static let shared = DataManager(settingsManager: SettingsManager.shared,
+                                    timerEventProvider: TimerManager.shared)
+    let timerModels: [Timer.Model.ID: Timer.Model]
+    private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
+    private var cancellables: Set<AnyCancellable> = []
 
-    private init(settingsManager: SettingsManager) {
-        self.timerModels = [
+    private init(settingsManager: SettingsManager,
+                 timerEventProvider: TimerEventProviding) {
+        let timerModels = [
             Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall),
                         category: .focus,
                         size: .small),
@@ -27,18 +33,27 @@ class DataManager: DataManaging {
                         category: .rest,
                         size: .large)
         ]
+        self.timerModels = Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
+        self.timerEvents = timerEventProvider.events
+        configureEventSubscriptions()
     }
 
-    func getTimerModels() -> [Timer.Model.ID: Timer.Model] {
-        return Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
+    private func configureEventSubscriptions() {
+        timerEvents[.timerDidComplete]?
+            .sink { [weak self] timerModelId in
+                guard let self else { return }
+                guard let timerModel = timerModels[timerModelId] else { return }
+                // TODO: - Persist data
+            }
+            .store(in: &cancellables)
     }
 }
 
 struct DataManagerMock: DataManaging {
-    let timerModels: [Timer.Model]
+    let timerModels: [Timer.Model.ID: Timer.Model]
 
-    func getTimerModels() -> [Timer.Model.ID: Timer.Model] {
-        return Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
+    init(timerModels: [Timer.Model]) {
+        self.timerModels = Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
     }
 }
 

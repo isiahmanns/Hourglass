@@ -31,7 +31,7 @@ class ViewModel: ObservableObject {
          timerManager: TimerManager,
          userNotificationManager: NotificationManager) {
 
-        self.timerModels = dataManager.getTimerModels()
+        self.timerModels = dataManager.timerModels
         self.settingsManager = settingsManager
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager
