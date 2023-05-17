@@ -135,6 +135,7 @@ class TimerModelStateManager {
     }
 
     private func configureSettingsObservations() {
+        // TODO: - Sort by length and use array indices, to match UI logic
         let focusTimers = timerModels.filterByCategory(.focus)
         let restTimers = timerModels.filterByCategory(.rest)
 

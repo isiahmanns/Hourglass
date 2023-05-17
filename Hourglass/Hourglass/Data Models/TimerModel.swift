@@ -23,11 +23,12 @@ extension Timer {
         case disabled
     }
 
-    enum Category {
+    enum Category: Int {
         case focus
         case rest
     }
 
+    // TODO: - May not be needed
     enum Size {
         case small
         case medium
