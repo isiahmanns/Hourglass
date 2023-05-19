@@ -5,14 +5,20 @@ enum StorageType {
     case inMemory
 }
 
-enum CoreDataModelName: String {
+enum CoreDataModel: String {
     case timerHistory = "TimerHistory"
 }
 
-struct CoreDataStore {
-    private let container: NSPersistentContainer
+enum CoreDataEntity: String {
+    case timeBlock = "TimeBlock"
+}
 
-    init(storageType: StorageType, modelName: CoreDataModelName) {
+class CoreDataStore {
+    static let shared = CoreDataStore(storageType: .disk, modelName: .timerHistory)
+    private let container: NSPersistentContainer
+    lazy var context: NSManagedObjectContext = container.viewContext
+
+    fileprivate init(storageType: StorageType, modelName: CoreDataModel) {
         self.container = NSPersistentContainer(name: modelName.rawValue)
         configureStores(for: storageType)
         loadStores()
@@ -38,20 +44,26 @@ struct CoreDataStore {
     }
 
     func fetch<T>(_ request: NSFetchRequest<T>) -> [T]? where T: NSFetchRequestResult {
-        try? container.viewContext.fetch(request)
+        try? context.fetch(request)
     }
 
     func insert(object: NSManagedObject) {
-        container.viewContext.insert(object)
+        context.insert(object)
     }
 
     func save() {
-        guard container.viewContext.hasChanges else { return }
+        guard context.hasChanges else { return }
 
         do {
-            try container.viewContext.save()
+            try context.save()
         } catch let error {
             print("Error persisting managed object: \(error)")
         }
+    }
+}
+
+class CoreDataTestStore: CoreDataStore {
+    init() {
+        super.init(storageType: .inMemory, modelName: .timerHistory)
     }
 }

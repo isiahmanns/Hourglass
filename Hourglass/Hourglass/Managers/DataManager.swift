@@ -1,4 +1,5 @@
 import Combine
+import CoreData
 import Foundation
 
 protocol DataManaging {
@@ -7,8 +8,7 @@ protocol DataManaging {
 
 class DataManager: DataManaging {
     static let shared = DataManager(settingsManager: SettingsManager.shared,
-                                    store: CoreDataStore(storageType: .disk,
-                                                         modelName: .timerHistory),
+                                    store: CoreDataStore.shared,
                                     timerEventProvider: TimerManager.shared)
     let timerModels: [Timer.Model.ID: Timer.Model]
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
@@ -67,7 +67,10 @@ class DataManager: DataManaging {
 
     private func createTimeBlock(from timerModel: Timer.Model) -> TimeBlock {
         let now = Date.now
-        let timeBlock = TimeBlock()
+        let entity = NSEntityDescription.entity(forEntityName: CoreDataEntity.timeBlock.rawValue,
+                                                in: store.context)
+        let timeBlock = NSManagedObject(entity: entity!, insertInto: nil) as! TimeBlock
+
         timeBlock.category = Int16(timerModel.category.rawValue)
         timeBlock.start = now - TimeInterval(timerModel.length * Constants.countdownFactor)
         timeBlock.end = now

@@ -22,6 +22,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // Root Dependencies
     private var timerModelStateManager = Dependencies.timerModelStateManager
+    private var dataManager = Dependencies.dataManager
     private var viewModel = ViewModel(dataManager: Dependencies.dataManager,
                                       settingsManager: Dependencies.settingsManager,
                                       timerManager: Dependencies.timerManager,

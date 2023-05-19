@@ -6,6 +6,8 @@ import XCTest
 final class ViewModelTests: XCTestCase {
 
     let (viewModel,
+         inMemoryStore,
+         dataManager,
          timerModelStateManager,
          timerPublisher,
          timerManager,
@@ -55,6 +57,7 @@ final class ViewModelTests: XCTestCase {
         assertTimerManager(activeTimerId: nil)
         assertTimer(timerModel, state: .inactive)
         assertUserNotification(.timerDidComplete, count: 1)
+        XCTAssertEqual(inMemoryStore.fetch(TimeBlock.fetchRequest())!.count, 1)
     }
 
     /**
@@ -76,6 +79,30 @@ final class ViewModelTests: XCTestCase {
         assertTimerManager(activeTimerId: nil)
         assertTimer(timerModel, state: .inactive)
         assertUserNotification(.timerDidComplete, count: 0)
+        XCTAssertEqual(inMemoryStore.fetch(TimeBlock.fetchRequest())!.count, 0)
+    }
+
+    func testPersistCompletedTimers() {
+        let timerModelA = timerModels[.focus]![0]
+        let timerModelB = timerModels[.rest]![0]
+
+        viewModel.didTapTimer(from: timerModelA)
+        (0..<3).forEach { _ in
+            timerPublisher.send(now)
+        }
+        XCTAssertEqual(inMemoryStore.fetch(TimeBlock.fetchRequest())!.count, 1)
+
+        viewModel.didTapTimer(from: timerModelA)
+        timerPublisher.send(now)
+        viewModel.didTapTimer(from: timerModelA)
+
+        (0..<2).forEach { _ in
+            viewModel.didTapTimer(from: timerModelB)
+            (0..<5).forEach { _ in
+                timerPublisher.send(now)
+            }
+        }
+        XCTAssertEqual(inMemoryStore.fetch(TimeBlock.fetchRequest())!.count, 3)
     }
 
     /**

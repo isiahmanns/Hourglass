@@ -17,15 +17,17 @@ struct UnitTestProviders {
     }
 
     static var fakeViewModel: (ViewModelMock,
+                               CoreDataStore,
+                               DataManaging,
                                TimerModelStateManagerFake,
                                TimerPublisher,
                                TimerManagerFake,
                                SettingsManager) {
 
         let (stubTimerPublisher, fakeTimerManager) = fakeTimerManager
+        let inMemoryStore = CoreDataTestStore()
         let mockDataManager = DataManagerMock(timerModels: stubTimerModels,
-                                              store: CoreDataStore(storageType: .inMemory,
-                                                                   modelName: .timeBlock),
+                                              store: inMemoryStore,
                                               timerEventProvider: fakeTimerManager)
         let userNotificationManager = UserNotificationManager.shared
         let settingsManager = SettingsManager.shared
@@ -42,6 +44,8 @@ struct UnitTestProviders {
         fakeTimerModelStateManager.delegate = viewModel
 
         return (viewModel,
+                inMemoryStore,
+                mockDataManager,
                 fakeTimerModelStateManager,
                 stubTimerPublisher,
                 fakeTimerManager,
