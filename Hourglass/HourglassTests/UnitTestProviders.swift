@@ -11,10 +11,9 @@ struct UnitTestProviders {
         return (stubTimerPublisher, fakeTimerManager)
     }
 
-    private static var mockDataManager: DataManaging {
-        let stubTimerModels = [Timer.Model(length: 3, category: .focus, size: .small),
-                               Timer.Model(length: 5, category: .rest, size: .medium)]
-        return DataManagerMock(timerModels: stubTimerModels)
+    private static var stubTimerModels: [Hourglass.Timer.Model] {
+        [Timer.Model(length: 3, category: .focus, size: .small),
+         Timer.Model(length: 5, category: .rest, size: .medium)]
     }
 
     static var fakeViewModel: (ViewModelMock,
@@ -23,8 +22,11 @@ struct UnitTestProviders {
                                TimerManagerFake,
                                SettingsManager) {
 
-        let mockDataManager = mockDataManager
         let (stubTimerPublisher, fakeTimerManager) = fakeTimerManager
+        let mockDataManager = DataManagerMock(timerModels: stubTimerModels,
+                                              store: CoreDataStore(storageType: .inMemory,
+                                                                   modelName: .timeBlock),
+                                              timerEventProvider: fakeTimerManager)
         let userNotificationManager = UserNotificationManager.shared
         let settingsManager = SettingsManager.shared
 

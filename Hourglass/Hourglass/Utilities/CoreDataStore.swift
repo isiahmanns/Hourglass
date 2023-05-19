@@ -5,11 +5,15 @@ enum StorageType {
     case inMemory
 }
 
+enum CoreDataModelName: String {
+    case timeBlock = "TimeBlock"
+}
+
 struct CoreDataStore {
     private let container: NSPersistentContainer
 
-    init(storageType: StorageType, modelName: String) {
-        self.container = NSPersistentContainer(name: modelName)
+    init(storageType: StorageType, modelName: CoreDataModelName) {
+        self.container = NSPersistentContainer(name: modelName.rawValue)
         configureStores(for: storageType)
         loadStores()
     }
@@ -33,9 +37,15 @@ struct CoreDataStore {
         }
     }
 
-    func save(object: NSManagedObject) {
-        container.viewContext.insert(object)
+    func fetch<T>(_ request: NSFetchRequest<T>) -> [T]? where T: NSFetchRequestResult {
+        try? container.viewContext.fetch(request)
+    }
 
+    func insert(object: NSManagedObject) {
+        container.viewContext.insert(object)
+    }
+
+    func save() {
         guard container.viewContext.hasChanges else { return }
 
         do {

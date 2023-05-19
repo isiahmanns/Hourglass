@@ -7,16 +7,16 @@ protocol DataManaging {
 
 class DataManager: DataManaging {
     static let shared = DataManager(settingsManager: SettingsManager.shared,
-                                    store: CoreDataStore(storageType: .disk, modelName: "TimeBlock"),
+                                    store: CoreDataStore(storageType: .disk, modelName: .timeBlock),
                                     timerEventProvider: TimerManager.shared)
     let timerModels: [Timer.Model.ID: Timer.Model]
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let store: CoreDataStore
     private var cancellables: Set<AnyCancellable> = []
 
-    private init(settingsManager: SettingsManager,
-                 store: CoreDataStore,
-                 timerEventProvider: TimerEventProviding) {
+    private convenience init(settingsManager: SettingsManager,
+                             store: CoreDataStore,
+                             timerEventProvider: TimerEventProviding) {
         let timerModels = [
             Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall),
                         category: .focus,
@@ -37,6 +37,15 @@ class DataManager: DataManaging {
                         category: .rest,
                         size: .large)
         ]
+
+        self.init(timerModels: timerModels,
+                  store: store,
+                  timerEventProvider: timerEventProvider)
+    }
+
+    fileprivate init(timerModels: [Timer.Model],
+                     store: CoreDataStore,
+                     timerEventProvider: TimerEventProviding) {
         self.timerModels = Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
         self.store = store
         self.timerEvents = timerEventProvider.events
@@ -48,22 +57,30 @@ class DataManager: DataManaging {
             .sink { [weak self] timerModelId in
                 guard let self else { return }
                 guard let timerModel = timerModels[timerModelId] else { return }
-                let now = Date.now
-                let timeBlock = TimeBlock()
-                timeBlock.category = Int16(timerModel.category.rawValue)
-                timeBlock.start = now - TimeInterval(timerModel.length * Constants.countdownFactor)
-                timeBlock.end = now
-                store.save(object: timeBlock)
+                let timeBlock = createTimeBlock(from: timerModel)
+                store.insert(object: timeBlock)
+                store.save()
             }
             .store(in: &cancellables)
     }
+
+    private func createTimeBlock(from timerModel: Timer.Model) -> TimeBlock {
+        let now = Date.now
+        let timeBlock = TimeBlock()
+        timeBlock.category = Int16(timerModel.category.rawValue)
+        timeBlock.start = now - TimeInterval(timerModel.length * Constants.countdownFactor)
+        timeBlock.end = now
+        return timeBlock
+    }
 }
 
-// TODO: - Make this a subclass to inherit the rest of the testable logic, inject timer model data
-struct DataManagerMock: DataManaging {
-    let timerModels: [Timer.Model.ID: Timer.Model]
+class DataManagerMock: DataManager {
+    override init(timerModels: [Timer.Model],
+                  store: CoreDataStore,
+                  timerEventProvider: TimerEventProviding) {
 
-    init(timerModels: [Timer.Model]) {
-        self.timerModels = Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
+        super.init(timerModels: timerModels,
+                   store: store,
+                   timerEventProvider: timerEventProvider)
     }
 }
