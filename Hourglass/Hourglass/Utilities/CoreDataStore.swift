@@ -6,7 +6,7 @@ enum StorageType {
 }
 
 enum CoreDataModelName: String {
-    case timeBlock = "TimeBlock"
+    case timerHistory = "TimerHistory"
 }
 
 struct CoreDataStore {

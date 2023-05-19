@@ -7,7 +7,8 @@ protocol DataManaging {
 
 class DataManager: DataManaging {
     static let shared = DataManager(settingsManager: SettingsManager.shared,
-                                    store: CoreDataStore(storageType: .disk, modelName: .timeBlock),
+                                    store: CoreDataStore(storageType: .disk,
+                                                         modelName: .timerHistory),
                                     timerEventProvider: TimerManager.shared)
     let timerModels: [Timer.Model.ID: Timer.Model]
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
