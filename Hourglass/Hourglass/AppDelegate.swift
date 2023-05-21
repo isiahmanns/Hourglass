@@ -4,6 +4,7 @@ import Combine
 protocol WindowCoordinator: AnyObject {
     func showAboutWindow()
     func showPopoverIfNeeded()
+    func showStatisticsWindow()
 }
 
 private struct Dependencies {
@@ -19,6 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var aboutWindow: NSWindow!
+    private var statisticsWindow: NSWindow!
 
     // Root Dependencies
     private var timerModelStateManager = Dependencies.timerModelStateManager
@@ -36,6 +38,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let view = setupContentView()
         setupPopover(with: view)
         setupAboutWindow()
+        //setupStatisticsWindow()
     }
 
     private func setupDelegates() {
@@ -88,6 +91,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         aboutWindow.titlebarAppearsTransparent = true
         aboutWindow.setContentSize(aboutViewController.view.fittingSize)
     }
+
+    private func setupStatisticsWindow() {
+        let statisticsView = StatisticsView()
+            .environment(
+                \.managedObjectContext,
+                 CoreDataStore.shared.context)
+
+        let statisticsViewController = NSHostingController(rootView: statisticsView)
+        //statisticsWindow = NSWindow(contentViewController: statisticsViewController)
+        statisticsWindow = StatWindow()
+        statisticsWindow?.delegate = self
+    }
 }
 
 extension AppDelegate {
@@ -120,5 +135,48 @@ extension AppDelegate: WindowCoordinator {
         if !popover.isShown {
             showPopover()
         }
+    }
+
+    func showStatisticsWindow() {
+        print(statisticsWindow)
+
+        if statisticsWindow == nil {
+            setupStatisticsWindow()
+        }
+        statisticsWindow?.makeKeyAndOrderFront(nil)
+    }
+}
+
+extension AppDelegate: NSWindowDelegate {
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        if sender == statisticsWindow {
+            statisticsWindow = nil
+        }
+
+        return true
+    }
+}
+
+class StatWindow: NSWindow {
+    init() {
+        super.init(contentRect: .init(x: 0, y: 0, width: 400, height: 400), styleMask: [.titled, .closable], backing: .buffered, defer: true)
+        /**
+         Note: - isReleasedWhenClosed's default value is true when subclassing NSWindow; false when using the contentViewController init.
+         Setting to false to mimic current behavior above.
+         */
+        isReleasedWhenClosed = false
+
+        /**
+         It seems like to use isReleasedWhenClosed properly, in the use case of tapping a button to create/show a window,
+         logic is needed to determine when the window was closed (toggling a flag in the window delegate). There is no way
+         to use the current window reference to determine if it was released because when this property is active, the memory can't be accessed once released (bad access).
+         Via the additional logic/flag is how it can be determined whether or not the window was closed prior to createing/showing a new one.
+
+         Another solution to this is to keep isReleasedWhenClosed false, and use the window delegate to set the property to nil manually. This is the current implementation above.
+         This subclass is a way to verify that under these conditions, the window's deinit still gets called.
+         */
+    }
+    deinit {
+        print("stat window dealloc")
     }
 }
