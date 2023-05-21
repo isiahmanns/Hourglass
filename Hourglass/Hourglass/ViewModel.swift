@@ -73,6 +73,10 @@ class ViewModel: ObservableObject {
         windowCoordinator?.showAboutWindow()
     }
 
+    func showStatisticsWindoow() {
+        windowCoordinator?.showStatisticsWindow()
+    }
+
     private func cancelTimer() {
         timerManager.cancelTimer()
     }

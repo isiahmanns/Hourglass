@@ -4,6 +4,7 @@ import Combine
 protocol WindowCoordinator: AnyObject {
     func showAboutWindow()
     func showPopoverIfNeeded()
+    func showStatisticsWindow()
 }
 
 private struct Dependencies {
@@ -19,6 +20,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var aboutWindow: NSWindow!
+    private var statisticsWindow: NSWindow!
 
     // Root Dependencies
     private var timerModelStateManager = Dependencies.timerModelStateManager
@@ -88,6 +90,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         aboutWindow.titlebarAppearsTransparent = true
         aboutWindow.setContentSize(aboutViewController.view.fittingSize)
     }
+
+    private func setupStatisticsWindow() {
+        let statisticsView = StatisticsView()
+            .environment(
+                \.managedObjectContext,
+                 CoreDataStore.shared.context)
+
+        let statisticsViewController = NSHostingController(rootView: statisticsView)
+        statisticsWindow = NSWindow(contentViewController: statisticsViewController)
+        statisticsWindow.delegate = self
+    }
 }
 
 extension AppDelegate {
@@ -120,5 +133,23 @@ extension AppDelegate: WindowCoordinator {
         if !popover.isShown {
             showPopover()
         }
+    }
+
+    func showStatisticsWindow() {
+        if statisticsWindow == nil {
+            setupStatisticsWindow()
+        }
+
+        statisticsWindow.makeKeyAndOrderFront(nil)
+    }
+}
+
+extension AppDelegate: NSWindowDelegate {
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        if sender == statisticsWindow {
+            statisticsWindow = nil
+        }
+
+        return true
     }
 }

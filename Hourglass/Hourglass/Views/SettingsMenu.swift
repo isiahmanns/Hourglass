@@ -52,7 +52,7 @@ struct SettingsMenu: View {
             }
             Section {
                 Button("Statistics") {
-                    // open window
+                    viewModel.showStatisticsWindoow()
                 }
                 Section("Options") {
                     Picker("Notification Style", selection: $notificationStyle) {
