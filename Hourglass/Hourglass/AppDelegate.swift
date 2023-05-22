@@ -93,16 +93,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupStatisticsWindow() {
         let statisticsView = StatisticsView()
-            .environment(
-                \.managedObjectContext,
-                 CoreDataStore.shared.context)
+            .environment(\.managedObjectContext, CoreDataStore.shared.context)
 
         let statisticsViewController = NSHostingController(rootView: statisticsView)
         statisticsWindow = NSWindow(contentViewController: statisticsViewController)
-        statisticsWindow.styleMask = [.titled, .closable, .fullSizeContentView]
+        statisticsWindow.styleMask = [.titled, .closable, .resizable]
         statisticsWindow.titlebarAppearsTransparent = true
         statisticsWindow.title = "Statistics"
-        statisticsWindow.setContentSize(statisticsViewController.view.fittingSize)
         statisticsWindow.delegate = self
     }
 }

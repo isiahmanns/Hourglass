@@ -12,8 +12,8 @@ struct StatisticsView: View {
 
     var body: some View {
          //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
-        let timeChunks = [TimeBlock.Chunk]()
-        // let timeChunks = TestData.timeBlockChunks.sorted()//.prefix(1)
+        // let timeChunks = [TimeBlock.Chunk]()
+        let timeChunks = TestData.timeBlockChunks//.prefix(1)
         // TODO: - Pad data
 
         if timeChunks.isEmpty {
