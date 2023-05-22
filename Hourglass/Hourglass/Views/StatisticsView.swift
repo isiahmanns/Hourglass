@@ -4,17 +4,17 @@ import SwiftUI
 // TODO: - Annotation summary
 
 struct StatisticsView: View {
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.start)])
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.start, order: .forward)])
     private var timeBlocks: FetchedResults<TimeBlock>
 
     let frame = (height: 300.0, width: 700.0)
     let daysPerFrame = 7
 
     var body: some View {
-         //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
-        // let timeChunks = [TimeBlock.Chunk]()
-        let timeChunks = TestData.timeBlockChunks//.prefix(1)
-        // TODO: - Pad data
+        //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
+        //let timeChunks = [TimeBlock.Chunk]()
+        //let timeChunks = TestData.timeBlockChunks
+        let timeChunks = Array(TestData.timeBlockChunks.prefix(1))
 
         if timeChunks.isEmpty {
             VStack(spacing: 12) {
@@ -27,6 +27,8 @@ struct StatisticsView: View {
             }
             .frame(width: frame.width, height: frame.height)
         } else {
+            let timeChunks = timeChunks.sortedAndPadded()
+
             ScrollView(.vertical, showsIndicators: true) {
                 Chart(timeChunks) { chunk in
                     BarMark(xStart: .value("Start", chunk.startSeconds),
@@ -54,12 +56,13 @@ struct StatisticsView: View {
                     }
                 }
                 .chartYAxis(.visible)
-                .chartYScale(domain: (timeChunks.first!.day...timeChunks.last!.day.addingTimeInterval(24 * 3600)))
+                //.chartYScale(domain: (timeChunks.first!.day...timeChunks.last!.day.addingTimeInterval(24 * 3600)))
                 /**
-                 Note: Reverse domain could work too. Could pad the data with an extra day, empty time span.
+                 Note: Reverse domain so as user scrolls down, they scroll back in time.
+                 Padding the data with an extra day with empty time span to override hiding y axis labels for data sets spanning single day.
                  This call makes Previews crash.
                  */
-                //.chartYScale(domain: .automatic(reversed: true))
+                .chartYScale(domain: .automatic(reversed: true))
 
                 // MARK: - X Axis
                 .chartXAxisLabel("Time", position: .top, alignment: .center)
@@ -128,6 +131,15 @@ extension TimeBlock {
         let startSeconds: Int
         let endSeconds: Int
         let category: Timer.Category
+    }
+}
+
+extension Array<TimeBlock.Chunk> {
+    func sortedAndPadded() -> Self {
+        let sortedCopy = sorted()
+        let precedingDay = first!.day.addingTimeInterval(-24 * 3600)
+        let precedingChunk = TimeBlock.Chunk(day: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
+        return [precedingChunk] + sortedCopy
     }
 }
 
