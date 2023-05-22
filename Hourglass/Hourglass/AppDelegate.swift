@@ -99,6 +99,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         let statisticsViewController = NSHostingController(rootView: statisticsView)
         statisticsWindow = NSWindow(contentViewController: statisticsViewController)
+        statisticsWindow.styleMask = [.titled, .closable, .fullSizeContentView]
+        statisticsWindow.titlebarAppearsTransparent = true
+        statisticsWindow.title = "Statistics"
+        statisticsWindow.setContentSize(statisticsViewController.view.fittingSize)
         statisticsWindow.delegate = self
     }
 }

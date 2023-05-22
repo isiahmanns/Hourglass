@@ -26,6 +26,15 @@ extension Timer {
     enum Category: Int {
         case focus
         case rest
+
+        var asString: String {
+            switch self {
+            case .focus:
+                return "Focus"
+            case .rest:
+                return "Rest"
+            }
+        }
     }
 
     // TODO: - May not be needed
