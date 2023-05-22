@@ -28,9 +28,10 @@ struct StatisticsView: View {
                 "Rest": Color.onBackgroundSecondary
             ])
             .chartLegend(.visible)
+            .chartLegend(position: .leading)
 
             // MARK: - Y Axis
-            .chartYAxisLabel("Day", position: .trailing, alignment: .center)
+            .chartYAxisLabel("Day", position: .topTrailing)
             .chartYAxis {
                 AxisMarks(values: .stride(by: .day)) {
                     AxisValueLabel(format: .dateTime.weekday().month().day())
@@ -47,14 +48,14 @@ struct StatisticsView: View {
             //.chartYScale(domain: .automatic(reversed: true))
 
             // MARK: - X Axis
-            .chartXAxisLabel("Time", position: .bottom, alignment: .center)
+            .chartXAxisLabel("Time", position: .top, alignment: .center)
             .chartXScale(domain: [0, 24 * 3600])
             .chartXAxis {
                 AxisMarks(values: (0..<25).map { 3600 * $0 }) {
                     AxisGridLine()
                 }
 
-                AxisMarks(values: stride(from: 0, through: 25, by: 3).map { 3600 * $0 }) { value in
+                AxisMarks(position: .top, values: stride(from: 0, through: 25, by: 3).map { 3600 * $0 }) { value in
                     if let valueInt = value.as(Int.self) {
                         let hour = valueInt / 3600
                         switch hour {
