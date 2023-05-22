@@ -2,70 +2,87 @@ import Charts
 import SwiftUI
 
 // TODO: - Annotation summary
-// TODO: - Add state to restrict y axis date domain, try to get pagination or scrolling
 
 struct StatisticsView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.end, order: .reverse)])
     private var timeBlocks: FetchedResults<TimeBlock>
 
+    let frame = (height: 300.0, width: 700.0)
+
     var body: some View {
          //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
         let timeChunks = StatisticsView.dummyData
 
-        Chart(timeChunks) { chunk in
-            BarMark(xStart: .value("Start", chunk.startSeconds),
-                    xEnd: .value("End", chunk.endSeconds),
-                    y: .value("Day", chunk.day),
-                    height: .fixed(14))
-            .foregroundStyle(by: .value("Category", chunk.category.asString))
-        }
-
-        // MARK: - Legend
-        .chartForegroundStyleScale([
-            "Focus": Color.accent,
-            "Rest": Color.onBackgroundSecondary
-        ])
-        .chartLegend(.visible)
-
-        // MARK: - Y Axis
-        .chartYAxisLabel("Day", position: .trailing, alignment: .center)
-        .chartYAxis {
-            AxisMarks(values: .stride(by: .day)) {
-                AxisValueLabel(format: .dateTime.weekday().month().day())
-                AxisGridLine()
-                AxisTick()
-            }
-        }
-
-        // MARK: - X Axis
-        .chartYAxis(.visible)
-        .chartXAxisLabel("Time", position: .bottom, alignment: .center)
-        .chartXScale(domain: [0, 24 * 3600])
-        .chartXAxis {
-            AxisMarks(values: (0..<25).map { 3600 * $0 }) {
-                AxisGridLine()
+        ScrollView(.vertical, showsIndicators: true) {
+            Chart(timeChunks) { chunk in
+                BarMark(xStart: .value("Start", chunk.startSeconds),
+                        xEnd: .value("End", chunk.endSeconds),
+                        y: .value("Day", chunk.day),
+                        height: .fixed(14))
+                .foregroundStyle(by: .value("Category", chunk.category.asString))
             }
 
-            AxisMarks(values: stride(from: 0, through: 25, by: 3).map { 3600 * $0 }) { value in
-                if let valueInt = value.as(Int.self) {
-                    let hour = valueInt / 3600
-                    switch hour {
-                    case 0:
-                        AxisValueLabel("12am")
-                    case 12:
-                        AxisValueLabel("12pm")
-                    default:
-                        AxisValueLabel(String(hour % 12))
-                    }
+            // MARK: - Legend
+            .chartForegroundStyleScale([
+                "Focus": Color.accent,
+                "Rest": Color.onBackgroundSecondary
+            ])
+            .chartLegend(.visible)
+
+            // MARK: - Y Axis
+            .chartYAxisLabel("Day", position: .trailing, alignment: .center)
+            .chartYAxis {
+                AxisMarks(values: .stride(by: .day)) {
+                    AxisValueLabel(format: .dateTime.weekday().month().day())
+                    AxisGridLine()
+                    AxisTick()
+                }
+            }
+            .chartYAxis(.visible)
+
+            // MARK: - X Axis
+            .chartXAxisLabel("Time", position: .bottom, alignment: .center)
+            .chartXScale(domain: [0, 24 * 3600])
+            .chartXAxis {
+                AxisMarks(values: (0..<25).map { 3600 * $0 }) {
+                    AxisGridLine()
                 }
 
-                AxisTick()
-            }
-        }
+                AxisMarks(values: stride(from: 0, through: 25, by: 3).map { 3600 * $0 }) { value in
+                    if let valueInt = value.as(Int.self) {
+                        let hour = valueInt / 3600
+                        switch hour {
+                        case 0:
+                            AxisValueLabel("12am")
+                        case 12:
+                            AxisValueLabel("12pm")
+                        default:
+                            AxisValueLabel(String(hour % 12))
+                        }
+                    }
 
-        // MARK: - Sizing
-        .frame(width: 700, height: 300)
-        .padding(20)
+                    AxisTick()
+                }
+            }
+
+            // MARK: - Plot area
+            .chartPlotStyle { plotContent in
+                // TODO: - should scale with data size (groupings of days)
+                plotContent
+                    .frame(width: frame.width, height: frame.height * 3)
+            }
+
+            // MARK: - Padding
+            .padding(20)
+        } // ScrollView
+        .frame(height: frame.height)
+    }
+}
+
+
+struct StatisticsView_Previews: PreviewProvider {
+    static var previews: some View {
+        StatisticsView()
     }
 }
 
