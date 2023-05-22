@@ -8,13 +8,13 @@ struct StatisticsView: View {
     private var timeBlocks: FetchedResults<TimeBlock>
 
     let frame = (height: 300.0, width: 700.0)
-    let daysPerFrame = 7
+    let daysPerFrame = 10
 
     var body: some View {
         //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
         //let timeChunks = [TimeBlock.Chunk]()
-        //let timeChunks = TestData.timeBlockChunks
-        let timeChunks = Array(TestData.timeBlockChunks.prefix(1))
+        let timeChunks = TestData.timeBlockChunks
+        //let timeChunks = Array(TestData.timeBlockChunks.prefix(1))
 
         if timeChunks.isEmpty {
             VStack(spacing: 12) {
