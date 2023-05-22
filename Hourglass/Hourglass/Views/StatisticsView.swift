@@ -8,10 +8,12 @@ struct StatisticsView: View {
     private var timeBlocks: FetchedResults<TimeBlock>
 
     let frame = (height: 300.0, width: 700.0)
+    let daysPerFrame = 7
 
     var body: some View {
          //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
         let timeChunks = StatisticsView.dummyData.sorted()//.prefix(1)
+        // TODO: - Pad data, think about showing an empty state
 
         ScrollView(.vertical, showsIndicators: true) {
             Chart(timeChunks) { chunk in
@@ -74,15 +76,19 @@ struct StatisticsView: View {
 
             // MARK: - Plot area
             .chartPlotStyle { plotContent in
-                // TODO: - should scale with data size (groupings of days)
+                let firstDay = timeChunks.first!.day
+                let lastDay = timeChunks.last!.day
+                let daySpanCount = Calendar.current.dateComponents([.day], from: firstDay, to: lastDay).day!
+                let plotHeight = frame.height * (Double(daySpanCount) / Double(daysPerFrame))
+
                 plotContent
-                    .frame(width: frame.width, height: frame.height * 3)
+                    .frame(width: frame.width, height: plotHeight)
             }
 
             // MARK: - Padding
             .padding(20)
         } // ScrollView
-        .frame(height: frame.height)
+        .frame(minHeight: frame.height)
     }
 }
 
