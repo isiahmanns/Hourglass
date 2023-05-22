@@ -4,14 +4,14 @@ import SwiftUI
 // TODO: - Annotation summary
 
 struct StatisticsView: View {
-    @FetchRequest(sortDescriptors: [SortDescriptor(\.end, order: .reverse)])
+    @FetchRequest(sortDescriptors: [SortDescriptor(\.start)])
     private var timeBlocks: FetchedResults<TimeBlock>
 
     let frame = (height: 300.0, width: 700.0)
 
     var body: some View {
          //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
-        let timeChunks = StatisticsView.dummyData
+        let timeChunks = StatisticsView.dummyData.sorted()//.prefix(1)
 
         ScrollView(.vertical, showsIndicators: true) {
             Chart(timeChunks) { chunk in
@@ -39,6 +39,7 @@ struct StatisticsView: View {
                 }
             }
             .chartYAxis(.visible)
+            .chartYScale(domain: (timeChunks.first!.day...timeChunks.last!.day.addingTimeInterval(24 * 3600)))
 
             // MARK: - X Axis
             .chartXAxisLabel("Time", position: .bottom, alignment: .center)
@@ -87,7 +88,11 @@ struct StatisticsView_Previews: PreviewProvider {
 }
 
 extension TimeBlock {
-    struct Chunk: Identifiable {
+    struct Chunk: Identifiable, Comparable {
+        static func < (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
+            lhs.day < rhs.day
+        }
+
         let id = UUID()
         let day: Date
         let startSeconds: Int
