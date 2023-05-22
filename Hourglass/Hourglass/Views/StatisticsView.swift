@@ -44,7 +44,7 @@ struct StatisticsView: View {
                     "Rest": Color.onBackgroundSecondary
                 ])
                 .chartLegend(.visible)
-                .chartLegend(position: .leading)
+                .chartLegend(position: .top, spacing: -12)
 
                 // MARK: - Y Axis
                 .chartYAxisLabel("Day", position: .topTrailing)
@@ -72,7 +72,8 @@ struct StatisticsView: View {
                         AxisGridLine()
                     }
 
-                    AxisMarks(position: .top, values: stride(from: 0, through: 25, by: 3).map { 3600 * $0 }) { value in
+                    let hoursBy3 = stride(from: 0, through: 25, by: 3).map { 3600 * $0 }
+                    AxisMarks(preset: .aligned, position: .top, values: hoursBy3) { value in
                         if let valueInt = value.as(Int.self) {
                             let hour = valueInt / 3600
                             switch hour {
@@ -80,6 +81,8 @@ struct StatisticsView: View {
                                 AxisValueLabel("12am")
                             case 12:
                                 AxisValueLabel("12pm")
+                            case 24:
+                                AxisValueLabel("")
                             default:
                                 AxisValueLabel(String(hour % 12))
                             }
@@ -102,6 +105,7 @@ struct StatisticsView: View {
 
                 // MARK: - Padding
                 .padding(20)
+                .padding([.leading], 56)
             } // ScrollView
             .frame(minHeight: frame.height)
         }
