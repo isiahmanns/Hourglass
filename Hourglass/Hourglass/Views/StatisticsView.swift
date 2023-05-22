@@ -12,86 +12,104 @@ struct StatisticsView: View {
 
     var body: some View {
          //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
-        let timeChunks = StatisticsView.dummyData.sorted()//.prefix(1)
-        // TODO: - Pad data, think about showing an empty state
+        let timeChunks = [TimeBlock.Chunk]()
+        // let timeChunks = TestData.timeBlockChunks.sorted()//.prefix(1)
+        // TODO: - Pad data
 
-        ScrollView(.vertical, showsIndicators: true) {
-            Chart(timeChunks) { chunk in
-                BarMark(xStart: .value("Start", chunk.startSeconds),
-                        xEnd: .value("End", chunk.endSeconds),
-                        y: .value("Day", chunk.day),
-                        height: .fixed(14))
-                .foregroundStyle(by: .value("Category", chunk.category.asString))
+        if timeChunks.isEmpty {
+            VStack(spacing: 12) {
+                Image(systemName: "chart.bar")
+                    .resizable()
+                    .frame(width: 40, height: 40)
+                    .foregroundColor(Color.background)
+                Text(Copy.emptyState)
+                    .multilineTextAlignment(.center)
             }
-
-            // MARK: - Legend
-            .chartForegroundStyleScale([
-                "Focus": Color.accent,
-                "Rest": Color.onBackgroundSecondary
-            ])
-            .chartLegend(.visible)
-            .chartLegend(position: .leading)
-
-            // MARK: - Y Axis
-            .chartYAxisLabel("Day", position: .topTrailing)
-            .chartYAxis {
-                AxisMarks(values: .stride(by: .day)) {
-                    AxisValueLabel(format: .dateTime.weekday().month().day())
-                    AxisGridLine()
-                    AxisTick()
-                }
-            }
-            .chartYAxis(.visible)
-            .chartYScale(domain: (timeChunks.first!.day...timeChunks.last!.day.addingTimeInterval(24 * 3600)))
-            /**
-             Note: Reverse domain could work too. Could pad the data with an extra day, empty time span.
-             This call makes Previews crash.
-             */
-            //.chartYScale(domain: .automatic(reversed: true))
-
-            // MARK: - X Axis
-            .chartXAxisLabel("Time", position: .top, alignment: .center)
-            .chartXScale(domain: [0, 24 * 3600])
-            .chartXAxis {
-                AxisMarks(values: (0..<25).map { 3600 * $0 }) {
-                    AxisGridLine()
+            .frame(width: frame.width, height: frame.height)
+        } else {
+            ScrollView(.vertical, showsIndicators: true) {
+                Chart(timeChunks) { chunk in
+                    BarMark(xStart: .value("Start", chunk.startSeconds),
+                            xEnd: .value("End", chunk.endSeconds),
+                            y: .value("Day", chunk.day),
+                            height: .fixed(14))
+                    .foregroundStyle(by: .value("Category", chunk.category.asString))
                 }
 
-                AxisMarks(position: .top, values: stride(from: 0, through: 25, by: 3).map { 3600 * $0 }) { value in
-                    if let valueInt = value.as(Int.self) {
-                        let hour = valueInt / 3600
-                        switch hour {
-                        case 0:
-                            AxisValueLabel("12am")
-                        case 12:
-                            AxisValueLabel("12pm")
-                        default:
-                            AxisValueLabel(String(hour % 12))
-                        }
+                // MARK: - Legend
+                .chartForegroundStyleScale([
+                    "Focus": Color.accent,
+                    "Rest": Color.onBackgroundSecondary
+                ])
+                .chartLegend(.visible)
+                .chartLegend(position: .leading)
+
+                // MARK: - Y Axis
+                .chartYAxisLabel("Day", position: .topTrailing)
+                .chartYAxis {
+                    AxisMarks(values: .stride(by: .day)) {
+                        AxisValueLabel(format: .dateTime.weekday().month().day())
+                        AxisGridLine()
+                        AxisTick()
+                    }
+                }
+                .chartYAxis(.visible)
+                .chartYScale(domain: (timeChunks.first!.day...timeChunks.last!.day.addingTimeInterval(24 * 3600)))
+                /**
+                 Note: Reverse domain could work too. Could pad the data with an extra day, empty time span.
+                 This call makes Previews crash.
+                 */
+                //.chartYScale(domain: .automatic(reversed: true))
+
+                // MARK: - X Axis
+                .chartXAxisLabel("Time", position: .top, alignment: .center)
+                .chartXScale(domain: [0, 24 * 3600])
+                .chartXAxis {
+                    AxisMarks(values: (0..<25).map { 3600 * $0 }) {
+                        AxisGridLine()
                     }
 
-                    AxisTick()
+                    AxisMarks(position: .top, values: stride(from: 0, through: 25, by: 3).map { 3600 * $0 }) { value in
+                        if let valueInt = value.as(Int.self) {
+                            let hour = valueInt / 3600
+                            switch hour {
+                            case 0:
+                                AxisValueLabel("12am")
+                            case 12:
+                                AxisValueLabel("12pm")
+                            default:
+                                AxisValueLabel(String(hour % 12))
+                            }
+                        }
+
+                        AxisTick()
+                    }
                 }
-            }
 
-            // MARK: - Plot area
-            .chartPlotStyle { plotContent in
-                let firstDay = timeChunks.first!.day
-                let lastDay = timeChunks.last!.day
-                let daySpanCount = Calendar.current.dateComponents([.day], from: firstDay, to: lastDay).day!
-                let plotHeight = frame.height * (Double(daySpanCount) / Double(daysPerFrame))
+                // MARK: - Plot area
+                .chartPlotStyle { plotContent in
+                    let firstDay = timeChunks.first!.day
+                    let lastDay = timeChunks.last!.day
+                    let daySpanCount = Calendar.current.dateComponents([.day], from: firstDay, to: lastDay).day!
+                    let plotHeight = frame.height * (Double(daySpanCount) / Double(daysPerFrame))
 
-                plotContent
-                    .frame(width: frame.width, height: plotHeight)
-            }
+                    plotContent
+                        .frame(width: frame.width, height: plotHeight)
+                }
 
-            // MARK: - Padding
-            .padding(20)
-        } // ScrollView
-        .frame(minHeight: frame.height)
+                // MARK: - Padding
+                .padding(20)
+            } // ScrollView
+            .frame(minHeight: frame.height)
+        }
     }
 }
 
+extension StatisticsView {
+    enum Copy {
+        static let emptyState = "There is no data to show.\nRevisit after completing a few time blocks."
+    }
+}
 
 struct StatisticsView_Previews: PreviewProvider {
     static var previews: some View {
@@ -113,7 +131,7 @@ extension TimeBlock {
     }
 }
 
-extension TimeBlock {
+private extension TimeBlock {
     var startDate: DateComponents {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: start!)
     }
@@ -151,7 +169,7 @@ extension TimeBlock {
     }
 }
 
-private extension DateComponents {
+extension DateComponents {
     var ymdDate: Date {
         Calendar.current.date(from: DateComponents(year: year, month: month, day: day))!
     }
@@ -160,78 +178,4 @@ private extension DateComponents {
         guard let hour, let minute, let second else { return -1 }
         return (hour * 3600) + (minute * 60) + second
     }
-}
-
-extension StatisticsView {
-    static let dummyData = [
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 21).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 21).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 21).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 21).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 21).ymdDate, startSeconds: 7000, endSeconds: 7900, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 22).ymdDate, startSeconds: 3000 + 21600, endSeconds: 3900 + 21600, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 22).ymdDate, startSeconds: 5000 + 21600, endSeconds: 6800 + 21600, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 22).ymdDate, startSeconds: 7000 + 21600, endSeconds: 7900 + 21600, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 23).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 23).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 23).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 23).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 23).ymdDate, startSeconds: 7000, endSeconds: 7900, category: .focus),
-//
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 24).ymdDate, startSeconds: 3000 + 43200, endSeconds: 3900 + 43200, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 24).ymdDate, startSeconds: 5000 + 43200, endSeconds: 6800 + 43200, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 24).ymdDate, startSeconds: 7000 + 43200, endSeconds: 7900 + 43200, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 25).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 25).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 25).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 25).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 25).ymdDate, startSeconds: 23 * 3600, endSeconds: 24 * 3600, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 26).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 26).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 26).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 26).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 26).ymdDate, startSeconds: 7000, endSeconds: 7900, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 27).ymdDate, startSeconds: 3000 + 21600, endSeconds: 3900 + 21600, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 27).ymdDate, startSeconds: 5000 + 21600, endSeconds: 6800 + 21600, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 27).ymdDate, startSeconds: 7000 + 21600, endSeconds: 7900 + 21600, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 28).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 28).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 28).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 28).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 28).ymdDate, startSeconds: 7000, endSeconds: 7900, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 29).ymdDate, startSeconds: 3000 + 43200, endSeconds: 3900 + 43200, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 29).ymdDate, startSeconds: 5000 + 43200, endSeconds: 6800 + 43200, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 29).ymdDate, startSeconds: 7000 + 43200, endSeconds: 7900 + 43200, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 30).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 30).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 30).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 30).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 5, day: 30).ymdDate, startSeconds: 23 * 3600, endSeconds: 24 * 3600, category: .focus),
-
-
-        // TODO: - Adding these makes the data window too large. Figure this out!
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 28).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 28).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 28).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 28).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 28).ymdDate, startSeconds: 7000, endSeconds: 7900, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 29).ymdDate, startSeconds: 3000 + 43200, endSeconds: 3900 + 43200, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 29).ymdDate, startSeconds: 5000 + 43200, endSeconds: 6800 + 43200, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 29).ymdDate, startSeconds: 7000 + 43200, endSeconds: 7900 + 43200, category: .focus),
-
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 30).ymdDate, startSeconds: 0, endSeconds: 900, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 30).ymdDate, startSeconds: 1000, endSeconds: 2800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 30).ymdDate, startSeconds: 3000, endSeconds: 3900, category: .rest),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 30).ymdDate, startSeconds: 5000, endSeconds: 6800, category: .focus),
-        TimeBlock.Chunk(day: DateComponents(year: 2023, month: 6, day: 30).ymdDate, startSeconds: 23 * 3600, endSeconds: 24 * 3600, category: .focus),
-    ]
 }

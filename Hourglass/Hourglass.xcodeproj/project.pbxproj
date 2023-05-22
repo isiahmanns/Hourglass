@@ -38,6 +38,7 @@
 		25C3126A29BC287F000070DF /* UnitTestProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C3126929BC287F000070DF /* UnitTestProviders.swift */; };
 		25C97C9029CC98AF001A8CAD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C97C8F29CC98AF001A8CAD /* main.swift */; };
 		25C97C9329D2A2C9001A8CAD /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C97C9229D2A2C9001A8CAD /* TimestampView.swift */; };
+		25D7D4BD2A1BC3C300ADEDF4 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7D4BC2A1BC3C300ADEDF4 /* TestData.swift */; };
 		25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6829A67985005BC143 /* TimerButton.swift */; };
 		25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6A29AAD45C005BC143 /* Color.swift */; };
 		25EB6D6F29AAE226005BC143 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */; };
@@ -98,6 +99,7 @@
 		25C3126929BC287F000070DF /* UnitTestProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestProviders.swift; sourceTree = "<group>"; };
 		25C97C8F29CC98AF001A8CAD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		25C97C9229D2A2C9001A8CAD /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
+		25D7D4BC2A1BC3C300ADEDF4 /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		25EB6D6829A67985005BC143 /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
 		25EB6D6A29AAD45C005BC143 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 			children = (
 				2570F7362A1472160031B0BB /* TimerHistory.xcdatamodeld */,
 				2570F7392A1563C70031B0BB /* CoreDataStore.swift */,
+				25D7D4BC2A1BC3C300ADEDF4 /* TestData.swift */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 				2507BB4B29C805BD004478BE /* AboutView.swift in Sources */,
 				25BAF15A29EE36F900FE33D8 /* DataManager.swift in Sources */,
 				258302EC29C369E400D37115 /* Events.swift in Sources */,
+				25D7D4BD2A1BC3C300ADEDF4 /* TestData.swift in Sources */,
 				25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */,
 				25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */,
 				25EB6D7229AAE32C005BC143 /* Font.swift in Sources */,
