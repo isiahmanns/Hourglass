@@ -40,6 +40,11 @@ struct StatisticsView: View {
             }
             .chartYAxis(.visible)
             .chartYScale(domain: (timeChunks.first!.day...timeChunks.last!.day.addingTimeInterval(24 * 3600)))
+            /**
+             Note: Reverse domain could work too. Could pad the data with an extra day, empty time span.
+             This call makes Previews crash.
+             */
+            //.chartYScale(domain: .automatic(reversed: true))
 
             // MARK: - X Axis
             .chartXAxisLabel("Time", position: .bottom, alignment: .center)
