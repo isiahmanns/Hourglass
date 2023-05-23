@@ -7,7 +7,7 @@ struct StatisticsView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.start, order: .forward)])
     private var timeBlocks: FetchedResults<TimeBlock>
 
-    @State var hoveredChunk: TimeBlock.Chunk?
+    @State private var hoveredChunk: TimeBlock.Chunk?
 
     let frame = (height: 300.0, width: 700.0)
     let daysPerFrame = 10
