@@ -33,7 +33,7 @@ struct StatisticsView: View {
                 Chart(timeChunks) { chunk in
                     BarMark(xStart: .value("Start", chunk.startSeconds),
                             xEnd: .value("End", chunk.endSeconds),
-                            y: .value("Day", chunk.day),
+                            y: .value("Day", chunk.date),
                             height: .fixed(14))
                     .foregroundStyle(by: .value("Category", chunk.category.asString))
                 }
@@ -94,8 +94,8 @@ struct StatisticsView: View {
 
                 // MARK: - Plot area
                 .chartPlotStyle { plotContent in
-                    let firstDay = timeChunks.first!.day
-                    let lastDay = timeChunks.last!.day
+                    let firstDay = timeChunks.first!.date
+                    let lastDay = timeChunks.last!.date
                     let daySpanCount = Calendar.current.dateComponents([.day], from: firstDay, to: lastDay).day!
                     let plotHeight = frame.height * (Double(daySpanCount) / Double(daysPerFrame))
 
@@ -127,11 +127,11 @@ struct StatisticsView_Previews: PreviewProvider {
 extension TimeBlock {
     struct Chunk: Identifiable, Comparable {
         static func < (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
-            lhs.day < rhs.day
+            lhs.date < rhs.date
         }
 
         let id = UUID()
-        let day: Date
+        let date: Date
         let startSeconds: Int
         let endSeconds: Int
         let category: Timer.Category
@@ -141,8 +141,8 @@ extension TimeBlock {
 extension Array<TimeBlock.Chunk> {
     func sortedAndPadded() -> Self {
         let sortedCopy = sorted()
-        let precedingDay = first!.day.addingTimeInterval(-24 * 3600)
-        let precedingChunk = TimeBlock.Chunk(day: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
+        let precedingDay = first!.date.addingTimeInterval(-24 * 3600)
+        let precedingChunk = TimeBlock.Chunk(date: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
         return [precedingChunk] + sortedCopy
     }
 }
@@ -167,21 +167,21 @@ private extension TimeBlock {
             let firstSecondOfDay = 0
 
             return [
-                Chunk(day: startDate.ymdDate,
-                     startSeconds: startDate.secondOfDay,
-                     endSeconds: lastSecondOfDay,
+                Chunk(date: startDate.ymdDate,
+                      startSeconds: startDate.secondOfDay,
+                      endSeconds: lastSecondOfDay,
                       category: Timer.Category(rawValue: Int(category))!),
-                Chunk(day: endDate.ymdDate,
-                     startSeconds: firstSecondOfDay,
-                     endSeconds: endDate.secondOfDay,
-                     category: Timer.Category(rawValue: Int(category))!)
+                Chunk(date: endDate.ymdDate,
+                      startSeconds: firstSecondOfDay,
+                      endSeconds: endDate.secondOfDay,
+                      category: Timer.Category(rawValue: Int(category))!)
             ]
         }
 
-        return [Chunk(day: endDate.ymdDate,
-                     startSeconds: startDate.secondOfDay,
-                     endSeconds: endDate.secondOfDay,
-                     category: Timer.Category(rawValue: Int(category))!)]
+        return [Chunk(date: endDate.ymdDate,
+                      startSeconds: startDate.secondOfDay,
+                      endSeconds: endDate.secondOfDay,
+                      category: Timer.Category(rawValue: Int(category))!)]
     }
 }
 
