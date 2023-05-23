@@ -7,6 +7,8 @@ struct StatisticsView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.start, order: .forward)])
     private var timeBlocks: FetchedResults<TimeBlock>
 
+    @State var hoveredValue: (TimeBlock.Chunk?, Date?) = (nil, nil)
+
     let frame = (height: 300.0, width: 700.0)
     let daysPerFrame = 10
 
@@ -31,11 +33,29 @@ struct StatisticsView: View {
 
             ScrollView(.vertical, showsIndicators: true) {
                 Chart(timeChunks) { chunk in
+                    // MARK: - Bar Marks
                     BarMark(xStart: .value("Start", chunk.startSeconds),
                             xEnd: .value("End", chunk.endSeconds),
                             y: .value("Day", chunk.date),
                             height: .fixed(14))
                     .foregroundStyle(by: .value("Category", chunk.category.asString))
+
+                    // MARK: - Annotations
+                    if case let (_, date) = hoveredValue, let date {
+                        RectangleMark(y: .value("Day", date), height: 20)
+                            .foregroundStyle(.primary.opacity(0.3))
+                            .opacity(0.3)
+                            //.foregroundStyle(.gray.opacity(0.2))
+                            // TODO: - Opacity is not working here...
+                    }
+
+                    if case let (chunk, _) = hoveredValue, let chunk {
+                        RectangleMark(xStart: .value("Start", chunk.startSeconds),
+                                      xEnd: .value("End", chunk.endSeconds),
+                                      y: .value("Day", chunk.date),
+                                      height: 14)
+                        .cornerRadius(2)
+                    }
                 }
 
                 // MARK: - Legend
@@ -103,7 +123,37 @@ struct StatisticsView: View {
                         .frame(width: frame.width, height: plotHeight)
                 }
 
-                // MARK: - Padding
+                // MARK: - Chart Overlay
+                .chartOverlay { chartProxy in
+                    GeometryReader { geoProxy in
+                        Color.clear
+                            .onContinuousHover { hoverPhase in
+                                switch hoverPhase {
+                                case .active(let hoverLocation):
+                                    let origin = geoProxy[chartProxy.plotAreaFrame].origin
+                                    let location = CGPoint(x: hoverLocation.x - origin.x,
+                                                           y: hoverLocation.y - origin.y - 10)
+
+                                    if let date = chartProxy.value(atY: location.y, as: Date.self),
+                                       timeChunks.contains(date: date) {
+                                        if let secondOfDay = chartProxy.value(atX: location.x, as: Int.self),
+                                           let chunk = timeChunks.firstWhereContains(secondOfDay: secondOfDay, for: date) {
+                                            print("second of day", secondOfDay, "date", date)
+                                            hoveredValue = (chunk, chunk.date)
+                                        } else {
+                                            hoveredValue = (nil, date.ymdDate)
+                                        }
+                                    } else {
+                                        hoveredValue = (nil, nil)
+                                    }
+                                case .ended:
+                                    hoveredValue = (nil, nil)
+                                }
+                            }
+                    }
+                }
+
+                // MARK: - Chart Padding
                 .padding(20)
                 .padding([.leading], 56)
             } // ScrollView
@@ -131,19 +181,31 @@ extension TimeBlock {
         }
 
         let id = UUID()
+
+        /// Date (ymd) without timestamp, used to bucket all chunks belonging to the same day.
         let date: Date
+
         let startSeconds: Int
         let endSeconds: Int
         let category: Timer.Category
     }
 }
 
-extension Array<TimeBlock.Chunk> {
+private extension Array<TimeBlock.Chunk> {
     func sortedAndPadded() -> Self {
         let sortedCopy = sorted()
         let precedingDay = first!.date.addingTimeInterval(-24 * 3600)
         let precedingChunk = TimeBlock.Chunk(date: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
         return [precedingChunk] + sortedCopy
+    }
+
+    func contains(date : Date) -> Bool {
+        contains(where: { $0.date == date.ymdDate } )
+    }
+
+    func firstWhereContains(secondOfDay: Int, for date: Date) -> TimeBlock.Chunk? {
+        filter { $0.date == date.ymdDate }
+            .first(where: { $0.startSeconds <= secondOfDay && secondOfDay <= $0.endSeconds })
     }
 }
 
@@ -193,5 +255,12 @@ extension DateComponents {
     var secondOfDay: Int {
         guard let hour, let minute, let second else { return -1 }
         return (hour * 3600) + (minute * 60) + second
+    }
+}
+
+private extension Date {
+    var ymdDate: Date {
+        let components = Calendar.current.dateComponents([.year, .month, .day], from: self)
+        return Calendar.current.date(from: components)!
     }
 }
