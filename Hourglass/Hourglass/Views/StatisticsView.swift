@@ -11,11 +11,12 @@ struct StatisticsView: View {
     let daysPerFrame = 14
 
     var body: some View {
-        //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
+        let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
+        // TODO: - Write snapshot tests using test data sets
         //let timeChunks = [TimeBlock.Chunk]()
         //let timeChunks = TestData.timeChunks
         //let timeChunks = Array(TestData.timeChunks.prefix(25))
-        let timeChunks: [TimeBlock.Chunk] = TestData.timeBlocks.flatMap(\.chunks)
+        //let timeChunks: [TimeBlock.Chunk] = TestData.timeBlocks.flatMap(\.chunks)
 
         if timeChunks.isEmpty {
             VStack(spacing: 12) {

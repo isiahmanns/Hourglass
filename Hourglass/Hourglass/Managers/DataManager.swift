@@ -72,7 +72,7 @@ class DataManager: DataManaging {
         let timeBlock = NSManagedObject(entity: entity!, insertInto: nil) as! TimeBlock
 
         timeBlock.category = Int16(timerModel.category.rawValue)
-        timeBlock.start = now - TimeInterval(timerModel.length * Constants.countdownFactor)
+        timeBlock.start = now - TimeInterval(timerModel.length * 60)
         timeBlock.end = now
         return timeBlock
     }
