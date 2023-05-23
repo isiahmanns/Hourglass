@@ -47,6 +47,26 @@ struct StatisticsView: View {
                                       y: .value("Day", hoveredChunk.date),
                                       height: 14)
                         .cornerRadius(2)
+                        .annotation(position: .bottom, alignment: .leading, spacing: 0) {
+                            // TODO: - Clean up background color
+                            // TODO: - Logic for position and alignment based on axis proximity
+                            // TODO: - Convert to hour:minute am/pm
+                            VStack(alignment: .leading) {
+                                Text("\(hoveredChunk.category.asString) Time Block")
+                                    .fontWeight(.semibold)
+                                Text("Start: \(hoveredChunk.startSeconds)")
+                                Text("End: \(hoveredChunk.endSeconds)")
+                                Divider()
+                                Text("Aggregate for Day")
+                                    .fontWeight(.semibold)
+                                Text("Total focus time: \(90)m")
+                                Text("Total rest time: \(20)m")
+                            }
+                            .font(.system(.footnote))
+                            .padding(10)
+                            .background(Color(red: (243-20)/255.0, green: (236-20)/255.0, blue: (235-20)/255.0))
+                            .cornerRadius(10)
+                        }
                     }
                 }
 
@@ -130,7 +150,7 @@ struct StatisticsView: View {
                                        timeChunks.contains(date: date) {
                                         if let secondOfDay = chartProxy.value(atX: location.x, as: Int.self),
                                            let chunk = timeChunks.firstWhereContains(secondOfDay: secondOfDay, for: date) {
-                                            print("second of day", secondOfDay, "date", date)
+                                            // print("second of day", secondOfDay, "date", date)
                                             hoveredChunk = chunk
                                         } else {
                                             hoveredChunk = nil
