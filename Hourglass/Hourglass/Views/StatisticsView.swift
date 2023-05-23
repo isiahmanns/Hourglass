@@ -13,8 +13,9 @@ struct StatisticsView: View {
     var body: some View {
         //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
         //let timeChunks = [TimeBlock.Chunk]()
-        let timeChunks = TestData.timeBlockChunks
-        //let timeChunks = Array(TestData.timeBlockChunks.prefix(25))
+        //let timeChunks = TestData.timeChunks
+        //let timeChunks = Array(TestData.timeChunks.prefix(25))
+        let timeChunks: [TimeBlock.Chunk] = TestData.timeBlocks.flatMap(\.chunks)
 
         if timeChunks.isEmpty {
             VStack(spacing: 12) {
@@ -301,7 +302,7 @@ private extension TimeBlock {
 
     var chunks: [TimeBlock.Chunk] {
         if doesIncludeNextDay {
-            let lastSecondOfDay = DateComponents(hour: 23, minute: 59, second: 59).secondOfDay
+            let lastSecondOfDay = 24 * 3600
             let firstSecondOfDay = 0
 
             return [
@@ -329,8 +330,7 @@ extension DateComponents {
     }
 
     var secondOfDay: Int {
-        guard let hour, let minute, let second else { return -1 }
-        return (hour * 3600) + (minute * 60) + second
+        return (hour! * 3600) + (minute! * 60) + second!
     }
 }
 
