@@ -1,8 +1,6 @@
 import Charts
 import SwiftUI
 
-// TODO: - Annotation summary
-
 struct StatisticsView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.start, order: .forward)])
     private var timeBlocks: FetchedResults<TimeBlock>
@@ -42,13 +40,16 @@ struct StatisticsView: View {
 
                     // MARK: - Annotations
                     if let hoveredChunk {
+                        let (annotationPos, annotationAlign) = annotationPlacement(for: hoveredChunk, from: timeChunks)
+
                         RectangleMark(xStart: .value("Start", hoveredChunk.startSeconds),
                                       xEnd: .value("End", hoveredChunk.endSeconds),
                                       y: .value("Day", hoveredChunk.date),
                                       height: 14)
                         .cornerRadius(2)
-                        .annotation(position: .bottom, alignment: .leading, spacing: 0) {
-                            // TODO: - Logic for position and alignment based on axis proximity
+                        .annotation(position: annotationPos,
+                                    alignment: annotationAlign,
+                                    spacing: 3) {
                             // TODO: - Convert to hour:minute am/pm
                             VStack(alignment: .leading) {
                                 Text("\(hoveredChunk.category.asString) Time Block")
@@ -58,8 +59,8 @@ struct StatisticsView: View {
                                 Divider()
                                 Text("Aggregate for Day")
                                     .fontWeight(.semibold)
-                                Text("Total focus time: \(90)m")
-                                Text("Total rest time: \(20)m")
+                                Text("Focus time: \(90)m")
+                                Text("Rest time: \(20)m")
                             }
                             .font(.system(.footnote))
                             .padding(10)
@@ -171,6 +172,25 @@ struct StatisticsView: View {
             } // ScrollView
             .frame(minHeight: frame.height)
         }
+    }
+
+    private func annotationPlacement(for chunk: TimeBlock.Chunk,
+                                     from chunks: [TimeBlock.Chunk]) -> (AnnotationPosition, Alignment) {
+        var position: AnnotationPosition = .bottom
+        var alignment: Alignment = .leading
+
+
+        if chunk.startSeconds > 3600 * 20 {
+            alignment = .trailing
+        }
+
+        let chunksByDate = Dictionary(grouping: chunks, by: \.date)
+        let sortedDates = chunksByDate.keys.sorted()
+        if sortedDates.prefix(5).contains(chunk.date) {
+            position = .top
+        }
+
+        return (position, alignment)
     }
 }
 
