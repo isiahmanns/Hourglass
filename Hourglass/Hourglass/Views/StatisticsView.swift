@@ -7,7 +7,7 @@ struct StatisticsView: View {
     @FetchRequest(sortDescriptors: [SortDescriptor(\.start, order: .forward)])
     private var timeBlocks: FetchedResults<TimeBlock>
 
-    @State var hoveredValue: (TimeBlock.Chunk?, Date?) = (nil, nil)
+    @State var hoveredChunk: TimeBlock.Chunk?
 
     let frame = (height: 300.0, width: 700.0)
     let daysPerFrame = 10
@@ -41,18 +41,10 @@ struct StatisticsView: View {
                     .foregroundStyle(by: .value("Category", chunk.category.asString))
 
                     // MARK: - Annotations
-                    if case let (_, date) = hoveredValue, let date {
-                        RectangleMark(y: .value("Day", date), height: 20)
-                            .foregroundStyle(.primary.opacity(0.3))
-                            .opacity(0.3)
-                            //.foregroundStyle(.gray.opacity(0.2))
-                            // TODO: - Opacity is not working here...
-                    }
-
-                    if case let (chunk, _) = hoveredValue, let chunk {
-                        RectangleMark(xStart: .value("Start", chunk.startSeconds),
-                                      xEnd: .value("End", chunk.endSeconds),
-                                      y: .value("Day", chunk.date),
+                    if let hoveredChunk {
+                        RectangleMark(xStart: .value("Start", hoveredChunk.startSeconds),
+                                      xEnd: .value("End", hoveredChunk.endSeconds),
+                                      y: .value("Day", hoveredChunk.date),
                                       height: 14)
                         .cornerRadius(2)
                     }
@@ -132,22 +124,22 @@ struct StatisticsView: View {
                                 case .active(let hoverLocation):
                                     let origin = geoProxy[chartProxy.plotAreaFrame].origin
                                     let location = CGPoint(x: hoverLocation.x - origin.x,
-                                                           y: hoverLocation.y - origin.y - 10)
+                                                           y: hoverLocation.y - origin.y - 14)
 
                                     if let date = chartProxy.value(atY: location.y, as: Date.self),
                                        timeChunks.contains(date: date) {
                                         if let secondOfDay = chartProxy.value(atX: location.x, as: Int.self),
                                            let chunk = timeChunks.firstWhereContains(secondOfDay: secondOfDay, for: date) {
                                             print("second of day", secondOfDay, "date", date)
-                                            hoveredValue = (chunk, chunk.date)
+                                            hoveredChunk = chunk
                                         } else {
-                                            hoveredValue = (nil, date.ymdDate)
+                                            hoveredChunk = nil
                                         }
                                     } else {
-                                        hoveredValue = (nil, nil)
+                                        hoveredChunk = nil
                                     }
                                 case .ended:
-                                    hoveredValue = (nil, nil)
+                                    hoveredChunk = nil
                                 }
                             }
                     }
