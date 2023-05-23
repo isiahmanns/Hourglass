@@ -13,8 +13,8 @@ struct StatisticsView: View {
     var body: some View {
         //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
         //let timeChunks = [TimeBlock.Chunk]()
-        //let timeChunks = TestData.timeBlockChunks
-        let timeChunks = Array(TestData.timeBlockChunks.prefix(25))
+        let timeChunks = TestData.timeBlockChunks
+        //let timeChunks = Array(TestData.timeBlockChunks.prefix(25))
 
         if timeChunks.isEmpty {
             VStack(spacing: 12) {
@@ -41,6 +41,8 @@ struct StatisticsView: View {
                     // MARK: - Annotations
                     if let hoveredChunk {
                         let (annotationPos, annotationAlign) = annotationPlacement(for: hoveredChunk, from: timeChunks)
+                        let startTimeStamp = getTimeStamp(for: hoveredChunk.startSeconds)
+                        let endTimeStamp = getTimeStamp(for: hoveredChunk.endSeconds)
 
                         RectangleMark(xStart: .value("Start", hoveredChunk.startSeconds),
                                       xEnd: .value("End", hoveredChunk.endSeconds),
@@ -50,12 +52,11 @@ struct StatisticsView: View {
                         .annotation(position: annotationPos,
                                     alignment: annotationAlign,
                                     spacing: 3) {
-                            // TODO: - Convert to hour:minute am/pm
                             VStack(alignment: .leading) {
                                 Text("\(hoveredChunk.category.asString) Time Block")
                                     .fontWeight(.semibold)
-                                Text("Start: \(hoveredChunk.startSeconds)")
-                                Text("End: \(hoveredChunk.endSeconds)")
+                                Text("Start: \(startTimeStamp)")
+                                Text("End: \(endTimeStamp)")
                                 Divider()
                                 Text("Aggregate for Day")
                                     .fontWeight(.semibold)
@@ -169,6 +170,16 @@ struct StatisticsView: View {
             } // ScrollView
             .frame(minHeight: frame.height)
         }
+    }
+
+    private func getTimeStamp(for secondOfDay: Int) -> String {
+        let (hour24, minutes) = secondOfDay.asSeconds.toHoursMinutes
+        let amPM = 12 <= hour24 && hour24 < 24 ? "pm" : "am"
+
+        let remainder = hour24 % 12
+        let hour12 = remainder == 0 ? 12 : remainder
+
+        return String(format: "\(hour12):%02d\(amPM)", minutes)
     }
 
     private func annotationPlacement(for chunk: TimeBlock.Chunk,
