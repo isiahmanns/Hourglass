@@ -40,9 +40,10 @@ struct StatisticsView: View {
 
                     // MARK: - Annotations
                     if let hoveredChunk {
-                        let (annotationPos, annotationAlign) = annotationPlacement(for: hoveredChunk, from: timeChunks)
+                        let (annotationPos, annotationAlign) = getAnnotationPlacement(for: hoveredChunk, from: timeChunks)
                         let startTimeStamp = getTimeStamp(for: hoveredChunk.startSeconds)
                         let endTimeStamp = getTimeStamp(for: hoveredChunk.endSeconds)
+                        let (focusMinutes, restMinutes) = getAggregateData(for: hoveredChunk.date, from: timeChunks)
 
                         RectangleMark(xStart: .value("Start", hoveredChunk.startSeconds),
                                       xEnd: .value("End", hoveredChunk.endSeconds),
@@ -60,8 +61,8 @@ struct StatisticsView: View {
                                 Divider()
                                 Text("Aggregate for Day")
                                     .fontWeight(.semibold)
-                                Text("Focus time: \(90)m")
-                                Text("Rest time: \(20)m")
+                                Text("Focus time: \(focusMinutes)m")
+                                Text("Rest time: \(restMinutes)m")
                             }
                             .font(.system(.footnote))
                             .padding(10)
@@ -172,6 +173,25 @@ struct StatisticsView: View {
         }
     }
 
+    private func getAggregateData(for date: Date, from chunks: [TimeBlock.Chunk]) -> (focus: Int, rest: Int) {
+        let chunksForDay = chunks.filter { $0.date == date }
+
+        let sumMinutes = { (partialResult: Int, chunk: TimeBlock.Chunk) -> Int in
+            let totalMinutes = (chunk.endSeconds - chunk.startSeconds) / 60
+            return partialResult + totalMinutes
+        }
+
+        let focusMinutes = chunksForDay
+            .filter { $0.category == .focus }
+            .reduce(0, sumMinutes)
+
+        let restMinutes = chunksForDay
+            .filter { $0.category == .rest }
+            .reduce(0, sumMinutes)
+
+        return (focusMinutes, restMinutes)
+    }
+
     private func getTimeStamp(for secondOfDay: Int) -> String {
         let (hour24, minutes) = secondOfDay.asSeconds.toHoursMinutes
         let amPM = 12 <= hour24 && hour24 < 24 ? "pm" : "am"
@@ -182,8 +202,8 @@ struct StatisticsView: View {
         return String(format: "\(hour12):%02d\(amPM)", minutes)
     }
 
-    private func annotationPlacement(for chunk: TimeBlock.Chunk,
-                                     from chunks: [TimeBlock.Chunk]) -> (AnnotationPosition, Alignment) {
+    private func getAnnotationPlacement(for chunk: TimeBlock.Chunk,
+                                        from chunks: [TimeBlock.Chunk]) -> (AnnotationPosition, Alignment) {
         var position: AnnotationPosition = .bottom
         var alignment: Alignment = .leading
 
