@@ -7,14 +7,14 @@ struct StatisticsView: View {
 
     @State private var hoveredChunk: TimeBlock.Chunk?
 
-    let frame = (height: 300.0, width: 700.0)
-    let daysPerFrame = 10
+    let frame = (height: 400.0, width: 700.0)
+    let daysPerFrame = 14
 
     var body: some View {
         //let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
         //let timeChunks = [TimeBlock.Chunk]()
-        let timeChunks = TestData.timeBlockChunks
-        //let timeChunks = Array(TestData.timeBlockChunks.prefix(1))
+        //let timeChunks = TestData.timeBlockChunks
+        let timeChunks = Array(TestData.timeBlockChunks.prefix(25))
 
         if timeChunks.isEmpty {
             VStack(spacing: 12) {
@@ -27,7 +27,7 @@ struct StatisticsView: View {
             }
             .frame(width: frame.width, height: frame.height)
         } else {
-            let timeChunks = timeChunks.sortedAndPadded()
+            let timeChunks = timeChunks.padIfNeeded()
 
             ScrollView(.vertical, showsIndicators: true) {
                 Chart(timeChunks) { chunk in
@@ -89,7 +89,6 @@ struct StatisticsView: View {
                     }
                 }
                 .chartYAxis(.visible)
-                //.chartYScale(domain: (timeChunks.first!.day...timeChunks.last!.day.addingTimeInterval(24 * 3600)))
                 /**
                  Note: Reverse domain so as user scrolls down, they scroll back in time.
                  Padding the data with an extra day with empty time span to override hiding y axis labels for data sets spanning single day.
@@ -127,9 +126,7 @@ struct StatisticsView: View {
 
                 // MARK: - Plot area
                 .chartPlotStyle { plotContent in
-                    let firstDay = timeChunks.first!.date
-                    let lastDay = timeChunks.last!.date
-                    let daySpanCount = Calendar.current.dateComponents([.day], from: firstDay, to: lastDay).day!
+                    let daySpanCount = timeChunks.daySpanCount()
                     let plotHeight = frame.height * (Double(daySpanCount) / Double(daysPerFrame))
 
                     plotContent
@@ -224,11 +221,21 @@ extension TimeBlock {
 }
 
 private extension Array<TimeBlock.Chunk> {
-    func sortedAndPadded() -> Self {
+    /// Pad data so that there will be x days minimum on y axis (enough chart area to show annotation)
+    func padIfNeeded() -> Self {
         let sortedCopy = sorted()
-        let precedingDay = first!.date.addingTimeInterval(-24 * 3600)
-        let precedingChunk = TimeBlock.Chunk(date: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
-        return [precedingChunk] + sortedCopy
+
+        let padCount = 10 - daySpanCount()
+        if padCount > 0 {
+            let padChunks = (1...padCount).map { count in
+                let precedingDay = sortedCopy.first!.date.addingTimeInterval(Double(count) * -24 * 3600)
+                return TimeBlock.Chunk(date: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
+            }
+
+            return padChunks + sortedCopy
+        }
+
+        return sortedCopy
     }
 
     func contains(date : Date) -> Bool {
@@ -238,6 +245,12 @@ private extension Array<TimeBlock.Chunk> {
     func firstWhereContains(secondOfDay: Int, for date: Date) -> TimeBlock.Chunk? {
         filter { $0.date == date.ymdDate }
             .first(where: { $0.startSeconds <= secondOfDay && secondOfDay <= $0.endSeconds })
+    }
+
+    func daySpanCount() -> Int {
+        let groupedByDate = Dictionary(grouping: self, by: \.date)
+        let dates = groupedByDate.keys.sorted()
+        return Calendar.current.dateComponents([.day], from: dates.first!, to: dates.last!).day! + 1
     }
 }
 
