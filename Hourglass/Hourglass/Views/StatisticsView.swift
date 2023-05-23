@@ -48,7 +48,6 @@ struct StatisticsView: View {
                                       height: 14)
                         .cornerRadius(2)
                         .annotation(position: .bottom, alignment: .leading, spacing: 0) {
-                            // TODO: - Clean up background color
                             // TODO: - Logic for position and alignment based on axis proximity
                             // TODO: - Convert to hour:minute am/pm
                             VStack(alignment: .leading) {
@@ -64,7 +63,8 @@ struct StatisticsView: View {
                             }
                             .font(.system(.footnote))
                             .padding(10)
-                            .background(Color(red: (243-20)/255.0, green: (236-20)/255.0, blue: (235-20)/255.0))
+                            .background(Color(white: 0.2))
+                            .foregroundColor(Color(white: 0.8))
                             .cornerRadius(10)
                         }
                     }
