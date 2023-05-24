@@ -36,13 +36,13 @@ struct AboutView: View {
                 }
 
                 Text("Copyright © 2023 Isiah Michael Manns.")
-                    .foregroundColor(Color.onBackgroundSecondary)
+                    .foregroundColor(Color.Hourglass.onBackgroundSecondary)
             }
         }
         .padding([.leading, .trailing], 50)
         .padding([.top, .bottom], 50)
-        .background(Color.background)
-        .foregroundColor(Color.onBackgroundPrimary)
+        .background(Color.Hourglass.background)
+        .foregroundColor(Color.Hourglass.onBackgroundPrimary)
     }
 }
 
@@ -59,9 +59,9 @@ extension AboutView {
                 .contentShape(capsule)
                 .overlay {
                     capsule
-                        .stroke(Color.onBackgroundPrimary)
+                        .stroke(Color.Hourglass.onBackgroundPrimary)
                 }
-                .foregroundColor(Color.onBackgroundPrimary)
+                .foregroundColor(Color.Hourglass.onBackgroundPrimary)
                 .opacity(configuration.isPressed ? 0.8 : 1)
         }
     }

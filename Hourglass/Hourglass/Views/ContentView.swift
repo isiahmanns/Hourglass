@@ -18,7 +18,7 @@ struct ContentView: View {
             .fixedSize()
             .padding([.top, .bottom], 40)
             .padding([.leading, .trailing], 50)
-            .background(Color.background)
+            .background(Color.Hourglass.background)
         }
     }
 }

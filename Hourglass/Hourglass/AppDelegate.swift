@@ -74,7 +74,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupPopover(with view: some View) {
         popover = NSPopover()
         popover.behavior = .transient
-        popover.contentViewController = PopoverViewController(with: view, backgroundColor: Color.background)
+        popover.contentViewController = PopoverViewController(with: view, backgroundColor: Color.Hourglass.background)
     }
 
     private func setupContentView() -> some View {
