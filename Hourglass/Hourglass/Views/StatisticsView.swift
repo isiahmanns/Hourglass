@@ -213,14 +213,17 @@ struct StatisticsView: View {
         var position: AnnotationPosition = .bottom
         var alignment: Alignment = .leading
 
-
         if chunk.startSeconds > 3600 * 20 {
             alignment = .trailing
         }
 
-        let chunksByDate = Dictionary(grouping: chunks, by: \.date)
-        let sortedDates = chunksByDate.keys.sorted()
-        if sortedDates.prefix(5).contains(chunk.date) {
+        let sortedUniqueDates = chunks
+            .reduce(into: Set<Date>()) { partialResult, chunk in
+                partialResult.insert(chunk.date)
+            }
+            .sorted()
+
+        if sortedUniqueDates.prefix(5).contains(chunk.date) {
             position = .top
         }
 
