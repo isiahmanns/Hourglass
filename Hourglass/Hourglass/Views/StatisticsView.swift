@@ -268,7 +268,7 @@ private extension Array<TimeBlock.Chunk> {
     func padIfNeeded() -> Self {
         let padCount = 10 - daySpanCount()
         if padCount > 0 {
-            let firstDate = map(\.date).sorted().first!
+            let firstDate = sortedDates.first!
 
             let padChunks = (1...padCount).map { count in
                 let precedingDay = firstDate.addingTimeInterval(Double(count) * -24 * 3600)
@@ -291,8 +291,12 @@ private extension Array<TimeBlock.Chunk> {
     }
 
     func daySpanCount() -> Int {
-        let sortedDates = map(\.date).sorted()
+        let sortedDates = sortedDates
         return Calendar.current.dateComponents([.day], from: sortedDates.first!, to: sortedDates.last!).day! + 1
+    }
+
+    private var sortedDates: [Date] {
+        map(\.date).sorted()
     }
 }
 
