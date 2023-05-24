@@ -86,6 +86,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let aboutViewController = NSHostingController(rootView: AboutView())
         aboutWindow = NSWindow(contentViewController: aboutViewController)
         aboutWindow.styleMask = [.titled, .closable, .fullSizeContentView]
+        aboutWindow.title = "About"
         aboutWindow.titleVisibility = .hidden
         aboutWindow.titlebarAppearsTransparent = true
         aboutWindow.setContentSize(aboutViewController.view.fittingSize)
