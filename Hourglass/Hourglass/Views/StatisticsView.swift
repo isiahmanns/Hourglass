@@ -241,11 +241,7 @@ struct StatisticsView_Previews: PreviewProvider {
 }
 
 extension TimeBlock {
-    struct Chunk: Identifiable, Comparable {
-        static func < (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
-            lhs.date < rhs.date
-        }
-
+    struct Chunk: Identifiable, Equatable {
         static func == (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
             lhs.date == rhs.date &&
             lhs.startSeconds == rhs.startSeconds &&
@@ -267,19 +263,19 @@ extension TimeBlock {
 private extension Array<TimeBlock.Chunk> {
     /// Pad data so that there will be x days minimum on y axis (enough chart area to show annotation)
     func padIfNeeded() -> Self {
-        let sortedCopy = sorted()
-
         let padCount = 10 - daySpanCount()
         if padCount > 0 {
+            let firstDate = map(\.date).sorted().first!
+
             let padChunks = (1...padCount).map { count in
-                let precedingDay = sortedCopy.first!.date.addingTimeInterval(Double(count) * -24 * 3600)
+                let precedingDay = firstDate.addingTimeInterval(Double(count) * -24 * 3600)
                 return TimeBlock.Chunk(date: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
             }
 
-            return padChunks + sortedCopy
+            return padChunks + self
         }
 
-        return sortedCopy
+        return self
     }
 
     func contains(date : Date) -> Bool {
@@ -292,9 +288,8 @@ private extension Array<TimeBlock.Chunk> {
     }
 
     func daySpanCount() -> Int {
-        let groupedByDate = Dictionary(grouping: self, by: \.date)
-        let dates = groupedByDate.keys.sorted()
-        return Calendar.current.dateComponents([.day], from: dates.first!, to: dates.last!).day! + 1
+        let sortedDates = map(\.date).sorted()
+        return Calendar.current.dateComponents([.day], from: sortedDates.first!, to: sortedDates.last!).day! + 1
     }
 }
 
