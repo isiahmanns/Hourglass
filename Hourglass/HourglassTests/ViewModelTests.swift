@@ -1,7 +1,7 @@
 import XCTest
 @testable import Hourglass
 
-// TODO: - Snapshot test is a better solution to create a state for the button and verify its appearance pixel for pixel.
+// TODO: - Snapshot tests to validate timer button state pixel for pixel. (#85)
 
 final class ViewModelTests: XCTestCase {
 
