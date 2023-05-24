@@ -114,7 +114,7 @@ extension ViewModel: EventNotifying {
     @objc func notifyUser(timerEvent: HourglassEventKey.Timer) {
         switch timerEvent {
         case .timerDidComplete:
-            notifyUser(.timerCompleteBanner, alertFlag: &viewState.showTimerCompleteAlert)
+            notifyUser(.timerCompleteNotif, alertFlag: &viewState.showTimerCompleteAlert)
         default:
             break
         }
@@ -123,8 +123,7 @@ extension ViewModel: EventNotifying {
     @objc func notifyUser(progressEvent: HourglassEventKey.Progress) {
         switch progressEvent {
         case .restWarningThresholdMet:
-            // TODO: - Either make this a silent/alt-sound user notification, or just make it a simple alert
-            notifyUser(.restWarningThresholdMetBanner, alertFlag: &viewState.showRestWarningAlert)
+            notifyUser(.restWarningThresholdMetNotif, alertFlag: &viewState.showRestWarningAlert)
         case .enforceRestThresholdMet:
             viewState.showEnforceRestAlert.toggle()
             windowCoordinator?.showPopoverIfNeeded()
@@ -139,7 +138,7 @@ extension ViewModel: EventNotifying {
             userNotificationManager.fireNotification(notification, soundIsEnabled: soundIsEnabled)
         case .popup:
             if soundIsEnabled {
-                userNotificationManager.fireNotification(.soundOnly, soundIsEnabled: true)
+                userNotificationManager.fireNotificationSound(for: notification)
             }
             alertFlag.toggle()
             windowCoordinator?.showPopoverIfNeeded()
