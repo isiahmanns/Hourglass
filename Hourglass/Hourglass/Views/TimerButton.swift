@@ -29,8 +29,8 @@ extension TimerButton {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
                 .frame(width: size, height: size, alignment: .center)
-                .background(Color.surface)
-                .foregroundColor(Color.onSurface)
+                .background(Color.Hourglass.surface)
+                .foregroundColor(Color.Hourglass.onSurface)
                 .clipShape(Circle())
                 .contentShape(Circle())
                 .opacity(opacityProvider(configuration.isPressed))
@@ -44,7 +44,7 @@ extension TimerButton {
                 EmptyView()
             case .active:
                 Circle()
-                    .stroke(Color.accent, lineWidth: 4.0)
+                    .stroke(Color.Hourglass.accent, lineWidth: 4.0)
             case .disabled:
                 Circle()
                     .fill(Color.black.opacity(0.6))

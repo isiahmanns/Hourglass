@@ -14,10 +14,12 @@ extension Color {
         }
     }
 
-    static let background = Token.background.color
-    static let onBackgroundPrimary = Token.onBackgroundPrimary.color
-    static let onBackgroundSecondary = Token.onBackgroundSecondary.color
-    static let surface = Token.surface.color
-    static let onSurface = Token.onSurface.color
-    static let accent = Token.accent.color
+    enum Hourglass {
+        static let background = Token.background.color
+        static let onBackgroundPrimary = Token.onBackgroundPrimary.color
+        static let onBackgroundSecondary = Token.onBackgroundSecondary.color
+        static let surface = Token.surface.color
+        static let onSurface = Token.onSurface.color
+        static let accent = Token.accent.color
+    }
 }

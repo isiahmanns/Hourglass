@@ -23,7 +23,7 @@ struct StatisticsView: View {
                 Image(systemName: "chart.bar")
                     .resizable()
                     .frame(width: 40, height: 40)
-                    .foregroundColor(Color.background)
+                    .foregroundColor(Color.Hourglass.background)
                 Text(Copy.emptyState)
                     .multilineTextAlignment(.center)
             }
@@ -79,8 +79,8 @@ struct StatisticsView: View {
 
                 // MARK: - Legend
                 .chartForegroundStyleScale([
-                    "Focus": Color.accent,
-                    "Rest": Color.onBackgroundSecondary
+                    "Focus": Color.Hourglass.accent,
+                    "Rest": Color.Hourglass.onBackgroundSecondary
                 ])
                 .chartLegend(.visible)
                 .chartLegend(position: .top, spacing: -12)

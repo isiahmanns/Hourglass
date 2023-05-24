@@ -120,7 +120,7 @@ struct SettingsMenu: View {
         } label: {
             Image(systemName: "gearshape.fill")
                 .imageScale(.large)
-                .foregroundColor(Color.onBackgroundSecondary)
+                .foregroundColor(Color.Hourglass.onBackgroundSecondary)
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("settings-button")

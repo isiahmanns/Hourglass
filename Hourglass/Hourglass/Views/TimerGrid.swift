@@ -44,6 +44,6 @@ private struct Header: View {
 
     var body: some View {
         Text(content)
-            .foregroundColor(Color.onBackgroundPrimary)
+            .foregroundColor(Color.Hourglass.onBackgroundPrimary)
     }
 }
