@@ -19,24 +19,12 @@ class DataManager: DataManaging {
                              store: CoreDataStore,
                              timerEventProvider: TimerEventProviding) {
         let timerModels = [
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall),
-                        category: .focus,
-                        size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusMedium),
-                        category: .focus,
-                        size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusLarge),
-                        category: .focus,
-                        size: .large),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestSmall),
-                        category: .rest,
-                        size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestMedium),
-                        category: .rest,
-                        size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestLarge),
-                        category: .rest,
-                        size: .large)
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall), category: .focus, size: .small),
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusMedium), category: .focus, size: .medium),
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusLarge), category: .focus, size: .large),
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestSmall), category: .rest, size: .small),
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestMedium), category: .rest, size: .medium),
+            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestLarge), category: .rest, size: .large)
         ]
 
         self.init(timerModels: timerModels,
