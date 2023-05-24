@@ -12,7 +12,7 @@ struct StatisticsView: View {
 
     var body: some View {
         let timeChunks: [TimeBlock.Chunk] = timeBlocks.flatMap(\.chunks)
-        // TODO: - Write snapshot tests using test data sets
+        // TODO: - Write snapshot tests using test data sets (#89)
         //let timeChunks = [TimeBlock.Chunk]()
         //let timeChunks = TestData.timeChunks
         //let timeChunks = Array(TestData.timeChunks.prefix(25))
@@ -307,7 +307,6 @@ private extension TimeBlock {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: end!)
     }
 
-    // TODO: - Test this with Core Data
     var doesIncludeNextDay: Bool {
         startDate.day! < endDate.day!
     }
