@@ -2,10 +2,12 @@ import SwiftUI
 
 class PopoverViewController: NSViewController {
     private let rootView: NSView
+    private let backgroundColor: Color
     private var needsConfigurePopoverFrame: Bool = true
 
-    init(with view: some View) {
+    init(with view: some View, backgroundColor: Color) {
         self.rootView = NSHostingView(rootView: view)
+        self.backgroundColor = backgroundColor
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -29,7 +31,7 @@ class PopoverViewController: NSViewController {
         if let popoverFrame = self.view.superview { // NSPopoverFrame <- NSVisualEffectView <- NSView
             let backgroundView = NSView(frame: popoverFrame.frame)
             backgroundView.wantsLayer = true
-            backgroundView.layer?.backgroundColor = NSColor(Color.background).cgColor
+            backgroundView.layer?.backgroundColor = NSColor(backgroundColor).cgColor
             backgroundView.autoresizingMask = [.width, .height]
             popoverFrame.addSubview(backgroundView, positioned: .below, relativeTo: self.view)
         }
