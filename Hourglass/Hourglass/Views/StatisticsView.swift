@@ -217,13 +217,8 @@ struct StatisticsView: View {
             alignment = .trailing
         }
 
-        let sortedUniqueDates = chunks
-            .reduce(into: Set<Date>()) { partialResult, chunk in
-                partialResult.insert(chunk.date)
-            }
-            .sorted()
-
-        if sortedUniqueDates.prefix(5).contains(chunk.date) {
+        let sortedDates = chunks.sortedDates
+        if sortedDates.prefix(5).contains(chunk.date) {
             position = .top
         }
 
@@ -295,8 +290,11 @@ private extension Array<TimeBlock.Chunk> {
         return Calendar.current.dateComponents([.day], from: sortedDates.first!, to: sortedDates.last!).day! + 1
     }
 
-    private var sortedDates: [Date] {
-        map(\.date).sorted()
+    var sortedDates: [Date] {
+        reduce(into: Set<Date>()) { partialResult, chunk in
+            partialResult.insert(chunk.date)
+        }
+        .sorted()
     }
 }
 
