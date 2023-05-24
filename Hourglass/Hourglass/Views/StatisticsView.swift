@@ -272,7 +272,7 @@ private extension Array<TimeBlock.Chunk> {
 
             let padChunks = (1...padCount).map { count in
                 let precedingDay = firstDate.addingTimeInterval(Double(count) * -24 * 3600)
-                return TimeBlock.Chunk(date: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
+                return TimeBlock.Chunk(date: precedingDay, startSeconds: -1, endSeconds: -1, category: .focus)
             }
 
             return padChunks + self
