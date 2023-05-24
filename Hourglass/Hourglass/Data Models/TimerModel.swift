@@ -37,7 +37,6 @@ extension Timer {
         }
     }
 
-    // TODO: - May not be needed
     enum Size {
         case small
         case medium

@@ -10,7 +10,7 @@ struct AboutView: View {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Hourglass")
-                        .font(.poppins) // TODO: - Rename API with sizes
+                        .font(.poppins)
                     Text("Version 1.0")
                 }
 
