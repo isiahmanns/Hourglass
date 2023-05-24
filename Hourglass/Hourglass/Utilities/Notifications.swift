@@ -1,15 +1,23 @@
 import UserNotifications
 
+/// A notification content provider for use with `UNNotificationRequest`.
 enum HourglassNotification: String {
     case timerCompleteBanner
     case restWarningThresholdMetBanner
-    case soundOnly
 
-    var contentBase: UNMutableNotificationContent {
+    var content: UNMutableNotificationContent {
         let notificationContent = UNMutableNotificationContent()
-        notificationContent.title = title
         notificationContent.interruptionLevel = .active
         return notificationContent
+    }
+
+    var soundFX: UNNotificationSound? {
+        switch self {
+        case .restWarningThresholdMetBanner:
+            return nil
+        default:
+            return UNNotificationSound.default
+        }
     }
 
     var title: String {
@@ -18,8 +26,6 @@ enum HourglassNotification: String {
             return Constants.timerCompleteAlert
         case .restWarningThresholdMetBanner:
             return Constants.restWarningAlert
-        case .soundOnly:
-            return ""
         }
     }
 
