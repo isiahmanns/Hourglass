@@ -32,15 +32,17 @@ struct StatisticsView: View {
             let timeChunks = timeChunks.padIfNeeded()
 
             ScrollView(.vertical, showsIndicators: true) {
-                Chart(timeChunks) { chunk in
+                Chart {
                     // MARK: - Bar Marks
-                    BarMark(xStart: .value("Start", chunk.startSeconds),
-                            xEnd: .value("End", chunk.endSeconds),
-                            y: .value("Day", chunk.date),
-                            height: .fixed(14))
-                    .foregroundStyle(by: .value("Category", chunk.category.asString))
+                    ForEach(timeChunks) { chunk in
+                        BarMark(xStart: .value("Start", chunk.startSeconds),
+                                xEnd: .value("End", chunk.endSeconds),
+                                y: .value("Day", chunk.date),
+                                height: .fixed(14))
+                        .foregroundStyle(by: .value("Category", chunk.category.asString))
+                    }
 
-                    // MARK: - Annotations
+                    // MARK: - Annotation
                     if let hoveredChunk {
                         let (annotationPos, annotationAlign) = getAnnotationPlacement(for: hoveredChunk, from: timeChunks)
                         let startTimeStamp = getTimeStamp(for: hoveredChunk.startSeconds)
@@ -153,7 +155,9 @@ struct StatisticsView: View {
                                         if let secondOfDay = chartProxy.value(atX: location.x, as: Int.self),
                                            let chunk = timeChunks.firstWhereContains(secondOfDay: secondOfDay, for: date) {
                                             // print("second of day", secondOfDay, "date", date)
-                                            hoveredChunk = chunk
+                                            if hoveredChunk != chunk {
+                                                hoveredChunk = chunk
+                                            }
                                         } else {
                                             hoveredChunk = nil
                                         }
@@ -240,6 +244,13 @@ extension TimeBlock {
     struct Chunk: Identifiable, Comparable {
         static func < (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
             lhs.date < rhs.date
+        }
+
+        static func == (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
+            lhs.date == rhs.date &&
+            lhs.startSeconds == rhs.startSeconds &&
+            lhs.endSeconds == rhs.endSeconds &&
+            lhs.category == rhs.category
         }
 
         let id = UUID()
