@@ -32,15 +32,17 @@ struct StatisticsView: View {
             let timeChunks = timeChunks.padIfNeeded()
 
             ScrollView(.vertical, showsIndicators: true) {
-                Chart(timeChunks) { chunk in
+                Chart {
                     // MARK: - Bar Marks
-                    BarMark(xStart: .value("Start", chunk.startSeconds),
-                            xEnd: .value("End", chunk.endSeconds),
-                            y: .value("Day", chunk.date),
-                            height: .fixed(14))
-                    .foregroundStyle(by: .value("Category", chunk.category.asString))
+                    ForEach(timeChunks) { chunk in
+                        BarMark(xStart: .value("Start", chunk.startSeconds),
+                                xEnd: .value("End", chunk.endSeconds),
+                                y: .value("Day", chunk.date),
+                                height: .fixed(14))
+                        .foregroundStyle(by: .value("Category", chunk.category.asString))
+                    }
 
-                    // MARK: - Annotations
+                    // MARK: - Annotation
                     if let hoveredChunk {
                         let (annotationPos, annotationAlign) = getAnnotationPlacement(for: hoveredChunk, from: timeChunks)
                         let startTimeStamp = getTimeStamp(for: hoveredChunk.startSeconds)
@@ -153,7 +155,9 @@ struct StatisticsView: View {
                                         if let secondOfDay = chartProxy.value(atX: location.x, as: Int.self),
                                            let chunk = timeChunks.firstWhereContains(secondOfDay: secondOfDay, for: date) {
                                             // print("second of day", secondOfDay, "date", date)
-                                            hoveredChunk = chunk
+                                            if hoveredChunk != chunk {
+                                                hoveredChunk = chunk
+                                            }
                                         } else {
                                             hoveredChunk = nil
                                         }
@@ -209,13 +213,11 @@ struct StatisticsView: View {
         var position: AnnotationPosition = .bottom
         var alignment: Alignment = .leading
 
-
         if chunk.startSeconds > 3600 * 20 {
             alignment = .trailing
         }
 
-        let chunksByDate = Dictionary(grouping: chunks, by: \.date)
-        let sortedDates = chunksByDate.keys.sorted()
+        let sortedDates = chunks.sortedDates
         if sortedDates.prefix(5).contains(chunk.date) {
             position = .top
         }
@@ -237,9 +239,12 @@ struct StatisticsView_Previews: PreviewProvider {
 }
 
 extension TimeBlock {
-    struct Chunk: Identifiable, Comparable {
-        static func < (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
-            lhs.date < rhs.date
+    struct Chunk: Identifiable, Equatable {
+        static func == (lhs: TimeBlock.Chunk, rhs: TimeBlock.Chunk) -> Bool {
+            lhs.date == rhs.date &&
+            lhs.startSeconds == rhs.startSeconds &&
+            lhs.endSeconds == rhs.endSeconds &&
+            lhs.category == rhs.category
         }
 
         let id = UUID()
@@ -256,19 +261,19 @@ extension TimeBlock {
 private extension Array<TimeBlock.Chunk> {
     /// Pad data so that there will be x days minimum on y axis (enough chart area to show annotation)
     func padIfNeeded() -> Self {
-        let sortedCopy = sorted()
-
         let padCount = 10 - daySpanCount()
         if padCount > 0 {
+            let firstDate = sortedDates.first!
+
             let padChunks = (1...padCount).map { count in
-                let precedingDay = sortedCopy.first!.date.addingTimeInterval(Double(count) * -24 * 3600)
-                return TimeBlock.Chunk(date: precedingDay, startSeconds: 0, endSeconds: 0, category: .focus)
+                let precedingDay = firstDate.addingTimeInterval(Double(count) * -24 * 3600)
+                return TimeBlock.Chunk(date: precedingDay, startSeconds: -1, endSeconds: -1, category: .focus)
             }
 
-            return padChunks + sortedCopy
+            return padChunks + self
         }
 
-        return sortedCopy
+        return self
     }
 
     func contains(date : Date) -> Bool {
@@ -281,9 +286,15 @@ private extension Array<TimeBlock.Chunk> {
     }
 
     func daySpanCount() -> Int {
-        let groupedByDate = Dictionary(grouping: self, by: \.date)
-        let dates = groupedByDate.keys.sorted()
-        return Calendar.current.dateComponents([.day], from: dates.first!, to: dates.last!).day! + 1
+        let sortedDates = sortedDates
+        return Calendar.current.dateComponents([.day], from: sortedDates.first!, to: sortedDates.last!).day! + 1
+    }
+
+    var sortedDates: [Date] {
+        reduce(into: Set<Date>()) { partialResult, chunk in
+            partialResult.insert(chunk.date)
+        }
+        .sorted()
     }
 }
 
