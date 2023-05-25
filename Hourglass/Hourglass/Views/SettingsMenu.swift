@@ -60,7 +60,8 @@ struct SettingsMenu: View {
                         Text("Notification Banner").tag(NotificationStyle.banner)
                     }
                     Toggle("Sound", isOn: $soundIsEnabled)
-                    Toggle("Fullscreen on Rest", isOn: .constant(true))
+                    // TODO: - Implement fullscreen on rest (#14)
+                    // Toggle("Fullscreen on Rest", isOn: .constant(true))
                 }
                 Section("Timer Presets") {
                     Menu("Focus Timers") {
