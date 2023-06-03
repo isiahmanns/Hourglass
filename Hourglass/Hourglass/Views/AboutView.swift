@@ -21,7 +21,9 @@ struct AboutView: View {
 
                 HStack(spacing: 10) {
                     Button {
-                        print("tapped BMAC")
+                        if let url = URL(string: "https://www.buymeacoffee.com/isiahmmanns") {
+                            NSWorkspace.shared.open(url)
+                        }
                     } label: {
                         Text("Support Hourglass")
                     }
