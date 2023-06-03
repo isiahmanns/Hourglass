@@ -16,6 +16,7 @@ struct TimerGrid: View {
                     }
                 }
             }
+            .frame(width: TimerButton.size)
 
             VStack(alignment: .center, spacing: ySpacing) {
                 Header(content: Copy.restHeader)
@@ -26,6 +27,7 @@ struct TimerGrid: View {
                     }
                 }
             }
+            .frame(width: TimerButton.size)
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("timer-grid")
@@ -44,6 +46,7 @@ private struct Header: View {
 
     var body: some View {
         Text(content)
+            .fixedSize()
             .foregroundColor(Color.Hourglass.onBackgroundPrimary)
     }
 }
