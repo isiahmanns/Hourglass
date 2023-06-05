@@ -21,14 +21,14 @@ struct AboutView: View {
 
                 HStack(spacing: 10) {
                     Button {
-                        print("tapped BMAC")
+                        openURL("https://www.buymeacoffee.com/isiahmmanns")
                     } label: {
                         Text("Support Hourglass")
                     }
                     .buttonStyle(AboutView.PillButtonStyle())
 
                     Button {
-                        print("tapped website")
+                        openURL("https://www.madebyisiah.com/projects/hourglass")
                     } label: {
                         Text("Website")
                     }
@@ -43,6 +43,12 @@ struct AboutView: View {
         .padding([.top, .bottom], 50)
         .background(Color.Hourglass.background)
         .foregroundColor(Color.Hourglass.onBackgroundPrimary)
+    }
+
+    private func openURL(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            NSWorkspace.shared.open(url)
+        }
     }
 }
 
