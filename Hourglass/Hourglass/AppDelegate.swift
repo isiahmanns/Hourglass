@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import Mixpanel
 
 protocol WindowCoordinator: AnyObject {
     func showAboutWindow()
@@ -32,7 +33,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var cancellables: Set<AnyCancellable> = []
 
+    func hardwareUUID() -> String?
+    {
+        let platformExpert = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        defer{ IOObjectRelease(platformExpert) }
+
+        guard platformExpert != 0 else { return nil }
+        return IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformUUIDKey as CFString, kCFAllocatorDefault, 0).takeRetainedValue() as? String
+    }
+
+    var serialNumber: String? {
+        let platformExpert = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        defer{ IOObjectRelease(platformExpert) }
+
+        guard platformExpert > 0 else { return nil }
+
+        guard let serialNumber = (IORegistryEntryCreateCFProperty(platformExpert, kIOPlatformSerialNumberKey as CFString, kCFAllocatorDefault, 0).takeUnretainedValue() as? String) else {
+            return nil
+        }
+
+        return serialNumber
+    }
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        Mixpanel.initialize(token: "")
+        print(Mixpanel.mainInstance().anonymousId)
+        print(Mixpanel.mainInstance().distinctId)
+        print(serialNumber)
+        print(hardwareUUID())
+        // Note: Looks like Mixpanel is taking the hardware UUID and hashing it?
         setupDelegates()
         setupStatusItem()
         let view = setupContentView()
