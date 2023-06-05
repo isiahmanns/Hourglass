@@ -6,5 +6,7 @@
 	<true/>
 	<key>ATSApplicationFontsPath</key>
 	<string>Fonts/</string>
+	<key>MIXPANEL_TOKEN</key>
+	<string>$(MIXPANEL_TOKEN)</string>
 </dict>
 </plist>
