@@ -83,7 +83,7 @@ struct RestSettingsFlow: View {
 private extension RestSettingsFlow {
     enum Copy {
         static let restReminderHelp = "Reminds you to take a rest after (x) minutes of focus. Must be less than the enforce rest threshold."
-        static let enforceRestHelp = "Disables focus timers and forces you to take a rest. Must be greater than the rest reminder threshold."
+        static let enforceRestHelp = "Disables focus timers and forces you to take a rest. Triggered when ongoing timer is completed or cancelled. Must be greater than the rest reminder threshold."
         static let getBackToWorkHelp = "Prohibits you from taking multiple rest blocks at a time."
         static let footnote = "Note: Hover to see settings descriptions."
     }
