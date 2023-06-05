@@ -217,8 +217,9 @@ struct StatisticsView: View {
             alignment = .trailing
         }
 
-        let sortedDates = chunks.sortedDates
-        if sortedDates.prefix(5).contains(chunk.date) {
+        let firstDate = chunks.sortedDates.first!
+        let first5Days = DateInterval(start: firstDate, end: firstDate.addingTimeInterval(4 * 24 * 3600))
+        if first5Days.contains(chunk.date) {
             position = .top
         }
 
