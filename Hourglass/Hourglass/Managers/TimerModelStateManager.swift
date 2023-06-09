@@ -4,10 +4,12 @@ import Combine
  A manager object that subscribes to timer events and handles associated `Timer.Model` state mutation.
  */
 class TimerModelStateManager {
-    static let shared = TimerModelStateManager(dataManager: DataManager.shared,
+    static let shared = TimerModelStateManager(analyticsManager: AnalyticsManager.shared.mixpanel,
+                                               dataManager: DataManager.shared,
                                                settingsManager: SettingsManager.shared,
                                                timerEventProvider: TimerManager.shared)
 
+    private let analyticsManager: AnalyticsManager
     private let timerModels: [Timer.Model.ID: Timer.Model]
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let settingsManager: SettingsManager
@@ -52,9 +54,11 @@ class TimerModelStateManager {
     private var focusStride: Int = 0
     private var cancellables: Set<AnyCancellable> = []
 
-    fileprivate init(dataManager: DataManaging,
+    fileprivate init(analyticsManager: AnalyticsManager,
+                     dataManager: DataManaging,
                      settingsManager: SettingsManager,
                      timerEventProvider: TimerEventProviding) {
+        self.analyticsManager = analyticsManager
         self.timerModels = dataManager.timerModels
         self.settingsManager = settingsManager
         self.timerEvents = timerEventProvider.events
@@ -108,6 +112,8 @@ class TimerModelStateManager {
                     enforceFocusIfNeeded()
                 }
 
+                analyticsManager.logEvent(.timerDidComplete(activeTimerModel))
+
                 activeTimerModelId = nil
             }
             .store(in: &cancellables)
@@ -128,6 +134,8 @@ class TimerModelStateManager {
                 default:
                     break
                 }
+
+                analyticsManager.logEvent(.timerWasCancelled(activeTimerModel))
 
                 activeTimerModelId = nil
             }
@@ -168,30 +176,31 @@ class TimerModelStateManager {
             self.didChangeTimerPreset(for: timerModel, to: length)
         }
 
-        settingsManager.observe(\.restWarningThreshold) { _ in
-            // TODO: - analytics
-            self.didChangeRestSettings()
+        settingsManager.observe(\.restWarningThreshold) { [self] newValue in
+            didChangeRestSettings()
+            analyticsManager.logEvent(.restWarningThresholdSet(newValue))
         }
 
-        settingsManager.observe(\.enforceRestThreshold) { _ in
-            // TODO: - analytics
-            self.didChangeRestSettings()
+        settingsManager.observe(\.enforceRestThreshold) { [self] newValue in
+            didChangeRestSettings()
+            analyticsManager.logEvent(.enforceRestThresholdSet(newValue))
         }
 
         settingsManager.observe(\.getBackToWork) { [self] isEnabled in
-            // TODO: - analytics
             if !isEnabled {
                 if timerModels.filterByCategory(.rest).allSatisfy({$0.state == .disabled}) {
                     setTimers(category: .rest, state: .inactive)
                 }
             }
+
+            analyticsManager.logEvent(.getBackToWorkSet(isEnabled))
         }
     }
 
     private func didChangeTimerPreset(for timerModel: Timer.Model, to length: Int) {
         defer {
             timerModel.length = length
-            // TODO: - analytics using updated timerModel
+            analyticsManager.logEvent(.timerPresetSet(timerModel))
         }
         delegate?.resetTimer(for: timerModel)
     }
@@ -243,10 +252,12 @@ class TimerModelStateManager {
 }
 
 class TimerModelStateManagerFake: TimerModelStateManager {
-    override init(dataManager: DataManaging,
+    override init(analyticsManager: AnalyticsManager,
+                  dataManager: DataManaging,
                   settingsManager: SettingsManager,
                   timerEventProvider: TimerEventProviding) {
-        super.init(dataManager: dataManager,
+        super.init(analyticsManager: analyticsManager,
+                   dataManager: dataManager,
                    settingsManager: settingsManager,
                    timerEventProvider: timerEventProvider)
     }

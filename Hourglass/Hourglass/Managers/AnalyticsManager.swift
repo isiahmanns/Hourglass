@@ -17,12 +17,12 @@ enum AnalyticsEngine: AnalyticsEngineType {
 }
 
 enum AnalyticsEvent {
-    case timerDidComplete(Timer.Model) // TMSM observer or TimerManager (inject DataManaging for TimerModels)
-    case timerWasCancelled(Timer.Model) // TMSM observer or TimerManager (inject DataManaging for TimerModels)
-    case restWarningThresholdSet(Int) // TMSM observer
-    case enforceRestThresholdSet(Int) // TMSM observer
-    case getBackToWorkSet(Bool) // TMSM observer
-    case timerPresetSet(Timer.Model) // *TMSM observer* or menu
+    case timerDidComplete(Timer.Model)
+    case timerWasCancelled(Timer.Model)
+    case restWarningThresholdSet(Int)
+    case enforceRestThresholdSet(Int)
+    case getBackToWorkSet(Bool)
+    case timerPresetSet(Timer.Model)
     case notificationStyleSet(NotificationStyle)
     case statisticsViewOpened
 
