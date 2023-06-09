@@ -11,7 +11,7 @@ struct MixpanelEngine: AnalyticsEngineType {
         Mixpanel.initialize(token: token)
     }
 
-    func logEvent(name: String, metadata: [String: AnalyticsDataType]) {
+    func logEvent(name: String, metadata: [String: AnalyticsDataType]?) {
         Mixpanel.mainInstance().track(event: name, properties: metadata)
     }
 }

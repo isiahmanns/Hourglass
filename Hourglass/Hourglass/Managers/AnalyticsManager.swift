@@ -1,12 +1,12 @@
 protocol AnalyticsEngineType {
-    func logEvent(name: String, metadata: [String: AnalyticsDataType])
+    func logEvent(name: String, metadata: [String: AnalyticsDataType]?)
 }
 
 enum AnalyticsEngine: AnalyticsEngineType {
     case mixpanel
     case stdout
 
-    func logEvent(name: String, metadata: [String: AnalyticsDataType]) {
+    func logEvent(name: String, metadata: [String: AnalyticsDataType]?) {
         switch self {
         case .mixpanel:
             MixpanelEngine.shared.logEvent(name: name, metadata: metadata)
@@ -47,7 +47,7 @@ enum AnalyticsEvent {
         }
     }
 
-    var metadata: [String: AnalyticsDataType] {
+    var metadata: [String: AnalyticsDataType]? {
         switch self {
         case let .timerDidComplete(timerModel), let .timerWasCancelled(timerModel):
             return ["Category" : String(describing: timerModel.category),
@@ -66,7 +66,7 @@ enum AnalyticsEvent {
         case let .notificationStyleSet(notificationStyle):
             return ["Notification Style": String(describing: notificationStyle)]
         case .statisticsViewOpened:
-            return [:]
+            return nil
         }
     }
 }
