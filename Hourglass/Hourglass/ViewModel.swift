@@ -78,6 +78,7 @@ class ViewModel: ObservableObject {
 
     func showStatisticsWindow() {
         windowCoordinator?.showStatisticsWindow()
+        logEvent(.statisticsViewOpened)
     }
 
     func logEvent(_ event: AnalyticsEvent) {

@@ -24,7 +24,7 @@ enum AnalyticsEvent {
     case getBackToWorkSet(Bool) // TMSM observer
     case timerPresetSet(Timer.Model) // *TMSM observer* or menu
     case notificationStyleSet(NotificationStyle)
-    case statisticsViewOpened // delegate
+    case statisticsViewOpened
 
     var name: String {
         switch self {
