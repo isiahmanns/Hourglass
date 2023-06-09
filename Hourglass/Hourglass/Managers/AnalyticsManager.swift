@@ -23,7 +23,7 @@ enum AnalyticsEvent {
     case enforceRestThresholdSet(Int) // TMSM observer
     case getBackToWorkSet(Bool) // TMSM observer
     case timerPresetSet(Timer.Model) // *TMSM observer* or menu
-    case notificationStyleSet(NotificationStyle) // menu
+    case notificationStyleSet(NotificationStyle)
     case statisticsViewOpened // delegate
 
     var name: String {
@@ -72,7 +72,7 @@ enum AnalyticsEvent {
 }
 
 struct AnalyticsManager {
-    struct shared {
+    enum shared {
         static let mixpanel = AnalyticsManager(analyticsEngine: .mixpanel)
         static let stdout = AnalyticsManager(analyticsEngine: .stdout)
     }

@@ -59,6 +59,10 @@ struct SettingsMenu: View {
                         Text("Menu Bar Popup").tag(NotificationStyle.popup)
                         Text("Notification Banner").tag(NotificationStyle.banner)
                     }
+                    .onChange(of: notificationStyle) { newValue in
+                        viewModel.logEvent(.notificationStyleSet(newValue))
+                    }
+
                     Toggle("Sound", isOn: $soundIsEnabled)
                     // TODO: - Implement fullscreen on rest (#14)
                     // Toggle("Fullscreen on Rest", isOn: .constant(true))

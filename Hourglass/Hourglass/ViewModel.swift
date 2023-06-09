@@ -12,6 +12,7 @@ protocol TimerHandling: AnyObject {
 }
 
 class ViewModel: ObservableObject {
+    private let analyticsManager: AnalyticsManager
     let timerModels: [Timer.Model.ID: Timer.Model]
     private let timerManager: TimerManager
     private let userNotificationManager: NotificationManager
@@ -26,11 +27,13 @@ class ViewModel: ObservableObject {
     private var pendingTimerModel: Timer.Model?
     @Published var viewState = ViewState()
 
-    init(dataManager: DataManaging,
+    init(analyticsManager: AnalyticsManager,
+         dataManager: DataManaging,
          settingsManager: SettingsManager,
          timerManager: TimerManager,
          userNotificationManager: NotificationManager) {
 
+        self.analyticsManager = analyticsManager
         self.timerModels = dataManager.timerModels
         self.settingsManager = settingsManager
         self.timerManager = timerManager
@@ -75,6 +78,10 @@ class ViewModel: ObservableObject {
 
     func showStatisticsWindow() {
         windowCoordinator?.showStatisticsWindow()
+    }
+
+    func logEvent(_ event: AnalyticsEvent) {
+        analyticsManager.logEvent(event)
     }
 
     private func cancelTimer() {
