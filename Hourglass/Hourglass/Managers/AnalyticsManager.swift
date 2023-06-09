@@ -1,5 +1,19 @@
-protocol AnalyticsEngine {
+protocol AnalyticsEngineType {
     func logEvent(name: String, metadata: [String: Any])
+}
+
+enum AnalyticsEngine: AnalyticsEngineType {
+    case mixpanel
+    case stdout
+
+    func logEvent(name: String, metadata: [String : Any]) {
+        switch self {
+        case .mixpanel:
+            MixpanelEngine.shared.logEvent(name: name, metadata: metadata)
+        case .stdout:
+            StdoutEngine.shared.logEvent(name: name, metadata: metadata)
+        }
+    }
 }
 
 enum AnalyticsEvent {
@@ -53,7 +67,16 @@ enum AnalyticsEvent {
 }
 
 struct AnalyticsManager {
+    struct shared {
+        static let mixpanel = AnalyticsManager(analyticsEngine: .mixpanel)
+        static let stdout = AnalyticsManager(analyticsEngine: .stdout)
+    }
+
     private let analyticsEngine: AnalyticsEngine
+
+    private init(analyticsEngine: AnalyticsEngine) {
+        self.analyticsEngine = analyticsEngine
+    }
 
     func logEvent(_ event: AnalyticsEvent) {
         analyticsEngine.logEvent(name: event.name, metadata: event.metadata)

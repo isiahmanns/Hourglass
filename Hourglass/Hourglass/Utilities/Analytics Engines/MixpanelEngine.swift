@@ -1,8 +1,10 @@
 import Foundation
 import Mixpanel
 
-struct MixpanelEngine: AnalyticsEngine {
-    init() {
+struct MixpanelEngine: AnalyticsEngineType {
+    static let shared = MixpanelEngine()
+
+    private init() {
         guard let token = Bundle.main.object(forInfoDictionaryKey: "MIXPANEL_TOKEN") as? String
         else { fatalError() }
 
