@@ -73,7 +73,7 @@ class ViewModel: ObservableObject {
         windowCoordinator?.showAboutWindow()
     }
 
-    func showStatisticsWindoow() {
+    func showStatisticsWindow() {
         windowCoordinator?.showStatisticsWindow()
     }
 
