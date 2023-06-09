@@ -1,12 +1,12 @@
 protocol AnalyticsEngineType {
-    func logEvent(name: String, metadata: [String: Any])
+    func logEvent(name: String, metadata: [String: String])
 }
 
 enum AnalyticsEngine: AnalyticsEngineType {
     case mixpanel
     case stdout
 
-    func logEvent(name: String, metadata: [String : Any]) {
+    func logEvent(name: String, metadata: [String: String]) {
         switch self {
         case .mixpanel:
             MixpanelEngine.shared.logEvent(name: name, metadata: metadata)
@@ -47,22 +47,22 @@ enum AnalyticsEvent {
         }
     }
 
-    var metadata: [String: Any] {
+    var metadata: [String: String] {
         switch self {
         case let .timerDidComplete(timerModel), let .timerWasCancelled(timerModel):
             return ["Category" : String(describing: timerModel.category),
                     "Size": String(describing: timerModel.size),
-                    "Length": timerModel.length]
+                    "Length": timerModel.length.description]
         case let .restWarningThresholdSet(restWarningThreshold):
-            return ["Rest Warning Threshold": restWarningThreshold]
+            return ["Rest Warning Threshold": restWarningThreshold.description]
         case let .enforceRestThresholdSet(enforceRestThreshold):
-            return ["Enforce Rest Threshold": enforceRestThreshold]
+            return ["Enforce Rest Threshold": enforceRestThreshold.description]
         case let .getBackToWorkSet(getBackToWork):
-            return ["Get Back to Work": getBackToWork]
+            return ["Get Back to Work": getBackToWork.description]
         case let .timerPresetSet(timerModel):
             return ["Category" : String(describing: timerModel.category),
                     "Size": String(describing: timerModel.size),
-                    "New Length": timerModel.length]
+                    "New Length": timerModel.length.description]
         case let .notificationStyleSet(notificationStyle):
             return ["Notification Style": String(describing: notificationStyle)]
         case .statisticsViewOpened:
