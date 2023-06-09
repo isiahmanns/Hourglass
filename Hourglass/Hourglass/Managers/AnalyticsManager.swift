@@ -17,12 +17,14 @@ enum AnalyticsEngine: AnalyticsEngineType {
 }
 
 enum AnalyticsEvent {
-    case timerDidComplete(Timer.Model)
-    case timerWasCancelled(Timer.Model)
-    case restSettingsElected(restWarningThreshold: Int, enforceRestThreshold: Int, getBackToWork: Bool)
-    case timerPresetElected(Timer.Model, newLength: Int)
-    case notificationStyleElected(NotificationStyle)
-    case statisticsViewOpened
+    case timerDidComplete(Timer.Model) // TMSM observer or TimerManager (inject DataManaging for TimerModels)
+    case timerWasCancelled(Timer.Model) // TMSM observer or TimerManager (inject DataManaging for TimerModels)
+    case restWarningThresholdSet(Int) // TMSM observer
+    case enforceRestThresholdSet(Int) // TMSM observer
+    case getBackToWorkSet(Bool) // TMSM observer
+    case timerPresetSet(Timer.Model) // *TMSM observer* or menu
+    case notificationStyleSet(NotificationStyle) // menu
+    case statisticsViewOpened // delegate
 
     var name: String {
         switch self {
@@ -30,12 +32,16 @@ enum AnalyticsEvent {
             return "timerDidComplete"
         case .timerWasCancelled:
             return "timerWasCancelled"
-        case .restSettingsElected:
-            return "restSettingsElected"
-        case .timerPresetElected:
-            return "restSettingsElected"
-        case .notificationStyleElected:
-            return "notificationStyleElected"
+        case .restWarningThresholdSet:
+            return "restWarningThresholdSet"
+        case .enforceRestThresholdSet:
+            return "enforceRestThresholdSet"
+        case .getBackToWorkSet:
+            return "getBackToWorkSet"
+        case .timerPresetSet:
+            return "timerPresetSet"
+        case .notificationStyleSet:
+            return "notificationStyleSet"
         case .statisticsViewOpened:
             return String(describing: self)
         }
@@ -47,18 +53,17 @@ enum AnalyticsEvent {
             return ["Category" : String(describing: timerModel.category),
                     "Size": String(describing: timerModel.size),
                     "Length": timerModel.length]
-        case let .restSettingsElected(restWarningThreshold: restWarningThreshold,
-                                      enforceRestThreshold: enforceRestThreshold,
-                                      getBackToWork: getBackToWork):
-            return ["Rest Warning Threshold": restWarningThreshold,
-                    "Enforce Rest Threshold": enforceRestThreshold,
-                    "Get Back to Work": getBackToWork]
-        case let .timerPresetElected(timerModel, newLength: newLength):
+        case let .restWarningThresholdSet(restWarningThreshold):
+            return ["Rest Warning Threshold": restWarningThreshold]
+        case let .enforceRestThresholdSet(enforceRestThreshold):
+            return ["Enforce Rest Threshold": enforceRestThreshold]
+        case let .getBackToWorkSet(getBackToWork):
+            return ["Get Back to Work": getBackToWork]
+        case let .timerPresetSet(timerModel):
             return ["Category" : String(describing: timerModel.category),
                     "Size": String(describing: timerModel.size),
-                    "Prev Length": timerModel.length,
-                    "New Length": newLength]
-        case let .notificationStyleElected(notificationStyle):
+                    "New Length": timerModel.length]
+        case let .notificationStyleSet(notificationStyle):
             return ["Notification Style": String(describing: notificationStyle)]
         case .statisticsViewOpened:
             return [:]

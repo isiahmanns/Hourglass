@@ -143,6 +143,8 @@ extension AppDelegate: WindowCoordinator {
         }
 
         statisticsWindow.makeKeyAndOrderFront(nil)
+
+        // TODO: - analytics
     }
 }
 

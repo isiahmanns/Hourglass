@@ -169,14 +169,17 @@ class TimerModelStateManager {
         }
 
         settingsManager.observe(\.restWarningThreshold) { _ in
+            // TODO: - analytics
             self.didChangeRestSettings()
         }
 
         settingsManager.observe(\.enforceRestThreshold) { _ in
+            // TODO: - analytics
             self.didChangeRestSettings()
         }
 
         settingsManager.observe(\.getBackToWork) { [self] isEnabled in
+            // TODO: - analytics
             if !isEnabled {
                 if timerModels.filterByCategory(.rest).allSatisfy({$0.state == .disabled}) {
                     setTimers(category: .rest, state: .inactive)
@@ -186,7 +189,10 @@ class TimerModelStateManager {
     }
 
     private func didChangeTimerPreset(for timerModel: Timer.Model, to length: Int) {
-        defer { timerModel.length = length }
+        defer {
+            timerModel.length = length
+            // TODO: - analytics using updated timerModel
+        }
         delegate?.resetTimer(for: timerModel)
     }
 
