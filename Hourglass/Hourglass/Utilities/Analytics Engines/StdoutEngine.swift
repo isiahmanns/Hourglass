@@ -3,7 +3,7 @@ struct StdoutEngine: AnalyticsEngineType {
 
     private init() {}
 
-    func logEvent(name: String, metadata: [String: String]) {
+    func logEvent(name: String, metadata: [String : Any]) {
         print("Logging event", name, metadata)
     }
 }
