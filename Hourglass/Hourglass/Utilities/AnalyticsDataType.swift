@@ -1,3 +1,3 @@
 import Mixpanel
 
-typealias AnalyticsDataType = MixpanelType
+typealias Metadata = Properties
