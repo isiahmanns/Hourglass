@@ -31,14 +31,17 @@ struct UnitTestProviders {
                                               timerEventProvider: fakeTimerManager)
         let userNotificationManager = UserNotificationManager.shared
         let settingsManager = SettingsManager.shared
+        let analyticsManager = AnalyticsManager.shared.stdout
 
-        let viewModel = ViewModelMock(dataManager: mockDataManager,
+        let viewModel = ViewModelMock(analyticsManager: analyticsManager,
+                                      dataManager: mockDataManager,
                                       settingsManager: settingsManager,
                                       timerManager: fakeTimerManager,
                                       userNotificationManager: userNotificationManager)
 
         let fakeTimerModelStateManager =
-        TimerModelStateManagerFake(dataManager: mockDataManager,
+        TimerModelStateManagerFake(analyticsManager: analyticsManager,
+                                   dataManager: mockDataManager,
                                    settingsManager: settingsManager,
                                    timerEventProvider: fakeTimerManager)
         fakeTimerModelStateManager.delegate = viewModel
