@@ -10,11 +10,8 @@ struct MixpanelEngine: AnalyticsEngineType {
 
         Mixpanel.initialize(token: token)
     }
-    
-    func logEvent(name: String, metadata: [String : Any]) {
-        let metadata = metadata.mapValues { value in
-            value as? MixpanelType
-        }
+
+    func logEvent(name: String, metadata: [String: AnalyticsDataType]) {
         Mixpanel.mainInstance().track(event: name, properties: metadata)
     }
 }

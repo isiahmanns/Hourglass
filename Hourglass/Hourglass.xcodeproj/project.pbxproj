@@ -21,6 +21,7 @@
 		253816F029A5D88C007BD118 /* ViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816EF29A5D88C007BD118 /* ViewModelTests.swift */; };
 		253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816F929A5D88C007BD118 /* HourglassUITests.swift */; };
 		25458EE129C6A69F00A118C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25458EE029C6A69F00A118C0 /* Constants.swift */; };
+		254C4F062A33C74900217448 /* AnalyticsDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254C4F052A33C74900217448 /* AnalyticsDataType.swift */; };
 		2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */; };
 		2570F7382A1472160031B0BB /* TimerHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7362A1472160031B0BB /* TimerHistory.xcdatamodeld */; };
 		2570F73A2A1563C70031B0BB /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7392A1563C70031B0BB /* CoreDataStore.swift */; };
@@ -86,6 +87,7 @@
 		253816F529A5D88C007BD118 /* HourglassUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HourglassUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		253816F929A5D88C007BD118 /* HourglassUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITests.swift; sourceTree = "<group>"; };
 		25458EE029C6A69F00A118C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		254C4F052A33C74900217448 /* AnalyticsDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsDataType.swift; sourceTree = "<group>"; };
 		2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSettingsFlow.swift; sourceTree = "<group>"; };
 		2570F7372A1472160031B0BB /* TimerHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TimerHistory.xcdatamodel; sourceTree = "<group>"; };
 		2570F7392A1563C70031B0BB /* CoreDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				2507BB4629C7A77F004478BE /* SettingsKeys.swift */,
 				258302ED29C36A0000D37115 /* Notifications.swift */,
 				258302EB29C369E400D37115 /* Events.swift */,
+				254C4F052A33C74900217448 /* AnalyticsDataType.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				258302EA29C331CC00D37115 /* SettingsManager.swift in Sources */,
 				2570F7382A1472160031B0BB /* TimerHistory.xcdatamodeld in Sources */,
 				2507BB4729C7A77F004478BE /* SettingsKeys.swift in Sources */,
+				254C4F062A33C74900217448 /* AnalyticsDataType.swift in Sources */,
 				25458EE129C6A69F00A118C0 /* Constants.swift in Sources */,
 				25EB6DAE29B04BC3005BC143 /* TimerManager.swift in Sources */,
 				253816DE29A5D88C007BD118 /* AppDelegate.swift in Sources */,

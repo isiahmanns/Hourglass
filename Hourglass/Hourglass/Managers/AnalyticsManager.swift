@@ -1,12 +1,12 @@
 protocol AnalyticsEngineType {
-    func logEvent(name: String, metadata: [String: Any])
+    func logEvent(name: String, metadata: [String: AnalyticsDataType])
 }
 
 enum AnalyticsEngine: AnalyticsEngineType {
     case mixpanel
     case stdout
 
-    func logEvent(name: String, metadata: [String : Any]) {
+    func logEvent(name: String, metadata: [String: AnalyticsDataType]) {
         switch self {
         case .mixpanel:
             MixpanelEngine.shared.logEvent(name: name, metadata: metadata)
@@ -47,7 +47,7 @@ enum AnalyticsEvent {
         }
     }
 
-    var metadata: [String: Any] {
+    var metadata: [String: AnalyticsDataType] {
         switch self {
         case let .timerDidComplete(timerModel), let .timerWasCancelled(timerModel):
             return ["Category" : String(describing: timerModel.category),
