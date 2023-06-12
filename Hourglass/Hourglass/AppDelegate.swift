@@ -8,6 +8,7 @@ protocol WindowCoordinator: AnyObject {
 }
 
 private struct Dependencies {
+    static let analyticsManager = AnalyticsManager.shared.mixpanel
     static let dataManager = DataManager.shared
     static let settingsManager = SettingsManager.shared
     static let timerManager = TimerManager.shared
@@ -25,7 +26,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Root Dependencies
     private var timerModelStateManager = Dependencies.timerModelStateManager
     private var dataManager = Dependencies.dataManager
-    private var viewModel = ViewModel(dataManager: Dependencies.dataManager,
+    private var viewModel = ViewModel(analyticsManager: Dependencies.analyticsManager,
+                                      dataManager: Dependencies.dataManager,
                                       settingsManager: Dependencies.settingsManager,
                                       timerManager: Dependencies.timerManager,
                                       userNotificationManager: Dependencies.userNotificationManager)

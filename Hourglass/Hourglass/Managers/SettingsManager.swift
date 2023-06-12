@@ -11,94 +11,49 @@ import Foundation
 extension UserDefaults {
     // MARK: - Timer Lengths
     @objc dynamic var timerFocusSmall: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
-            as? Int ?? Constants.timerFocusSmall
-        }
+        object(forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
+        as? Int ?? Constants.timerFocusSmall
     }
 
     @objc dynamic var timerFocusMedium: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
-            as? Int ?? Constants.timerFocusMedium
-        }
+        object(forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
+        as? Int ?? Constants.timerFocusMedium
     }
 
     @objc dynamic var timerFocusLarge: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
-            as? Int ?? Constants.timerFocusLarge
-        }
+        object(forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
+        as? Int ?? Constants.timerFocusLarge
     }
 
     @objc dynamic var timerRestSmall: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
-            as? Int ?? Constants.timerRestSmall
-        }
+        object(forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
+        as? Int ?? Constants.timerRestSmall
     }
 
     @objc dynamic var timerRestMedium: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
-            as? Int ?? Constants.timerRestMedium
-        }
+        object(forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
+        as? Int ?? Constants.timerRestMedium
     }
 
     @objc dynamic var timerRestLarge: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
-            as? Int ?? Constants.timerRestLarge
-        }
+        object(forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
+        as? Int ?? Constants.timerRestLarge
     }
 
     // MARK: - Rest Settings
     @objc dynamic var restWarningThreshold: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.restWarningThreshold.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.restWarningThreshold.rawValue)
-            as? Int ?? Constants.restWarningThreshold
-        }
+        object(forKey: SettingsKeys.restWarningThreshold.rawValue)
+        as? Int ?? Constants.restWarningThreshold
     }
 
     @objc dynamic var enforceRestThreshold: Int {
-        set {
-            set(newValue, forKey: SettingsKeys.enforceRestThreshold.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.enforceRestThreshold.rawValue)
-            as? Int ?? Constants.enforceRestThreshold
-        }
+        object(forKey: SettingsKeys.enforceRestThreshold.rawValue)
+        as? Int ?? Constants.enforceRestThreshold
     }
 
     @objc dynamic var getBackToWork: Bool {
-        set {
-            set(newValue, forKey: SettingsKeys.getBackToWork.rawValue)
-        }
-        get {
-            object(forKey: SettingsKeys.getBackToWork.rawValue)
-            as? Bool ?? Constants.getBackToWorkIsEnabled
-        }
+        object(forKey: SettingsKeys.getBackToWork.rawValue)
+        as? Bool ?? Constants.getBackToWorkIsEnabled
     }
 }
 
@@ -124,17 +79,17 @@ struct SettingsManager {
     func setTimer(length: Int, for timerSetting: SettingsKeys.TimerSetting) {
         switch timerSetting {
         case .timerFocusSmall:
-            store.timerFocusSmall = length
+            store.set(length, forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
         case .timerFocusMedium:
-            store.timerFocusMedium = length
+            store.set(length, forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
         case .timerFocusLarge:
-            store.timerFocusLarge = length
+            store.set(length, forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
         case .timerRestSmall:
-            store.timerRestSmall = length
+            store.set(length, forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
         case .timerRestMedium:
-            store.timerRestMedium = length
+            store.set(length, forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
         case .timerRestLarge:
-            store.timerRestLarge = length
+            store.set(length, forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
         }
     }
 
@@ -159,10 +114,10 @@ struct SettingsManager {
     func setRestWarningThreshold(_ value: Int, conservatively: Bool = false) {
         if conservatively {
             if store.restWarningThreshold != value {
-                store.restWarningThreshold = value
+                store.set(value, forKey: SettingsKeys.restWarningThreshold.rawValue)
             }
         } else {
-            store.restWarningThreshold = value
+            store.set(value, forKey: SettingsKeys.restWarningThreshold.rawValue)
         }
     }
 
@@ -174,10 +129,10 @@ struct SettingsManager {
     func setEnforceRestThreshold(_ value: Int, conservatively: Bool = false) {
         if conservatively {
             if store.enforceRestThreshold != value {
-                store.enforceRestThreshold =  value
+                store.set(value, forKey: SettingsKeys.enforceRestThreshold.rawValue)
             }
         } else {
-            store.enforceRestThreshold = value
+            store.set(value, forKey: SettingsKeys.enforceRestThreshold.rawValue)
         }
     }
 
@@ -189,10 +144,10 @@ struct SettingsManager {
     func setGetBackToWork(isEnabled: Bool, conservatively: Bool = false) {
         if conservatively {
             if store.getBackToWork != isEnabled {
-                store.getBackToWork = isEnabled
+                store.set(isEnabled, forKey: SettingsKeys.getBackToWork.rawValue)
             }
         } else {
-            store.getBackToWork = isEnabled
+            store.set(isEnabled, forKey: SettingsKeys.getBackToWork.rawValue)
         }
     }
 
@@ -211,6 +166,7 @@ struct SettingsManager {
     }
 
     // Fullscreen Break
+    /*
     func setFullScreenOnBreak(isEnabled: Bool) {
         store.set(isEnabled, forKey: SettingsKeys.fullScreenOnBreak.rawValue)
     }
@@ -219,6 +175,7 @@ struct SettingsManager {
         store.object(forKey: SettingsKeys.fullScreenOnBreak.rawValue)
         as? Bool ?? Constants.fullscreenOnBreak
     }
+     */
 
     // Notification Style
     func setNotification(style: NotificationStyle) {
