@@ -25,6 +25,8 @@
 		254C4F082A38A8C200217448 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254C4F072A38A8C200217448 /* GoogleService-Info.plist */; };
 		254C4F092A38A8C200217448 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254C4F072A38A8C200217448 /* GoogleService-Info.plist */; };
 		254C4F0A2A38A8C200217448 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254C4F072A38A8C200217448 /* GoogleService-Info.plist */; };
+		254C4F0D2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 254C4F0C2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		254C4F152A38F85700217448 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 254C4F142A38F85700217448 /* FirebaseCrashlytics */; };
 		2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */; };
 		2570F7382A1472160031B0BB /* TimerHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7362A1472160031B0BB /* TimerHistory.xcdatamodeld */; };
 		2570F73A2A1563C70031B0BB /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7392A1563C70031B0BB /* CoreDataStore.swift */; };
@@ -128,7 +130,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				254C4F152A38F85700217448 /* FirebaseCrashlytics in Frameworks */,
 				25AF8B902A2EAA93000A3F5F /* Mixpanel in Frameworks */,
+				254C4F0D2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,6 +216,7 @@
 				253816EE29A5D88C007BD118 /* HourglassTests */,
 				253816F829A5D88C007BD118 /* HourglassUITests */,
 				253816DB29A5D88C007BD118 /* Products */,
+				254C4F132A38F85700217448 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -272,6 +277,13 @@
 			path = HourglassUITests;
 			sourceTree = "<group>";
 		};
+		254C4F132A38F85700217448 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2570F7482A177F160031B0BB /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,6 +330,8 @@
 			name = Hourglass;
 			packageProductDependencies = (
 				25AF8B8F2A2EAA93000A3F5F /* Mixpanel */,
+				254C4F0C2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				254C4F142A38F85700217448 /* FirebaseCrashlytics */,
 			);
 			productName = Hourglass;
 			productReference = 253816DA29A5D88C007BD118 /* Hourglass.app */;
@@ -393,6 +407,7 @@
 			mainGroup = 253816D129A5D88C007BD118;
 			packageReferences = (
 				25AF8B8E2A2EAA93000A3F5F /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
+				254C4F0B2A38AD2B00217448 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 253816DB29A5D88C007BD118 /* Products */;
 			projectDirPath = "";
@@ -933,6 +948,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		254C4F0B2A38AD2B00217448 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		25AF8B8E2A2EAA93000A3F5F /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
@@ -944,6 +967,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		254C4F0C2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 254C4F0B2A38AD2B00217448 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		254C4F142A38F85700217448 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 254C4F0B2A38AD2B00217448 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
 		25AF8B8F2A2EAA93000A3F5F /* Mixpanel */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 25AF8B8E2A2EAA93000A3F5F /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
