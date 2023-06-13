@@ -22,6 +22,9 @@
 		253816FA29A5D88C007BD118 /* HourglassUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 253816F929A5D88C007BD118 /* HourglassUITests.swift */; };
 		25458EE129C6A69F00A118C0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25458EE029C6A69F00A118C0 /* Constants.swift */; };
 		254C4F062A33C74900217448 /* AnalyticsDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254C4F052A33C74900217448 /* AnalyticsDataType.swift */; };
+		254C4F082A38A8C200217448 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254C4F072A38A8C200217448 /* GoogleService-Info.plist */; };
+		254C4F092A38A8C200217448 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254C4F072A38A8C200217448 /* GoogleService-Info.plist */; };
+		254C4F0A2A38A8C200217448 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254C4F072A38A8C200217448 /* GoogleService-Info.plist */; };
 		2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */; };
 		2570F7382A1472160031B0BB /* TimerHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7362A1472160031B0BB /* TimerHistory.xcdatamodeld */; };
 		2570F73A2A1563C70031B0BB /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7392A1563C70031B0BB /* CoreDataStore.swift */; };
@@ -88,6 +91,7 @@
 		253816F929A5D88C007BD118 /* HourglassUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourglassUITests.swift; sourceTree = "<group>"; };
 		25458EE029C6A69F00A118C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		254C4F052A33C74900217448 /* AnalyticsDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsDataType.swift; sourceTree = "<group>"; };
+		254C4F072A38A8C200217448 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSettingsFlow.swift; sourceTree = "<group>"; };
 		2570F7372A1472160031B0BB /* TimerHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TimerHistory.xcdatamodel; sourceTree = "<group>"; };
 		2570F7392A1563C70031B0BB /* CoreDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
@@ -226,6 +230,7 @@
 			children = (
 				25AF8B992A2F9B38000A3F5F /* Config.xcconfig */,
 				25EB6D7029AAE24B005BC143 /* Info.plist */,
+				254C4F072A38A8C200217448 /* GoogleService-Info.plist */,
 				25C97C8F29CC98AF001A8CAD /* main.swift */,
 				253816DD29A5D88C007BD118 /* AppDelegate.swift */,
 				25EB6DAB29B027AB005BC143 /* ViewModel.swift */,
@@ -406,6 +411,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				25EB6D6F29AAE226005BC143 /* Poppins-Regular.ttf in Resources */,
+				254C4F082A38A8C200217448 /* GoogleService-Info.plist in Resources */,
 				253816E529A5D88C007BD118 /* Preview Assets.xcassets in Resources */,
 				253816E229A5D88C007BD118 /* Assets.xcassets in Resources */,
 			);
@@ -415,6 +421,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				254C4F092A38A8C200217448 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +429,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				254C4F0A2A38A8C200217448 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
