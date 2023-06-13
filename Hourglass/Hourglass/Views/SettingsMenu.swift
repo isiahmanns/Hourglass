@@ -116,6 +116,11 @@ struct SettingsMenu: View {
                     let getBackToWorkIsEnabled = getBackToWorkIsEnabled ? "On" : "Off"
                     Text("Get Back To Work: \(getBackToWorkIsEnabled)")
                 }
+                Section("Debug Menu") {
+                    Button("Simulate Crash") {
+                        fatalError("Debug crash simluation")
+                    }
+                }
             }
             Section {
                 Button("Quit Hourglass") {
