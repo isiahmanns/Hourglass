@@ -183,7 +183,7 @@ struct SettingsManager {
     }
 
     func getNotificationStyle() -> NotificationStyle {
-        #if DEBUG || CITESTING
+        #if CITESTING
         if let overrideValue = ProcessInfo.processInfo.environment[SettingsKeys.notificationStyle.rawValue] {
             return NotificationStyle(rawValue: Int(overrideValue)!)!
         }
