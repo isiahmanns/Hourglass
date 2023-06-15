@@ -1,5 +1,6 @@
-import SwiftUI
 import Combine
+import FirebaseCore
+import SwiftUI
 
 protocol WindowCoordinator: AnyObject {
     func showAboutWindow()
@@ -35,6 +36,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var cancellables: Set<AnyCancellable> = []
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
+        FirebaseApp.configure()
         setupDelegates()
         setupStatusItem()
         let view = setupContentView()

@@ -3,6 +3,9 @@ workflows:
     name: Build and test
     instance_type: mac_mini_m1
     environment:
+      groups:
+        - firebase_credentials
+        - config_credentials
       xcode: 14.3
     triggering:
       events:
@@ -23,6 +26,10 @@ workflows:
           script: xcodebuild -project 'Hourglass.xcodeproj' -scheme 'Hourglass' -showdestinations
         - name: Show SDKs
           script: xcodebuild -showsdks
+        - name: Pre-build configuration
+          script: |
+            echo $FIREBASE_IOS | base64 --decode > $CM_BUILD_DIR/Hourglass/Hourglass/GoogleService-Info.plist
+            echo $CONFIG_IOS | base64 --decode > $CM_BUILD_DIR/Hourglass/Hourglass/Config.xcconfig
         - name: Build and test on device
           script: >
             xcodebuild clean test
@@ -31,4 +38,7 @@ workflows:
             -destination 'platform=macOS,arch=x86_64'
             -sdk 'macosx13.3'
             -parallel-testing-enabled NO
+            CODE_SIGN_IDENTITY=""
+            CODE_SIGNING_REQUIRED=NO
+            CODE_SIGNING_ALLOWED=NO
             | xcpretty && exit ${PIPESTATUS[0]}
