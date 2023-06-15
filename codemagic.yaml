@@ -5,6 +5,7 @@ workflows:
     environment:
       groups:
         - firebase_credentials
+        - config_credentials
       xcode: 14.3
     triggering:
       events:
@@ -26,7 +27,9 @@ workflows:
         - name: Show SDKs
           script: xcodebuild -showsdks
         - name: Pre-build configuration
-          script: echo $FIREBASE_IOS | base64 --decode > $CM_BUILD_DIR/Hourglass/Hourglass/GoogleService-Info.plist
+          script: |
+            echo $FIREBASE_IOS | base64 --decode > $CM_BUILD_DIR/Hourglass/Hourglass/GoogleService-Info.plist
+            echo $CONFIG_IOS | base64 --decode > $CM_BUILD_DIR/Hourglass/Hourglass/Config.xcconfig
         - name: Build and test on device
           script: >
             xcodebuild clean test
