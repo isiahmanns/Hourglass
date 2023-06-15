@@ -15,7 +15,7 @@ final class ViewModelTests: XCTestCase {
     let now = Date.now
 
     lazy var timerModels: [Hourglass.Timer.Category: [Hourglass.Timer.Model]] = {
-        Dictionary(grouping: Array(viewModel.timerModels.values).sortByLength(),
+        Dictionary(grouping: Array(viewModel.timerModels.values).sortBySize(),
                    by: { $0.category })
     }()
 
