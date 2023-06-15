@@ -34,7 +34,7 @@ workflows:
           script: >
             xcodebuild clean test
             -project 'Hourglass.xcodeproj'
-            -scheme 'HourglassCITesting'
+            -scheme 'Hourglass'
             -destination 'platform=macOS,arch=x86_64'
             -sdk 'macosx13.3'
             -parallel-testing-enabled NO
