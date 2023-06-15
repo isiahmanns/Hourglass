@@ -807,6 +807,7 @@
 		};
 		257053BA29BF76720074A144 /* CITesting */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25AF8B992A2F9B38000A3F5F /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
