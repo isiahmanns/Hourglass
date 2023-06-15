@@ -9,7 +9,7 @@ protocol WindowCoordinator: AnyObject {
 }
 
 private struct Dependencies {
-    static let analyticsManager = AnalyticsManager.shared.mixpanel
+    static let analyticsManager = AnalyticsManager.shared
     static let dataManager = DataManager.shared
     static let settingsManager = SettingsManager.shared
     static let timerManager = TimerManager.shared

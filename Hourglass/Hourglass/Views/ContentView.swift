@@ -25,7 +25,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = ViewModel(analyticsManager: AnalyticsManager.shared.stdout,
+        let viewModel = ViewModel(analyticsManager: AnalyticsManager.shared,
                                   dataManager: DataManager.shared,
                                   settingsManager: SettingsManager.shared,
                                   timerManager: TimerManager.shared,
