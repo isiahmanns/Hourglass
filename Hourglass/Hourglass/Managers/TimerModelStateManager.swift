@@ -4,7 +4,7 @@ import Combine
  A manager object that subscribes to timer events and handles associated `Timer.Model` state mutation.
  */
 class TimerModelStateManager {
-    static let shared = TimerModelStateManager(analyticsManager: AnalyticsManager.shared.mixpanel,
+    static let shared = TimerModelStateManager(analyticsManager: AnalyticsManager.shared,
                                                dataManager: DataManager.shared,
                                                settingsManager: SettingsManager.shared,
                                                timerEventProvider: TimerManager.shared)

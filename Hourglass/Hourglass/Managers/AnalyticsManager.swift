@@ -72,10 +72,11 @@ enum AnalyticsEvent {
 }
 
 struct AnalyticsManager {
-    enum shared {
-        static let mixpanel = AnalyticsManager(analyticsEngine: .mixpanel)
-        static let stdout = AnalyticsManager(analyticsEngine: .stdout)
-    }
+    #if CITESTING
+    static let shared = AnalyticsManager(analyticsEngine: .stdout)
+    #else
+    static let shared = AnalyticsManager(analyticsEngine: .mixpanel)
+    #endif
 
     private let analyticsEngine: AnalyticsEngine
 

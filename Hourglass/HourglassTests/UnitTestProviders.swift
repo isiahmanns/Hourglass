@@ -31,7 +31,7 @@ struct UnitTestProviders {
                                               timerEventProvider: fakeTimerManager)
         let userNotificationManager = UserNotificationManager.shared
         let settingsManager = SettingsManager.shared
-        let analyticsManager = AnalyticsManager.shared.stdout
+        let analyticsManager = AnalyticsManager.shared
 
         let viewModel = ViewModelMock(analyticsManager: analyticsManager,
                                       dataManager: mockDataManager,
