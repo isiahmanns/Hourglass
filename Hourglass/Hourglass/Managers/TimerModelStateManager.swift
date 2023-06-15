@@ -79,7 +79,6 @@ class TimerModelStateManager {
             .sink { [weak self] timerModelId in
                 guard let self else { return }
                 guard let activeTimerModel, timerModelId == activeTimerModel.id else {
-                    // TODO: - Analytics, invalid state
                     fatalError()
                 }
 
@@ -97,7 +96,6 @@ class TimerModelStateManager {
             .sink { [weak self] timerModelId in
                 guard let self else { return }
                 guard let activeTimerModel, timerModelId == activeTimerModel.id else {
-                    // TODO: - Analytics, invalid state
                     fatalError()
                 }
 
@@ -122,7 +120,6 @@ class TimerModelStateManager {
             .sink { [weak self] timerModelId in
                 guard let self else { return }
                 guard let activeTimerModel, timerModelId == activeTimerModel.id else {
-                    // TODO: - Analytics, invalid state
                     fatalError()
                 }
 

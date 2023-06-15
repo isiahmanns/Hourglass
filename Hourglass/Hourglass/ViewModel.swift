@@ -62,7 +62,6 @@ class ViewModel: ObservableObject {
             }
 
             guard let pendingTimerModel else {
-                // TODO: - Analytics, invalid state
                 fatalError()
             }
 
