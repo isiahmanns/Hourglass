@@ -38,4 +38,7 @@ workflows:
             -destination 'platform=macOS,arch=x86_64'
             -sdk 'macosx13.3'
             -parallel-testing-enabled NO
+            CODE_SIGN_IDENTITY=""
+            CODE_SIGNING_REQUIRED=NO
+            CODE_SIGNING_ALLOWED=NO
             | xcpretty && exit ${PIPESTATUS[0]}
