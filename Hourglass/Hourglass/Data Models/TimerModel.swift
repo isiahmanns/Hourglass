@@ -37,7 +37,7 @@ extension Timer {
         }
     }
 
-    enum Size {
+    enum Size: Int {
         case small
         case medium
         case large
@@ -54,7 +54,7 @@ extension Dictionary<Timer.Model.ID, Timer.Model> {
 }
 
 extension Array<Timer.Model> {
-    func sortByLength() -> [Timer.Model] {
-        self.sorted(by: {$0.length < $1.length})
+    func sortBySize() -> [Timer.Model] {
+        self.sorted(by: {$0.size.rawValue < $1.size.rawValue})
     }
 }
