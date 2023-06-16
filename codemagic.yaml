@@ -41,3 +41,103 @@ workflows:
                     CODE_SIGNING_ALLOWED=NO \
                     | xcpretty
                 exit ${PIPESTATUS[0]}
+    archive-and-release:
+        name: Archive and release
+        instance_type: mac_mini_m1
+        environment:
+            groups:
+                - firebase_credentials
+                - config_credentials
+                - code_signing
+            xcode: 14.3
+        integrations:
+            app_store_connect: App Store Connect Key
+        working_directory: Hourglass
+        max_build_duration: 6
+        scripts:
+            - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command
+              script: keychain initialize
+            - name: Fetch signing files
+              script: |
+                app-store-connect fetch-signing-files "$(xcode-project detect-bundle-id)" \
+                    --platform MAC_OS \
+                    --type MAC_APP_STORE \
+            - name: Fetch Mac Installer Distribution certificates
+              script: |
+                app-store-connect list-certificates \
+                    --type MAC_INSTALLER_DISTRIBUTION \
+                    --certificate-key "$MAC_INSTALLER_CERTIFICATE_KEY" \
+                    --save
+            - name: Set up signing certificate
+              script: keychain add-certificates -A
+            - name: Set up code signing settings on Xcode project
+              script: |
+                customExportOptions='{"method":"app-store", "signingStyle":"manual", "installerSigningCertificate":"3rd Party Mac Developer Installer"}'
+                xcode-project use-profiles \
+                    --custom-export-options "$customExportOptions"
+                echo "Export Options plist"
+                cat $HOME/export_options.plist
+            - name: List Certs and Profiles
+              script: |
+                ls "/Users/builder/Library/MobileDevice/Provisioning Profiles"
+                ls /Users/builder/Library/MobileDevice/Certificates/
+            - name: Generate secret project files from Codemagic UI
+              script: |
+                echo $FIREBASE_IOS | base64 --decode > $CM_BUILD_DIR/Hourglass/Hourglass/GoogleService-Info.plist
+                echo $CONFIG_IOS | base64 --decode > $CM_BUILD_DIR/Hourglass/Hourglass/Config.xcconfig
+            - name: Set the build version
+              script: | 
+                #!/bin/sh
+                set -e
+                set -x
+                cd $CM_BUILD_DIR/Hourglass
+                agvtool new-version -all $(($BUILD_NUMBER + 1))
+            - name: Generate archive
+              script: |
+                xcodebuild clean archive \
+                    -project 'Hourglass.xcodeproj' \
+                    -scheme 'Hourglass' \
+                    -destination 'platform=macOS,arch=x86_64' \
+                    -sdk 'macosx13.3' \
+                    -archivePath build/macos/Hourglass.xcarchive
+            - name: Export archive
+              script: |
+                echo "Export Options plist"
+                cat $HOME/export_options.plist
+                xcodebuild -exportArchive \
+                    -archivePath build/macos/Hourglass.xcarchive \
+                    -exportPath build/macos/ \
+                    -exportOptionsPlist $HOME/export_options.plist
+        artifacts:
+            - build/macos/Hourglass.pkg
+            - build/macos/Hourglass.xcarchive
+            - build/macos/DistributionSummary.plist
+            - build/macos/ExportOptions.plist
+            - build/macos/Packaging.log
+            - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+        publishing:
+            app_store_connect:
+                auth: integration
+                submit_to_testflight: true
+                expire_build_submitted_for_review: true
+                beta_groups:
+                    - Home Team
+                submit_to_app_store: false
+            scripts:
+                - name: Upload debug symbols to Firebase Crashlytics
+                  script: | 
+                    echo "Find build artifacts"
+                    dsymPath=$(find $HOME/Library/Developer/Xcode/DerivedData/Hourglass*/Build | head -1)
+                    echo "dsyms expected:"
+                    find $dsymPath -name "*.dSYM"
+                    dsymFile=$(find $dsymPath -name "*.dSYM" | head -1) 
+                    if [[ -z ${dsymFile} ]]
+                    then
+                        echo "No debug symbols were found, skip publishing to Firebase Crashlytics"
+                    else
+                        echo "Publishing debug symbols file <$dsymFile> to Firebase Crashlytics"
+                        $HOME/Library/Developer/Xcode/DerivedData/**/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols \
+                            -gsp $CM_BUILD_DIR/Hourglass/Hourglass/GoogleService-Info.plist \
+                            -p mac \
+                            $dsymFile
+                    fi
