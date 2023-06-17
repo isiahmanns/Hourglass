@@ -3,9 +3,11 @@
 
 [Github Project][github-project-link]
 
-Hourglass is a Pomodoro tool with custom controls to select your focus and break time-blocks. 
-No distractions, no pausing, no bloat. Commit to focus for the duration of the timer. Customize your timer presets. 
-A break is suggested, and then forced, after a set amount of focus time.
+Hourglass is a menu-bar Pomodoro tool with custom controls to select your focus and rest time-blocks.
+
+- No distractions, no pausing, no bloat. Commit to focus for the duration of the timer. 
+- Customize your timer presets. A break is suggested, and then forced, after a set amount of focus time.
+- View your completed time-block history in an interactive chart.
 
 This is for folks who agree that traditional Pomodoro technique is too rigid. 
 Need a bigger time-block for your task? Take it. Want a shorter rest period? Go ahead. 
