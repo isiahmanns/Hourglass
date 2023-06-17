@@ -123,6 +123,7 @@ workflows:
                 beta_groups:
                     - Home Team
                 submit_to_app_store: false
+                copyright: 2023 Isiah Michael Manns
             scripts:
                 - name: Upload debug symbols to Firebase Crashlytics
                   script: | 
