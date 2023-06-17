@@ -94,6 +94,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         aboutWindow.title = "About"
         aboutWindow.titleVisibility = .hidden
         aboutWindow.titlebarAppearsTransparent = true
+        aboutWindow.level = .floating
         aboutWindow.setContentSize(aboutViewController.view.fittingSize)
     }
 
