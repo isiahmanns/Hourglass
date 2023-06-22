@@ -106,6 +106,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statisticsWindow = NSWindow(contentViewController: statisticsViewController)
         statisticsWindow.styleMask = [.titled, .closable, .resizable]
         statisticsWindow.titlebarAppearsTransparent = true
+        statisticsWindow.level = .floating
         statisticsWindow.title = "Statistics"
         statisticsWindow.delegate = self
     }
