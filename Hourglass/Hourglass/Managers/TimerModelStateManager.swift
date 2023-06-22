@@ -27,7 +27,7 @@ class TimerModelStateManager {
      This setting is triggered immediately, on the tick of the timer.
      */
     private var restWarningThreshold: Int? {
-        let restWarningThreshold = settingsManager.getRestWarningThreshold()
+        let restWarningThreshold = settingsManager.getRestWarningThreshold() * Constants.countdownFactor
         return restWarningThreshold > 0 ? restWarningThreshold : nil
     }
 
@@ -37,7 +37,7 @@ class TimerModelStateManager {
      This setting is triggered when a timer is cancelled or completed.
      */
     private var enforceRestThreshold: Int? {
-        let enforceRestThreshold = settingsManager.getEnforceRestThreshold()
+        let enforceRestThreshold = settingsManager.getEnforceRestThreshold() * Constants.countdownFactor
         return enforceRestThreshold > 0 ? enforceRestThreshold : nil
     }
 
