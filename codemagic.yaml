@@ -62,12 +62,14 @@ workflows:
                 app-store-connect fetch-signing-files "$(xcode-project detect-bundle-id)" \
                     --platform MAC_OS \
                     --type MAC_APP_STORE \
+                    --verbose
             - name: Fetch Mac Installer Distribution certificates
               script: |
                 app-store-connect list-certificates \
                     --type MAC_INSTALLER_DISTRIBUTION \
                     --certificate-key "$MAC_INSTALLER_CERTIFICATE_KEY" \
                     --save
+                    --verbose
             - name: Set up signing certificate
               script: keychain add-certificates -A
             - name: Set up code signing settings on Xcode project
