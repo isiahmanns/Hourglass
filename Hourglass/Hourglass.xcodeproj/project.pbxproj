@@ -49,6 +49,7 @@
 		25C97C9029CC98AF001A8CAD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C97C8F29CC98AF001A8CAD /* main.swift */; };
 		25C97C9329D2A2C9001A8CAD /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C97C9229D2A2C9001A8CAD /* TimestampView.swift */; };
 		25D7D4BD2A1BC3C300ADEDF4 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7D4BC2A1BC3C300ADEDF4 /* TestData.swift */; };
+		25E019252A453D7F007BF235 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E019242A453D7F007BF235 /* Bundle.swift */; };
 		25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6829A67985005BC143 /* TimerButton.swift */; };
 		25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6A29AAD45C005BC143 /* Color.swift */; };
 		25EB6D6F29AAE226005BC143 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */; };
@@ -116,6 +117,7 @@
 		25C97C8F29CC98AF001A8CAD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		25C97C9229D2A2C9001A8CAD /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		25D7D4BC2A1BC3C300ADEDF4 /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
+		25E019242A453D7F007BF235 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		25EB6D6829A67985005BC143 /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
 		25EB6D6A29AAD45C005BC143 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				258302ED29C36A0000D37115 /* Notifications.swift */,
 				258302EB29C369E400D37115 /* Events.swift */,
 				254C4F052A33C74900217448 /* AnalyticsDataType.swift */,
+				25E019242A453D7F007BF235 /* Bundle.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 				25D7D4BD2A1BC3C300ADEDF4 /* TestData.swift in Sources */,
 				25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */,
 				25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */,
+				25E019252A453D7F007BF235 /* Bundle.swift in Sources */,
 				25EB6D7229AAE32C005BC143 /* Font.swift in Sources */,
 				2570F74A2A1A34B20031B0BB /* StatisticsView.swift in Sources */,
 				2507BB5129C91BF9004478BE /* AlertView.swift in Sources */,
