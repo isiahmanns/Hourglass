@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct AboutView: View {
+    let bundle: Bundle
+
     var body: some View {
         HStack(alignment: .center, spacing: 50) {
             // Icon
@@ -11,7 +13,11 @@ struct AboutView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Hourglass")
                         .font(.poppins)
-                    Text("Version 1.0")
+
+                    if let releaseNo = bundle.releaseVersionNumber,
+                       let buildNo = bundle.buildVersionNumber {
+                        Text("Version \(releaseNo) (\(buildNo))")
+                    }
                 }
 
                 VStack(alignment: .leading) {
@@ -75,6 +81,6 @@ extension AboutView {
 
 struct AboutView_Previews: PreviewProvider {
     static var previews: some View {
-        AboutView()
+        AboutView(bundle: Bundle.main)
     }
 }
