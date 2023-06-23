@@ -21,12 +21,12 @@ struct RestSettingsFlow: View {
             Form {
                 Picker("Rest Reminder:", selection: $restWarningThreshold) {
                     Text("Off").tag(-1)
-                    Text("15").tag(15)
-                    Text("20").tag(20)
-                    Text("30").tag(30)
-                    Text("40").tag(40)
-                    Text("50").tag(50)
-                    Text("60").tag(60)
+                    Text("15 minutes").tag(15)
+                    Text("20 minutes").tag(20)
+                    Text("30 minutes").tag(30)
+                    Text("40 minutes").tag(40)
+                    Text("50 minutes").tag(50)
+                    Text("60 minutes").tag(60)
                 }
                 .onChange(of: restWarningThreshold) { _ in
                     if !dataIsValid { enforceRestThreshold = -1 }
@@ -35,12 +35,12 @@ struct RestSettingsFlow: View {
 
                 Picker("Enforce Rest:", selection: $enforceRestThreshold) {
                     Text("Off").tag(-1)
-                    Text("15").tag(15)
-                    Text("20").tag(20)
-                    Text("30").tag(30)
-                    Text("40").tag(40)
-                    Text("50").tag(50)
-                    Text("60").tag(60)
+                    Text("15 minutes").tag(15)
+                    Text("20 minutes").tag(20)
+                    Text("30 minutes").tag(30)
+                    Text("40 minutes").tag(40)
+                    Text("50 minutes").tag(50)
+                    Text("60 minutes").tag(60)
                 }
                 .onChange(of: enforceRestThreshold) { _ in
                     if !dataIsValid { restWarningThreshold = -1 }

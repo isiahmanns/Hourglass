@@ -158,7 +158,7 @@ final class HourglassUITests: XCTestCase {
         let settingsButton = app.popUpButtons["settings-button"]
         settingsButton.tap()
 
-        let timerSetting = app.menuItems["Rest Timers"].menuItems["15"]
+        let timerSetting = app.menuItems["Rest Timers"].menuItems["15 minutes"]
         timerSetting.tap()
 
         let alert = app.sheets.matching(identifier: "alert").element
@@ -174,7 +174,7 @@ final class HourglassUITests: XCTestCase {
 
         // Cleanup
         settingsButton.tap()
-        app.menuItems["Rest Timers"].menuItems["10"].tap()
+        app.menuItems["Rest Timers"].menuItems["10 minutes"].tap()
     }
 }
 
