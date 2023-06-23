@@ -70,40 +70,40 @@ struct SettingsMenu: View {
                 Section("Timer Presets") {
                     Menu("Focus Timers") {
                         Picker("Small", selection: $timerFocusSmallPreset) {
-                            Text("15").tag(15)
-                            Text("20").tag(20)
+                            Text("15 minutes").tag(15)
+                            Text("20 minutes").tag(20)
                         }
 
                         Picker("Medium", selection: $timerFocusMediumPreset) {
-                            Text("25").tag(25)
-                            Text("30").tag(30)
+                            Text("25 minutes").tag(25)
+                            Text("30 minutes").tag(30)
                         }
 
                         Picker("Large", selection: $timerFocusLargePreset) {
-                            Text("35").tag(35)
-                            Text("40").tag(40)
+                            Text("35 minutes").tag(35)
+                            Text("40 minutes").tag(40)
                         }
                     }.pickerStyle(.inline)
                     Menu("Rest Timers") {
                         Picker("Small", selection: $timerRestSmallPreset) {
-                            Text("3").tag(3)
-                            Text("5").tag(5)
+                            Text("3 minutes").tag(3)
+                            Text("5 minutes").tag(5)
                         }
 
                         Picker("Medium", selection: $timerRestMediumPreset) {
-                            Text("10").tag(10)
-                            Text("15").tag(15)
+                            Text("10 minutes").tag(10)
+                            Text("15 minutes").tag(15)
                         }
 
                         Picker("Large", selection: $timerRestLargePreset) {
-                            Text("20").tag(20)
-                            Text("25").tag(25)
+                            Text("20 minutes").tag(20)
+                            Text("25 minutes").tag(25)
                         }
                     }
                     .pickerStyle(.inline)
                 }
                 Section("Rest Settings") {
-                    Button("Set Rest Thresholds") {
+                    Button("Edit Rest Settings") {
                         viewModel.viewState.showRestSettingsFlow.toggle()
                     }
 
