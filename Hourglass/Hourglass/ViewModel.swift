@@ -134,6 +134,9 @@ extension ViewModel: EventNotifying {
         case .enforceRestThresholdMet:
             viewState.showEnforceRestAlert.toggle()
             windowCoordinator?.showPopoverIfNeeded()
+        case .getBackToWork:
+            viewState.showGetBackToWorkAlert.toggle()
+            windowCoordinator?.showPopoverIfNeeded()
         }
     }
 
@@ -161,6 +164,7 @@ extension ViewModel {
         var showRestWarningAlert: Bool = false
         var showEnforceRestAlert: Bool = false
         var showRestSettingsFlow: Bool = false
+        var showGetBackToWorkAlert: Bool = false
     }
 
     enum StartNewTimerDialogResponse {
