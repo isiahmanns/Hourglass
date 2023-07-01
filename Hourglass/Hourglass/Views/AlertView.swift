@@ -34,6 +34,6 @@ private extension AlertView {
         static let timerCompleteAlert = Constants.timerCompleteAlert
         static let timerResetAlert = "Timer has been reset."
         static let restWarningAlert = Constants.restWarningAlert
-        static let enforceRestAlert = "You've been focused for a while now. Let your mind rest."
+        static let enforceRestAlert = "You've been focused for a while now. Take a rest."
     }
 }
