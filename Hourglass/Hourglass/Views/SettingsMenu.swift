@@ -107,10 +107,10 @@ struct SettingsMenu: View {
                         viewModel.viewState.showRestSettingsFlow.toggle()
                     }
 
-                    let restWarningThreshold = restWarningThreshold > 0 ? "\(restWarningThreshold)m" : "Off"
+                    let restWarningThreshold = restWarningThreshold > 0 ? "\(restWarningThreshold)fb" : "Off"
                     Text("Rest Reminder: \(restWarningThreshold)")
 
-                    let enforceRestThreshold = enforceRestThreshold > 0 ? "\(enforceRestThreshold)m" : "Off"
+                    let enforceRestThreshold = enforceRestThreshold > 0 ? "\(enforceRestThreshold)fb" : "Off"
                     Text("Enforce Rest: \(enforceRestThreshold)")
 
                     let getBackToWorkIsEnabled = getBackToWorkIsEnabled ? "On" : "Off"
