@@ -108,13 +108,13 @@ struct SettingsMenu: View {
                     }
 
                     let restWarningThreshold = restWarningThreshold > 0 ? "\(restWarningThreshold)fb" : "Off"
-                    Text("Rest Reminder: \(restWarningThreshold)")
+                    DetailText("Rest Reminder: \(restWarningThreshold)")
 
                     let enforceRestThreshold = enforceRestThreshold > 0 ? "\(enforceRestThreshold)fb" : "Off"
-                    Text("Enforce Rest: \(enforceRestThreshold)")
+                    DetailText("Enforce Rest: \(enforceRestThreshold)")
 
                     let getBackToWorkIsEnabled = getBackToWorkIsEnabled ? "On" : "Off"
-                    Text("Get Back To Work: \(getBackToWorkIsEnabled)")
+                    DetailText("Get Back To Work: \(getBackToWorkIsEnabled)")
                 }
             }
             Section {
@@ -129,5 +129,18 @@ struct SettingsMenu: View {
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("settings-button")
+    }
+}
+
+private struct DetailText: View {
+    let text: String
+
+    init(_ text: String) {
+        self.text = text
+    }
+
+    var body: some View {
+        Text(text)
+            .font(.system(size: 10))
     }
 }
