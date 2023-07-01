@@ -19,8 +19,8 @@ enum Constants {
     static let timerRestLarge = 20
 
     // Timer threshold defaults
-    static let restWarningThreshold: Int = 30
-    static let enforceRestThreshold: Int = -1
+    static let restWarningThreshold: Int = 1
+    static let enforceRestThreshold: Int = 2
     static let getBackToWorkIsEnabled: Bool = false
 
     // Timer alert dialog

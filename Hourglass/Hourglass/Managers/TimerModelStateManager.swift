@@ -27,7 +27,7 @@ class TimerModelStateManager {
      This setting is triggered immediately, on the tick of the timer.
      */
     private var restWarningThreshold: Int? {
-        let restWarningThreshold = settingsManager.getRestWarningThreshold() * Constants.countdownFactor
+        let restWarningThreshold = settingsManager.getRestWarningThreshold()
         return restWarningThreshold > 0 ? restWarningThreshold : nil
     }
 
@@ -37,7 +37,7 @@ class TimerModelStateManager {
      This setting is triggered when a timer is cancelled or completed.
      */
     private var enforceRestThreshold: Int? {
-        let enforceRestThreshold = settingsManager.getEnforceRestThreshold() * Constants.countdownFactor
+        let enforceRestThreshold = settingsManager.getEnforceRestThreshold()
         return enforceRestThreshold > 0 ? enforceRestThreshold : nil
     }
 
@@ -75,23 +75,6 @@ class TimerModelStateManager {
             }
             .store(in: &cancellables)
 
-        timerEvents[.timerDidTick]?
-            .sink { [weak self] timerModelId in
-                guard let self else { return }
-                guard let activeTimerModel, timerModelId == activeTimerModel.id else {
-                    fatalError()
-                }
-
-                switch activeTimerModel.category {
-                case .focus:
-                    focusStride += 1
-                    showRestWarningIfNeeded()
-                default:
-                    break
-                }
-            }
-            .store(in: &cancellables)
-
         timerEvents[.timerDidComplete]?
             .sink { [weak self] timerModelId in
                 guard let self else { return }
@@ -99,11 +82,15 @@ class TimerModelStateManager {
                     fatalError()
                 }
 
+                defer { self.activeTimerModelId = nil }
+
                 setTimers(state: .inactive)
                 delegate?.notifyUser(timerEvent: .timerDidComplete)
 
                 switch activeTimerModel.category {
                 case .focus:
+                    focusStride += 1
+                    showRestWarningIfNeeded()
                     enforceRestIfNeeded()
                 case .rest:
                     resetFocusStride()
@@ -111,8 +98,6 @@ class TimerModelStateManager {
                 }
 
                 analyticsManager.logEvent(.timerDidComplete(activeTimerModel))
-
-                activeTimerModelId = nil
             }
             .store(in: &cancellables)
 
@@ -123,18 +108,10 @@ class TimerModelStateManager {
                     fatalError()
                 }
 
+                defer { self.activeTimerModelId = nil }
+
                 activeTimerModel.state = .inactive
-
-                switch activeTimerModel.category {
-                case .focus:
-                    enforceRestIfNeeded()
-                default:
-                    break
-                }
-
                 analyticsManager.logEvent(.timerWasCancelled(activeTimerModel))
-
-                activeTimerModelId = nil
             }
             .store(in: &cancellables)
     }
