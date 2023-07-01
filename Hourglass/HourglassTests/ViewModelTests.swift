@@ -395,6 +395,7 @@ final class ViewModelTests: XCTestCase {
         (0..<5).forEach { _ in
             timerPublisher.send(now)
         }
+        assertUserNotification(.getBackToWork, count: 1)
         assertTimer(timerModel5sRest, state: .disabled)
         assertTimer(timerModel3sFocus, state: .inactive)
 
@@ -418,6 +419,7 @@ final class ViewModelTests: XCTestCase {
         (0..<5).forEach { _ in
             timerPublisher.send(now)
         }
+        assertUserNotification(.getBackToWork, count: 1)
         assertTimer(timerModel5sRest, state: .disabled)
         assertTimer(timerModel3sFocus, state: .inactive)
 

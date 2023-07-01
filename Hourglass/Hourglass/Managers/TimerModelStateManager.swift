@@ -205,6 +205,7 @@ class TimerModelStateManager {
 
     private func enforceFocusIfNeeded() {
         if getBackToWorkIsEnabled {
+            delegate?.notifyUser(progressEvent: .getBackToWork)
             setTimers(category: .rest, state: .disabled)
             setTimers(category: .focus, state: .inactive)
         }
