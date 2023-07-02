@@ -2,8 +2,10 @@ import UserNotifications
 
 /// A notification content provider for use with `UNNotificationRequest`.
 enum HourglassNotification: String {
-    case timerCompleteNotif
-    case restWarningThresholdMetNotif
+    case timerCompleted
+    case restWarningThresholdMet
+    case enforceRestThresholdMet
+    case getBackToWork
 
     var content: UNMutableNotificationContent {
         let notificationContent = UNMutableNotificationContent()
@@ -17,10 +19,14 @@ enum HourglassNotification: String {
 
     var title: String {
         switch self {
-        case .timerCompleteNotif:
+        case .timerCompleted:
             return Constants.timerCompleteAlert
-        case .restWarningThresholdMetNotif:
+        case .restWarningThresholdMet:
             return Constants.restWarningAlert
+        case .enforceRestThresholdMet:
+            return Constants.enforceRestAlert
+        case .getBackToWork:
+            return Constants.getBackToWorkAlert
         }
     }
 
