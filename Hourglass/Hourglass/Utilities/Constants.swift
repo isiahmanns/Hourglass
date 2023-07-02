@@ -1,11 +1,8 @@
 import Foundation
 
 enum Constants {
-    // Notification style default
-    static let notificationStyle = NotificationStyle.popup.rawValue
-
     // Fullscreen-on-break default
-    static let fullscreenOnBreak = true
+    // static let fullscreenOnBreak = true
 
     // Sound default
     static let soundIsEnabled = true
