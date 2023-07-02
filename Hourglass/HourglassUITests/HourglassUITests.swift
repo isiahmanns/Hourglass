@@ -44,26 +44,6 @@ final class HourglassUITests: XCTestCase {
         XCTAssertTrue(settingsButton.exists)
     }
 
-    func testStartTimerToCompletionPopup() {
-        app.setNotificationStyle(.popup)
-        app.launchMenu()
-
-        // Tap 3s timer
-        let (_, timerGridButtons) = timerGrid
-        timerGridButtons[3].tap()
-
-        let alert = app.sheets.matching(identifier: "alert").element
-        XCTAssertTrue(alert.waitForExistence(timeout: 4))
-
-        let alertTitle = alert.staticTexts["Time is up."]
-        let okButton = alert.buttons["OK"]
-        [alertTitle, okButton].forEach { element in
-            XCTAssertTrue(element.exists)
-        }
-
-        okButton.tap()
-    }
-
     /**
      Test local notification via UNUserNotificationCenter on timer complete.
 
@@ -74,7 +54,6 @@ final class HourglassUITests: XCTestCase {
      - Menu bar is not hidden (Desktop and Dock system settings)
      */
     func DISABLED_testStartTimerToCompletionBanner() {
-        app.setNotificationStyle(.banner)
         app.launchMenu()
 
         // Tap 3s timer
@@ -189,12 +168,5 @@ extension XCUIApplication {
 
     func log() {
         print(debugDescription)
-    }
-}
-
-// Settings override helpers via launch environment
-extension XCUIApplication {
-    func setNotificationStyle(_ style: NotificationStyle) {
-        launchEnvironment[SettingsKeys.notificationStyle.rawValue] = String(style.rawValue)
     }
 }

@@ -176,21 +176,4 @@ struct SettingsManager {
         as? Bool ?? Constants.fullscreenOnBreak
     }
      */
-
-    // Notification Style
-    func setNotification(style: NotificationStyle) {
-        store.set(style.rawValue, forKey: SettingsKeys.notificationStyle.rawValue)
-    }
-
-    func getNotificationStyle() -> NotificationStyle {
-        #if CITESTING
-        if let overrideValue = ProcessInfo.processInfo.environment[SettingsKeys.notificationStyle.rawValue] {
-            return NotificationStyle(rawValue: Int(overrideValue)!)!
-        }
-        #endif
-        let value = store.object(forKey: SettingsKeys.notificationStyle.rawValue)
-        as? Int ?? Constants.notificationStyle
-
-        return NotificationStyle(rawValue: value)!
-    }
 }

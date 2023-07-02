@@ -121,7 +121,7 @@ extension ViewModel: EventNotifying {
     @objc func notifyUser(timerEvent: HourglassEventKey.Timer) {
         switch timerEvent {
         case .timerDidComplete:
-            notifyUser(.timerCompleteNotif, alertFlag: &viewState.showTimerCompleteAlert)
+            notifyUser(.timerCompleted)
         default:
             break
         }
@@ -130,36 +130,23 @@ extension ViewModel: EventNotifying {
     @objc func notifyUser(progressEvent: HourglassEventKey.Progress) {
         switch progressEvent {
         case .restWarningThresholdMet:
-            notifyUser(.restWarningThresholdMetNotif, alertFlag: &viewState.showRestWarningAlert)
+            notifyUser(.restWarningThresholdMet)
         case .enforceRestThresholdMet:
-            viewState.showEnforceRestAlert.toggle()
-            windowCoordinator?.showPopoverIfNeeded()
+            notifyUser(.enforceRestThresholdMet)
+        case .getBackToWork:
+            notifyUser(.getBackToWork)
         }
     }
 
-    private func notifyUser(_ notification: HourglassNotification, alertFlag: inout Bool) {
-        let soundIsEnabled = settingsManager.getSoundIsEnabled()
-
-        switch settingsManager.getNotificationStyle() {
-        case .banner:
-            userNotificationManager.fireNotification(notification, soundIsEnabled: soundIsEnabled)
-        case .popup:
-            if soundIsEnabled {
-                userNotificationManager.fireNotificationSound(for: notification)
-            }
-            alertFlag.toggle()
-            windowCoordinator?.showPopoverIfNeeded()
-        }
+    private func notifyUser(_ notification: HourglassNotification) {
+        userNotificationManager.fireNotification(notification, soundIsEnabled: settingsManager.getSoundIsEnabled())
     }
 }
 
 extension ViewModel {
     struct ViewState {
         var showStartNewTimerDialog: Bool = false
-        var showTimerCompleteAlert: Bool = false
         var showTimerResetAlert: Bool = false
-        var showRestWarningAlert: Bool = false
-        var showEnforceRestAlert: Bool = false
         var showRestSettingsFlow: Bool = false
     }
 
