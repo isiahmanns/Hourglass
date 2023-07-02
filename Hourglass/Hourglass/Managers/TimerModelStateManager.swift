@@ -196,7 +196,7 @@ class TimerModelStateManager {
     }
 
     private func enforceRestIfNeeded() {
-        if let enforceRestThreshold, focusStride >= enforceRestThreshold {
+        if let enforceRestThreshold, focusStride == enforceRestThreshold {
             setTimers(category: .focus, state: .disabled)
             setTimers(category: .rest, state: .inactive)
             delegate?.notifyUser(progressEvent: .enforceRestThresholdMet)
