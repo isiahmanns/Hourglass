@@ -12,12 +12,7 @@ enum HourglassNotification: String {
     }
 
     var soundFX: UNNotificationSound? {
-        switch self {
-        case .restWarningThresholdMetNotif:
-            return nil
-        default:
-            return UNNotificationSound.default
-        }
+        return UNNotificationSound.default
     }
 
     var title: String {
