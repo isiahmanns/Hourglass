@@ -121,7 +121,7 @@ extension ViewModel: EventNotifying {
     @objc func notifyUser(timerEvent: HourglassEventKey.Timer) {
         switch timerEvent {
         case .timerDidComplete:
-            notifyUser(.timerCompleteNotif)
+            notifyUser(.timerCompleted)
         default:
             break
         }
@@ -130,13 +130,11 @@ extension ViewModel: EventNotifying {
     @objc func notifyUser(progressEvent: HourglassEventKey.Progress) {
         switch progressEvent {
         case .restWarningThresholdMet:
-            notifyUser(.restWarningThresholdMetNotif)
+            notifyUser(.restWarningThresholdMet)
         case .enforceRestThresholdMet:
-            viewState.showEnforceRestAlert.toggle()
-            windowCoordinator?.showPopoverIfNeeded()
+            notifyUser(.enforceRestThresholdMet)
         case .getBackToWork:
-            viewState.showGetBackToWorkAlert.toggle()
-            windowCoordinator?.showPopoverIfNeeded()
+            notifyUser(.getBackToWork)
         }
     }
 
@@ -149,9 +147,7 @@ extension ViewModel {
     struct ViewState {
         var showStartNewTimerDialog: Bool = false
         var showTimerResetAlert: Bool = false
-        var showEnforceRestAlert: Bool = false
         var showRestSettingsFlow: Bool = false
-        var showGetBackToWorkAlert: Bool = false
     }
 
     enum StartNewTimerDialogResponse {

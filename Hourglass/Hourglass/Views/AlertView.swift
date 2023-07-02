@@ -16,9 +16,7 @@ struct AlertView: View {
                     viewModel.didReceiveStartNewTimerDialog(response: .no)
                 }
             }
-            .alert(Copy.getBackToWorkAlert, isPresented: $viewModel.viewState.showGetBackToWorkAlert) {}
             .alert(Copy.timerResetAlert, isPresented: $viewModel.viewState.showTimerResetAlert) {}
-            .alert(Copy.enforceRestAlert, isPresented: $viewModel.viewState.showEnforceRestAlert) {}
             .sheet(isPresented: $viewModel.viewState.showRestSettingsFlow) {
                 RestSettingsFlow(viewModel: viewModel, settingsManager: settingsManager)
             }
@@ -31,7 +29,5 @@ private extension AlertView {
         static let startNewTimerDialogConfirm = "Start timer"
         static let startNewTimerDialogCancel = "Cancel"
         static let timerResetAlert = "Timer has been reset."
-        static let enforceRestAlert = "You've been focused for a while now. Take a rest."
-        static let getBackToWorkAlert = "Get back to work!"
     }
 }
