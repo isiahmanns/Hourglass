@@ -10,9 +10,6 @@ struct SettingsMenu: View {
      - The UserDefaults cache gets written to only when selecting new options via the Menu.
      */
 
-    @AppStorage(SettingsKeys.notificationStyle.rawValue)
-    var notificationStyle: NotificationStyle = .init(rawValue: Constants.notificationStyle)!
-
     @AppStorage(SettingsKeys.soundIsEnabled.rawValue)
     var soundIsEnabled: Bool = Constants.soundIsEnabled
 
@@ -55,14 +52,6 @@ struct SettingsMenu: View {
                     viewModel.showStatisticsWindow()
                 }
                 Section("Options") {
-                    Picker("Notification Style", selection: $notificationStyle) {
-                        Text("Menu Bar Popup").tag(NotificationStyle.popup)
-                        Text("Notification Banner").tag(NotificationStyle.banner)
-                    }
-                    .onChange(of: notificationStyle) { newValue in
-                        viewModel.logEvent(.notificationStyleSet(newValue))
-                    }
-
                     Toggle("Sound", isOn: $soundIsEnabled)
                     // TODO: - Implement fullscreen on rest (#14)
                     // Toggle("Fullscreen on Rest", isOn: .constant(true))
