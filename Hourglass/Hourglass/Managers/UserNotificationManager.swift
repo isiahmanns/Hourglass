@@ -38,6 +38,7 @@ class UserNotificationManager: NSObject, NotificationManager {
                                             content: content,
                                             trigger: nil)
 
+        userNotificationCenter.removeAllDeliveredNotifications()
         userNotificationCenter.add(request)
     }
 }
