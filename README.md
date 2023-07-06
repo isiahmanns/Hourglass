@@ -1,8 +1,8 @@
 # Hourglass
 [![Codemagic build status][badge-svg-link]][build-link]
-
-[✏️ Github Project][github-project-link]  
-[🛍️ Mac App Store][mac-app-store-link]
+[![Static Badge][mac-app-store-badge]][mac-app-store-link]
+[![Static Badge][github-badge]][github-project-link]
+[![Static Badge][bmac-badge]][bmac-link]
 
 Hourglass is a menu-bar Pomodoro tool with custom controls to select your focus and rest time-blocks.
 
@@ -17,4 +17,8 @@ You choose how to manage your time, and Hourglass will remind you to take a brea
 [badge-svg-link]: https://api.codemagic.io/apps/6414e23f7e66ee98ea7b215d/build-and-test/status_badge.svg
 [build-link]: https://codemagic.io/apps/6414e23f7e66ee98ea7b215d/build-and-test/latest_build
 [github-project-link]: https://github.com/users/isiahmanns/projects/1
+[github-badge]: https://img.shields.io/badge/Github%20Project-black?logo=github
 [mac-app-store-link]: https://apps.apple.com/us/app/hourglass-focus-timer/id6450314646
+[mac-app-store-badge]: https://img.shields.io/badge/Mac%20App%20Store-white?logo=appstore
+[bmac-link]: https://www.buymeacoffee.com/isiahmmanns
+[bmac-badge]: https://img.shields.io/badge/Buy%20Me%20a%20Coffee-grey?logo=buymeacoffee
