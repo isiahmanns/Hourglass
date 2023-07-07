@@ -27,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var statisticsWindow: NSWindow!
 
     // Root Dependencies
-    // TODO: - Add IAP here, and on init run transaction.updates()
+    private var iapManager = Dependencies.iapManager
     private var timerModelStateManager = Dependencies.timerModelStateManager
     private var dataManager = Dependencies.dataManager
     private var viewModel = ViewModel(analyticsManager: Dependencies.analyticsManager,
