@@ -50,6 +50,8 @@
 		25C97C9329D2A2C9001A8CAD /* TimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C97C9229D2A2C9001A8CAD /* TimestampView.swift */; };
 		25D7D4BD2A1BC3C300ADEDF4 /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25D7D4BC2A1BC3C300ADEDF4 /* TestData.swift */; };
 		25E019252A453D7F007BF235 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E019242A453D7F007BF235 /* Bundle.swift */; };
+		25E0198F2A57B32F007BF235 /* IAPStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E0198E2A57B32F007BF235 /* IAPStoreView.swift */; };
+		25E019912A57B6A6007BF235 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E019902A57B6A6007BF235 /* IAPManager.swift */; };
 		25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6829A67985005BC143 /* TimerButton.swift */; };
 		25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6A29AAD45C005BC143 /* Color.swift */; };
 		25EB6D6F29AAE226005BC143 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */; };
@@ -118,6 +120,8 @@
 		25C97C9229D2A2C9001A8CAD /* TimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimestampView.swift; sourceTree = "<group>"; };
 		25D7D4BC2A1BC3C300ADEDF4 /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		25E019242A453D7F007BF235 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		25E0198E2A57B32F007BF235 /* IAPStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPStoreView.swift; sourceTree = "<group>"; };
+		25E019902A57B6A6007BF235 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		25EB6D6829A67985005BC143 /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
 		25EB6D6A29AAD45C005BC143 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
@@ -169,6 +173,7 @@
 				2507BB4A29C805BD004478BE /* AboutView.swift */,
 				2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */,
 				2570F7492A1A34B20031B0BB /* StatisticsView.swift */,
+				25E0198E2A57B32F007BF235 /* IAPStoreView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 				25EB6DAD29B04BC3005BC143 /* TimerManager.swift */,
 				25BAF15929EE36F800FE33D8 /* DataManager.swift */,
 				25AFADD729EE6AC100307115 /* TimerModelStateManager.swift */,
+				25E019902A57B6A6007BF235 /* IAPManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -522,6 +528,7 @@
 				25937DBA29B1B4E900A15F0B /* TimerModel.swift in Sources */,
 				2507BB4F29C91BBB004478BE /* TimerGrid.swift in Sources */,
 				2570F73A2A1563C70031B0BB /* CoreDataStore.swift in Sources */,
+				25E019912A57B6A6007BF235 /* IAPManager.swift in Sources */,
 				25C3126629B5AE1E000070DF /* TimeUnit.swift in Sources */,
 				25C97C9329D2A2C9001A8CAD /* TimestampView.swift in Sources */,
 				25AF8B922A2EAD3C000A3F5F /* AnalyticsManager.swift in Sources */,
@@ -536,6 +543,7 @@
 				254C4F062A33C74900217448 /* AnalyticsDataType.swift in Sources */,
 				25458EE129C6A69F00A118C0 /* Constants.swift in Sources */,
 				25EB6DAE29B04BC3005BC143 /* TimerManager.swift in Sources */,
+				25E0198F2A57B32F007BF235 /* IAPStoreView.swift in Sources */,
 				253816DE29A5D88C007BD118 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
