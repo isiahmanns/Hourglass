@@ -16,6 +16,7 @@ private struct Dependencies {
     static let timerModelStateManager = TimerModelStateManager.shared
     static let userNotificationManager = UserNotificationManager.shared
     static let bundle = Bundle.main
+    static let iapManager = IAPManager.shared
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -26,6 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var statisticsWindow: NSWindow!
 
     // Root Dependencies
+    private var iapManager = Dependencies.iapManager
     private var timerModelStateManager = Dependencies.timerModelStateManager
     private var dataManager = Dependencies.dataManager
     private var viewModel = ViewModel(analyticsManager: Dependencies.analyticsManager,
@@ -89,7 +91,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupAboutWindow() {
-        let aboutViewController = NSHostingController(rootView: AboutView(bundle: Dependencies.bundle))
+        let aboutView = AboutView(bundle: Dependencies.bundle,
+                                  iapManager: Dependencies.iapManager)
+        let aboutViewController = NSHostingController(rootView: aboutView)
         aboutWindow = NSWindow(contentViewController: aboutViewController)
         aboutWindow.styleMask = [.titled, .closable, .fullSizeContentView]
         aboutWindow.title = "About"
