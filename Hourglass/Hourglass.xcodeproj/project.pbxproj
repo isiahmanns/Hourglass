@@ -52,6 +52,7 @@
 		25E019252A453D7F007BF235 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E019242A453D7F007BF235 /* Bundle.swift */; };
 		25E0198F2A57B32F007BF235 /* IAPStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E0198E2A57B32F007BF235 /* IAPStoreView.swift */; };
 		25E019912A57B6A6007BF235 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E019902A57B6A6007BF235 /* IAPManager.swift */; };
+		25E019952A58F3A2007BF235 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E019942A58F3A2007BF235 /* StoreKit.framework */; };
 		25EB6D6929A67985005BC143 /* TimerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6829A67985005BC143 /* TimerButton.swift */; };
 		25EB6D6B29AAD45C005BC143 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25EB6D6A29AAD45C005BC143 /* Color.swift */; };
 		25EB6D6F29AAE226005BC143 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */; };
@@ -122,6 +123,7 @@
 		25E019242A453D7F007BF235 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		25E0198E2A57B32F007BF235 /* IAPStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPStoreView.swift; sourceTree = "<group>"; };
 		25E019902A57B6A6007BF235 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
+		25E019942A58F3A2007BF235 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		25EB6D6829A67985005BC143 /* TimerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerButton.swift; sourceTree = "<group>"; };
 		25EB6D6A29AAD45C005BC143 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		25EB6D6E29AAE226005BC143 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				254C4F152A38F85700217448 /* FirebaseCrashlytics in Frameworks */,
 				25AF8B902A2EAA93000A3F5F /* Mixpanel in Frameworks */,
 				254C4F0D2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				25E019952A58F3A2007BF235 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +292,7 @@
 		254C4F132A38F85700217448 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				25E019942A58F3A2007BF235 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
