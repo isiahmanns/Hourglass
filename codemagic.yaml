@@ -13,7 +13,7 @@ workflows:
                 - pull_request
                 - tag
             branch_patterns:
-                - pattern: "{develop,main}"
+                - pattern: "{develop,main,release/*}"
                   include: true
                   source: false
             cancel_previous_builds: true
