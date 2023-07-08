@@ -6,6 +6,7 @@ struct IAPStoreView: View {
     @Binding var isPresenting: Bool
     @State private var quantity: Int = 1
     @State private var products: [String: Product] = [:]
+    @State private var isPurchaseInProgress: Bool = false
     typealias ProductId = IAPManager.ProductId
 
     private func productDisplayPrice(for product: Product?) -> String {
@@ -31,7 +32,9 @@ struct IAPStoreView: View {
                     let tipProduct = products[ProductId.tip.rawValue]
                     let tipDislayPrice = productDisplayPrice(for: tipProduct)
                     Button("Tip \(tipDislayPrice)") {
+                        isPurchaseInProgress.toggle()
                         Task {
+                            defer { isPurchaseInProgress.toggle() }
                             guard let tipProduct else { return }
                             let purchaseResult = try await iapManager.purchase(product: tipProduct, quantity: quantity)
 
@@ -51,7 +54,7 @@ struct IAPStoreView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(Color.Hourglass.accent)
-                    .disabled(tipProduct == nil)
+                    .disabled(tipProduct == nil || isPurchaseInProgress)
 
                     Button("Close", role: .cancel) {
                         isPresenting.toggle()
