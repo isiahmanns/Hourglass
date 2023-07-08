@@ -2,6 +2,8 @@ import SwiftUI
 
 struct AboutView: View {
     let bundle: Bundle
+    let iapManager: IAPManager
+    @State private var showStoreFlow: Bool = false
 
     var body: some View {
         HStack(alignment: .center, spacing: 50) {
@@ -27,7 +29,7 @@ struct AboutView: View {
 
                 HStack(spacing: 10) {
                     Button {
-                        openURL("https://www.buymeacoffee.com/isiahmmanns")
+                        showStoreFlow.toggle()
                     } label: {
                         Text("Support Hourglass")
                     }
@@ -49,6 +51,10 @@ struct AboutView: View {
         .padding([.top, .bottom], 50)
         .background(Color.Hourglass.background)
         .foregroundColor(Color.Hourglass.onBackgroundPrimary)
+        .sheet(isPresented: $showStoreFlow) {
+            IAPStoreView(iapManager: iapManager,
+                         isPresenting: $showStoreFlow)
+        }
     }
 
     private func openURL(_ urlString: String) {
@@ -81,6 +87,7 @@ extension AboutView {
 
 struct AboutView_Previews: PreviewProvider {
     static var previews: some View {
-        AboutView(bundle: Bundle.main)
+        AboutView(bundle: Bundle.main,
+                  iapManager: IAPManager.shared)
     }
 }
