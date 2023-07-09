@@ -2,7 +2,6 @@ import UserNotifications
 
 protocol NotificationManager {
     func fireNotification(_ notification: HourglassNotification, soundIsEnabled: Bool)
-    func fireNotificationSound(for: HourglassNotification)
 }
 
 class UserNotificationManager: NSObject, NotificationManager {
@@ -34,19 +33,12 @@ class UserNotificationManager: NSObject, NotificationManager {
         fireNotification(id: notification.id, content: notificationContent)
     }
 
-    func fireNotificationSound(for notification: HourglassNotification) {
-        let notificationContent = notification.content
-            .title("")
-            .sound(notification.soundFX)
-
-        fireNotification(id: notification.id, content: notificationContent)
-    }
-
     private func fireNotification(id: String, content: UNNotificationContent) {
         let request = UNNotificationRequest(identifier: id,
                                             content: content,
                                             trigger: nil)
 
+        userNotificationCenter.removeAllDeliveredNotifications()
         userNotificationCenter.add(request)
     }
 }

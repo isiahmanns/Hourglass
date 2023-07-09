@@ -152,44 +152,43 @@ final class ViewModelTests: XCTestCase {
     }
 
     func testRestWarning() {
-        let timerModel = timerModels[.focus]![0]
+        let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setRestWarningThreshold(2)
 
-        viewModel.didTapTimer(from: timerModel)
-        (0..<2).forEach { _ in
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
+        assertUserNotification(.timerDidComplete, count: 1)
+        assertUserNotification(.restWarningThresholdMet, count: 0)
 
-        assertUserNotification(.timerDidComplete, count: 0)
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        (0..<3).forEach { _ in
+            timerPublisher.send(now)
+        }
+        assertUserNotification(.timerDidComplete, count: 2)
         assertUserNotification(.restWarningThresholdMet, count: 1)
     }
 
     func testRestWarningResetAfterCompletedRestBlock() {
         let timerModel3sFocus = timerModels[.focus]![0]
         let timerModel5sRest = timerModels[.rest]![0]
-        settingsManager.setRestWarningThreshold(5)
+        settingsManager.setRestWarningThreshold(2)
 
-        // Complete 3s focus block
+        // Complete focus blocks
         viewModel.didTapTimer(from: timerModel3sFocus)
         (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
-
         assertUserNotification(.timerDidComplete, count: 1)
         assertUserNotification(.restWarningThresholdMet, count: 0)
 
-        // Start another 3s focus block
         viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
+        (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
-
-        // Verify rest warning is triggered
-        assertUserNotification(.timerDidComplete, count: 1)
-        assertUserNotification(.restWarningThresholdMet, count: 1)
-
-        timerPublisher.send(now)
         assertUserNotification(.timerDidComplete, count: 2)
+        assertUserNotification(.restWarningThresholdMet, count: 1)
 
         // Complete rest block
         viewModel.didTapTimer(from: timerModel5sRest)
@@ -199,40 +198,31 @@ final class ViewModelTests: XCTestCase {
         assertUserNotification(.timerDidComplete, count: 3)
 
         // Run focus blocks and verify that rest warning is triggered again
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<3).forEach { _ in
-            timerPublisher.send(now)
-        }
-        assertUserNotification(.timerDidComplete, count: 4)
-
-        viewModel.didTapTimer(from: timerModel3sFocus)
         (0..<2).forEach { _ in
-            timerPublisher.send(now)
+            viewModel.didTapTimer(from: timerModel3sFocus)
+            (0..<3).forEach { _ in
+                timerPublisher.send(now)
+            }
         }
-        assertUserNotification(.timerDidComplete, count: 4)
+        assertUserNotification(.timerDidComplete, count: 5)
         assertUserNotification(.restWarningThresholdMet, count: 2)
     }
 
     func testRestWarningDoesNotResetAfterIncompleteRestBlock() {
         let timerModel3sFocus = timerModels[.focus]![0]
         let timerModel5sRest = timerModels[.rest]![0]
-        settingsManager.setRestWarningThreshold(2)
+        settingsManager.setRestWarningThreshold(1)
 
-        // Run focus block
+        // Complete focus block
         viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
+        (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
-
         // Verify rest warning is triggered
-        assertUserNotification(.timerDidComplete, count: 0)
-        assertUserNotification(.restWarningThresholdMet, count: 1)
-
-        timerPublisher.send(now)
         assertUserNotification(.timerDidComplete, count: 1)
         assertUserNotification(.restWarningThresholdMet, count: 1)
 
-        // Cancel rest block
+        // Start and cancel rest block
         viewModel.didTapTimer(from: timerModel5sRest)
         timerPublisher.send(now)
         viewModel.didTapTimer(from: timerModel5sRest)
@@ -249,72 +239,22 @@ final class ViewModelTests: XCTestCase {
         assertUserNotification(.restWarningThresholdMet, count: 1)
     }
 
-    func testRestWarningContinuesAfterCancelledFocusBlock() {
-        let timerModel3sFocus = timerModels[.focus]![0]
-        settingsManager.setRestWarningThreshold(5)
-
-        // Start and cancel 3s focus block
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
-            timerPublisher.send(now)
-        }
-        viewModel.didTapTimer(from: timerModel3sFocus)
-
-        assertUserNotification(.timerDidComplete, count: 0)
-        assertUserNotification(.restWarningThresholdMet, count: 0)
-
-        // Start 3s focus block again
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<3).forEach { _ in
-            timerPublisher.send(now)
-        }
-
-        // Verify rest warning is triggered
-        assertUserNotification(.timerDidComplete, count: 1)
-        assertUserNotification(.restWarningThresholdMet, count: 1)
-    }
-
-    func testEnforceRestOnTimerComplete() {
-        let timerModel3sFocus = timerModels[.focus]![0]
-        settingsManager.setEnforceRestThreshold(5)
-
-        // Complete 3s focus block
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<3).forEach { _ in
-            timerPublisher.send(now)
-        }
-        assertUserNotification(.timerDidComplete, count: 1)
-        assertUserNotification(.enforceRestThresholdMet, count: 0)
-
-        // Start another 3s focus block
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
-            timerPublisher.send(now)
-        }
-        assertUserNotification(.timerDidComplete, count: 1)
-        assertUserNotification(.enforceRestThresholdMet, count: 0)
-
-        // Verify enforce rest is triggered when timer is complete
-        timerPublisher.send(now)
-        assertUserNotification(.timerDidComplete, count: 2)
-        assertUserNotification(.enforceRestThresholdMet, count: 1)
-        assertTimer(timerModel3sFocus, state: .disabled)
-    }
-
-    func testEnforceRestOnTimerCancel() {
+    func testEnforceRest() {
         let timerModel3sFocus = timerModels[.focus]![0]
         settingsManager.setEnforceRestThreshold(2)
 
-        // Run focus block
         viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
+        (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
+        assertUserNotification(.timerDidComplete, count: 1)
+        assertUserNotification(.enforceRestThresholdMet, count: 0)
 
-        // Cancel focus block
         viewModel.didTapTimer(from: timerModel3sFocus)
-
-        assertUserNotification(.timerDidComplete, count: 0)
+        (0..<3).forEach { _ in
+            timerPublisher.send(now)
+        }
+        assertUserNotification(.timerDidComplete, count: 2)
         assertUserNotification(.enforceRestThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .disabled)
     }
@@ -322,19 +262,21 @@ final class ViewModelTests: XCTestCase {
     func testEnforceRestResetAfterCompletedRestBlock() {
         let timerModel3sFocus = timerModels[.focus]![0]
         let timerModel5sRest = timerModels[.rest]![0]
-        settingsManager.setEnforceRestThreshold(5)
+        settingsManager.setEnforceRestThreshold(2)
 
-        // Complete 2 focus blocks
+        // Complete focus blocks
         viewModel.didTapTimer(from: timerModel3sFocus)
         (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
+        assertUserNotification(.timerDidComplete, count: 1)
+        assertUserNotification(.enforceRestThresholdMet, count: 0)
+
         viewModel.didTapTimer(from: timerModel3sFocus)
         (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
-
-        // Verify enforce rest is triggered when timer is complete
+        // Verify enforce rest is triggered
         assertUserNotification(.timerDidComplete, count: 2)
         assertUserNotification(.enforceRestThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .disabled)
@@ -344,22 +286,17 @@ final class ViewModelTests: XCTestCase {
         (0..<5).forEach { _ in
             timerPublisher.send(now)
         }
-
         // Verify that enforce rest is de-triggered
         assertUserNotification(.timerDidComplete, count: 3)
-        assertUserNotification(.enforceRestThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .inactive)
 
-        // Complete 2 focus blocks again
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<3).forEach { _ in
-            timerPublisher.send(now)
+        // Complete focus blocks and verify that enforce rest is triggered again
+        (0..<2).forEach { _  in
+            viewModel.didTapTimer(from: timerModel3sFocus)
+            (0..<3).forEach { _ in
+                timerPublisher.send(now)
+            }
         }
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<3).forEach { _ in
-            timerPublisher.send(now)
-        }
-
         // Verify that enforce rest is triggered again
         assertUserNotification(.timerDidComplete, count: 5)
         assertUserNotification(.enforceRestThresholdMet, count: 2)
@@ -369,62 +306,24 @@ final class ViewModelTests: XCTestCase {
     func testEnforceRestDoesNotResetAfterIncompleteRestBlock() {
         let timerModel3sFocus = timerModels[.focus]![0]
         let timerModel5sRest = timerModels[.rest]![0]
-        settingsManager.setEnforceRestThreshold(5)
-
-        // Complete 2 focus blocks
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<3).forEach { _ in
-            timerPublisher.send(now)
-        }
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<3).forEach { _ in
-            timerPublisher.send(now)
-        }
-
-        // Verify enforce rest is triggered when timer is complete
-        assertUserNotification(.timerDidComplete, count: 2)
-        assertUserNotification(.enforceRestThresholdMet, count: 1)
-        assertTimer(timerModel3sFocus, state: .disabled)
-
-        // Start and cancel rest block
-        viewModel.didTapTimer(from: timerModel5sRest)
-        (0..<4).forEach { _ in
-            timerPublisher.send(now)
-        }
-        viewModel.didTapTimer(from: timerModel5sRest)
-
-        // Verify that enforce rest is *still* triggered
-        assertUserNotification(.timerDidComplete, count: 2)
-        assertUserNotification(.enforceRestThresholdMet, count: 1)
-        assertTimer(timerModel3sFocus, state: .disabled)
-    }
-
-    func testEnforceRestContinuesAfterCancelledFocusBlock() {
-        let timerModel3sFocus = timerModels[.focus]![0]
-        settingsManager.setEnforceRestThreshold(5)
-
-        // Start and cancel focus block
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        timerPublisher.send(now)
-        viewModel.didTapTimer(from: timerModel3sFocus)
-
-        assertUserNotification(.timerDidComplete, count: 0)
-        assertUserNotification(.enforceRestThresholdMet, count: 0)
+        settingsManager.setEnforceRestThreshold(1)
 
         // Complete focus block
         viewModel.didTapTimer(from: timerModel3sFocus)
         (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
+        // Verify enforce rest is triggered
         assertUserNotification(.timerDidComplete, count: 1)
-        assertUserNotification(.enforceRestThresholdMet, count: 0)
+        assertUserNotification(.enforceRestThresholdMet, count: 1)
+        assertTimer(timerModel3sFocus, state: .disabled)
 
-        // Start and cancel focus block
-        viewModel.didTapTimer(from: timerModel3sFocus)
+        // Start and cancel rest block
+        viewModel.didTapTimer(from: timerModel5sRest)
         timerPublisher.send(now)
-        viewModel.didTapTimer(from: timerModel3sFocus)
+        viewModel.didTapTimer(from: timerModel5sRest)
 
-        // Verify enforce rest is triggered when timer is complete
+        // Verify that enforce rest is *still* triggered
         assertUserNotification(.timerDidComplete, count: 1)
         assertUserNotification(.enforceRestThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .disabled)
@@ -432,32 +331,33 @@ final class ViewModelTests: XCTestCase {
 
     func testRestWarningWithEnforceRestHappyPath() {
         let timerModel3sFocus = timerModels[.focus]![0]
-        settingsManager.setRestWarningThreshold(2)
-        settingsManager.setEnforceRestThreshold(5)
+        settingsManager.setRestWarningThreshold(1)
+        settingsManager.setEnforceRestThreshold(3)
 
-        // Run focus block
+        // Run focus blocks
         viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
+        (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
-        assertUserNotification(.timerDidComplete, count: 0)
-        assertUserNotification(.enforceRestThresholdMet, count: 0)
-        assertUserNotification(.restWarningThresholdMet, count: 1)
-        assertTimer(timerModel3sFocus, state: .active)
-
-        // Complete focus block
-        timerPublisher.send(now)
         assertUserNotification(.timerDidComplete, count: 1)
         assertUserNotification(.enforceRestThresholdMet, count: 0)
         assertUserNotification(.restWarningThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .inactive)
 
-        // Complete another focus block
         viewModel.didTapTimer(from: timerModel3sFocus)
         (0..<3).forEach { _ in
             timerPublisher.send(now)
         }
         assertUserNotification(.timerDidComplete, count: 2)
+        assertUserNotification(.enforceRestThresholdMet, count: 0)
+        assertUserNotification(.restWarningThresholdMet, count: 1)
+        assertTimer(timerModel3sFocus, state: .inactive)
+
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        (0..<3).forEach { _ in
+            timerPublisher.send(now)
+        }
+        assertUserNotification(.timerDidComplete, count: 3)
         assertUserNotification(.enforceRestThresholdMet, count: 1)
         assertUserNotification(.restWarningThresholdMet, count: 1)
         assertTimer(timerModel3sFocus, state: .disabled)
@@ -465,8 +365,8 @@ final class ViewModelTests: XCTestCase {
 
     func testRestWarningAndEnforceRestOff() {
         let timerModel3sFocus = timerModels[.focus]![0]
-        settingsManager.setRestWarningThreshold(0)
-        settingsManager.setEnforceRestThreshold(0)
+        settingsManager.setRestWarningThreshold(-1)
+        settingsManager.setEnforceRestThreshold(-1)
 
         // Run focus block twice
         (0..<2).forEach { _ in
@@ -495,38 +395,23 @@ final class ViewModelTests: XCTestCase {
         (0..<5).forEach { _ in
             timerPublisher.send(now)
         }
-
-        // Verify rest timer disabled after completion
-        assertUserNotification(.timerDidComplete, count: 1)
+        assertUserNotification(.getBackToWork, count: 1)
         assertTimer(timerModel5sRest, state: .disabled)
-
-        // Run focus block
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
-            timerPublisher.send(now)
-        }
-
-        // Verify rest timer is still disabled while focus timer runs
-        assertUserNotification(.timerDidComplete, count: 1)
-        assertTimer(timerModel3sFocus, state: .active)
-        assertTimer(timerModel5sRest, state: .disabled)
+        assertTimer(timerModel3sFocus, state: .inactive)
 
         // Complete focus block
-        timerPublisher.send(now)
-
-        // Verify rest timer is enabled when focus timer completes
-        assertUserNotification(.timerDidComplete, count: 2)
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        (0..<3).forEach { _ in
+            timerPublisher.send(now)
+        }
+        assertTimer(timerModel5sRest, state: .inactive)
         assertTimer(timerModel3sFocus, state: .inactive)
-        assertTimer(timerModel5sRest, state: .inactive)
     }
 
-    /**
-     Test that when getBackToWork is enabled, after completing a rest block, you cannot start another rest block until enforceRestThreshold is met (via cancelled focus blocks).
-     */
-    func testGetBackToWorkAndEnforceRestOnCancelledFocusBlock() {
+    func testGetBackToWorkAndEnforceRest() {
         let timerModel3sFocus = timerModels[.focus]![0]
         let timerModel5sRest = timerModels[.rest]![0]
-        settingsManager.setEnforceRestThreshold(3)
+        settingsManager.setEnforceRestThreshold(2)
         settingsManager.setGetBackToWork(isEnabled: true)
 
         // Complete rest block
@@ -534,50 +419,26 @@ final class ViewModelTests: XCTestCase {
         (0..<5).forEach { _ in
             timerPublisher.send(now)
         }
+        assertUserNotification(.getBackToWork, count: 1)
         assertTimer(timerModel5sRest, state: .disabled)
-
-        // Run, cancel, and run focus block again
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        (0..<2).forEach { _ in
-            timerPublisher.send(now)
-        }
-        viewModel.didTapTimer(from: timerModel3sFocus)
-
-        viewModel.didTapTimer(from: timerModel3sFocus)
-        timerPublisher.send(now)
-        viewModel.didTapTimer(from: timerModel3sFocus)
-
-        assertUserNotification(.enforceRestThresholdMet, count: 1)
-        assertTimer(timerModel3sFocus, state: .disabled)
-        assertTimer(timerModel5sRest, state: .inactive)
-    }
-
-    /**
-     Test that when getBackToWork is enabled, after completing a rest block, you cannot start another rest block until enforceRestThreshold is met (via a completed focus block).
-     */
-    func testGetBackToWorkAndEnforceRestOnCompletedFocusBlock() {
-        let timerModel3sFocus = timerModels[.focus]![0]
-        let timerModel5sRest = timerModels[.rest]![0]
-        settingsManager.setEnforceRestThreshold(5)
-        settingsManager.setGetBackToWork(isEnabled: true)
-
-        // Complete rest block
-        viewModel.didTapTimer(from: timerModel5sRest)
-        (0..<5).forEach { _ in
-            timerPublisher.send(now)
-        }
-        assertTimer(timerModel5sRest, state: .disabled)
+        assertTimer(timerModel3sFocus, state: .inactive)
 
         // Complete focus blocks
-        (0..<2).forEach { _ in
-            viewModel.didTapTimer(from: timerModel3sFocus)
-            (0..<3).forEach { _ in
-                timerPublisher.send(now)
-            }
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        (0..<3).forEach { _ in
+            timerPublisher.send(now)
         }
-        assertUserNotification(.enforceRestThresholdMet, count: 1)
-        assertTimer(timerModel3sFocus, state: .disabled)
         assertTimer(timerModel5sRest, state: .inactive)
+        assertTimer(timerModel3sFocus, state: .inactive)
+
+        viewModel.didTapTimer(from: timerModel3sFocus)
+        (0..<3).forEach { _ in
+            timerPublisher.send(now)
+        }
+        assertTimer(timerModel5sRest, state: .inactive)
+        assertTimer(timerModel3sFocus, state: .disabled)
+
+        assertUserNotification(.enforceRestThresholdMet, count: 1)
     }
 
     private func assertUserNotification(_ event: HourglassEventKey.Timer, count: Int) {
