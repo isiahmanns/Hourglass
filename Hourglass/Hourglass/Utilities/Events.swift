@@ -9,5 +9,6 @@ enum HourglassEventKey {
     @objc enum Progress: Int {
         case restWarningThresholdMet
         case enforceRestThresholdMet
+        case getBackToWork
     }
 }

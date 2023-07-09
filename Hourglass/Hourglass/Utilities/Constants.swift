@@ -1,11 +1,8 @@
 import Foundation
 
 enum Constants {
-    // Notification style default
-    static let notificationStyle = NotificationStyle.popup.rawValue
-
     // Fullscreen-on-break default
-    static let fullscreenOnBreak = true
+    // static let fullscreenOnBreak = true
 
     // Sound default
     static let soundIsEnabled = true
@@ -19,13 +16,15 @@ enum Constants {
     static let timerRestLarge = 20
 
     // Timer threshold defaults
-    static let restWarningThreshold: Int = 30
-    static let enforceRestThreshold: Int = -1
+    static let restWarningThreshold: Int = 1
+    static let enforceRestThreshold: Int = 2
     static let getBackToWorkIsEnabled: Bool = false
 
     // Timer alert dialog
     static let timerCompleteAlert = "Time is up."
     static let restWarningAlert = "Take a rest, soon."
+    static let enforceRestAlert = "You've been focused for a while, now.\nTake a rest."
+    static let getBackToWorkAlert = "Get back to work!"
 
     // Timestamp default
     static let timeStampZero = "00:00"
