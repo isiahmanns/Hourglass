@@ -1,4 +1,4 @@
-# Hourglass
+# Hourglass ⏳
 [![Codemagic build status][badge-svg-link]][build-link]
 [![Static Badge][mac-app-store-badge]][mac-app-store-link]
 [![Static Badge][github-badge]][github-project-link]
