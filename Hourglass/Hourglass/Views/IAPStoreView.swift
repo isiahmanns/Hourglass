@@ -9,14 +9,6 @@ struct IAPStoreView: View {
     @State private var isPurchaseInProgress: Bool = false
     typealias ProductId = IAPManager.ProductId
 
-    private func productDisplayPrice(for product: Product?) -> String {
-        guard let product else { return "" }
-        let price = product.price
-        let adjustedPrice = price * Decimal(quantity)
-        let formatStyle = product.priceFormatStyle
-        return formatStyle.format(adjustedPrice)
-    }
-
     var body: some View {
         VStack (spacing: 14) {
             Text("Support Hourglass").fontWeight(.medium)
@@ -30,13 +22,12 @@ struct IAPStoreView: View {
 
                 HStack {
                     let tipProduct = products[ProductId.tip.rawValue]
-                    let tipDislayPrice = productDisplayPrice(for: tipProduct)
+                    let tipDislayPrice = tipProduct?.displayPrice(quantity: quantity) ?? "..."
                     Button("Tip \(tipDislayPrice)") {
                         isPurchaseInProgress.toggle()
                         Task {
                             defer { isPurchaseInProgress.toggle() }
-                            guard let tipProduct else { return }
-                            let purchaseResult = try await iapManager.purchase(product: tipProduct, quantity: quantity)
+                            let purchaseResult = try await iapManager.purchase(product: tipProduct!, quantity: quantity)
 
                             switch purchaseResult {
                             case .success(let verificationResult):
@@ -75,6 +66,15 @@ struct IAPStoreView: View {
         .padding(.horizontal, 20)
         .padding(.top, 10)
         .padding(.bottom, 12)
+    }
+}
+
+extension Product {
+    func displayPrice(quantity: Int) -> String {
+        let price = price
+        let adjustedPrice = price * Decimal(quantity)
+        let formatStyle = priceFormatStyle
+        return formatStyle.format(adjustedPrice)
     }
 }
 
