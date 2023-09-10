@@ -15,6 +15,7 @@ class DataManager: DataManaging {
     private let store: CoreDataStore
     private var cancellables: Set<AnyCancellable> = []
 
+    // TODO: - Refactor, remove SettingsManager dependency
     private convenience init(settingsManager: SettingsManager,
                              store: CoreDataStore,
                              timerEventProvider: TimerEventProviding) {

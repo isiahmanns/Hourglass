@@ -8,6 +8,7 @@ import Foundation
  The computed property setters are used for unit testing.
  These properties are exposed to objc to support KVO.
  */
+// TODO: - Remove timer settings
 extension UserDefaults {
     // MARK: - Timer Lengths
     @objc dynamic var timerFocusSmall: Int {
@@ -165,6 +166,7 @@ struct SettingsManager {
         as? Bool ?? Constants.soundIsEnabled
     }
 
+    // TODO: - Remove
     // Fullscreen Break
     /*
     func setFullScreenOnBreak(isEnabled: Bool) {

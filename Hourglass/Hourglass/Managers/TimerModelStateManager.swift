@@ -116,6 +116,7 @@ class TimerModelStateManager {
             .store(in: &cancellables)
     }
 
+    // TODO: - Refactor
     private func configureSettingsObservations() {
         let focusTimers = timerModels.filterByCategory(.focus)
         let restTimers = timerModels.filterByCategory(.rest)
@@ -160,6 +161,7 @@ class TimerModelStateManager {
             analyticsManager.logEvent(.enforceRestThresholdSet(newValue))
         }
 
+        // TODO: - Refactor
         settingsManager.observe(\.getBackToWork) { [self] isEnabled in
             if !isEnabled {
                 if timerModels.filterByCategory(.rest).allSatisfy({$0.state == .disabled}) {
@@ -171,6 +173,7 @@ class TimerModelStateManager {
         }
     }
 
+    // TODO: - Refactor
     private func didChangeTimerPreset(for timerModel: Timer.Model, to length: Int) {
         defer {
             timerModel.length = length
@@ -179,6 +182,7 @@ class TimerModelStateManager {
         delegate?.resetTimer(for: timerModel)
     }
 
+    // TODO: - Test
     private func didChangeRestSettings() {
         resetFocusStride()
         delegate?.resetActiveTimer()
@@ -195,6 +199,7 @@ class TimerModelStateManager {
         }
     }
 
+    // TODO: - Refactor
     private func enforceRestIfNeeded() {
         if let enforceRestThreshold, focusStride == enforceRestThreshold {
             setTimers(category: .focus, state: .disabled)
@@ -203,6 +208,7 @@ class TimerModelStateManager {
         }
     }
 
+    // TODO: - Refactor
     private func enforceFocusIfNeeded() {
         if getBackToWorkIsEnabled {
             delegate?.notifyUser(progressEvent: .getBackToWork)

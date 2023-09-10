@@ -7,6 +7,7 @@ enum Constants {
     // Sound default
     static let soundIsEnabled = true
 
+    // TODO: - Remove timer settings
     // Timer length defaults
     static let timerFocusSmall = 15
     static let timerFocusMedium = 25

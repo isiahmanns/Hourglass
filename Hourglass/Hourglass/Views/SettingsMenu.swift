@@ -10,6 +10,7 @@ struct SettingsMenu: View {
      - The UserDefaults cache gets written to only when selecting new options via the Menu.
      */
 
+    // TODO: - Remove timer settings
     @AppStorage(SettingsKeys.soundIsEnabled.rawValue)
     var soundIsEnabled: Bool = Constants.soundIsEnabled
 

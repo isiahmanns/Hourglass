@@ -1,3 +1,4 @@
+// TODO: - Remove timer settings
 enum SettingsKeys: String {
     enum TimerSetting: String {
         case timerFocusSmall

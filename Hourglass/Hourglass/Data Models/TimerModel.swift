@@ -20,6 +20,7 @@ extension Timer {
     enum State {
         case active
         case inactive
+        // TODO: - Remove timer state
         case disabled
     }
 
@@ -37,6 +38,7 @@ extension Timer {
         }
     }
 
+    // TODO: - Remove timer size
     enum Size: Int {
         case small
         case medium
@@ -44,6 +46,7 @@ extension Timer {
     }
 }
 
+// TODO: - Remove
 extension Dictionary<Timer.Model.ID, Timer.Model> {
     func filterByCategory(_ category: Timer.Category) -> [Timer.Model] {
         self.values
