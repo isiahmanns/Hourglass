@@ -12,8 +12,7 @@ struct TimerButton: View {
             Text(String(model.length))
         }
         .buttonStyle(TimerButton.Style(for: model.state))
-        .disabled(model.state == .disabled)
-        .accessibilityIdentifier("\(model.length)m-timer-button-\(model.category)-\(model.size)")
+        .accessibilityIdentifier("\(model.length)m-timer-button")
     }
 }
 
@@ -46,9 +45,6 @@ extension TimerButton {
             case .active:
                 Circle()
                     .stroke(Color.Hourglass.accent, lineWidth: 4.0)
-            case .disabled:
-                Circle()
-                    .fill(Color.black.opacity(0.6))
             }
         }
 
@@ -60,7 +56,7 @@ extension TimerButton {
 
 struct TimerButton_Previews: PreviewProvider {
     static var previews: some View {
-        let timerModel = Timer.Model(length: 15, category: .rest, size: .large)
+        let timerModel = Timer.Model(length: 15)
         TimerButton(model: timerModel) {}
             .font(Font.poppins)
     }

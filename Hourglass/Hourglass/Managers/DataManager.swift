@@ -7,7 +7,7 @@ protocol DataManaging {
 }
 
 class DataManager: DataManaging {
-    static let shared = DataManager(settingsManager: SettingsManager.shared,
+    static let shared = DataManager(timerLengths: Constants.timerLengths,
                                     store: CoreDataStore.shared,
                                     timerEventProvider: TimerManager.shared)
     let timerModels: [Timer.Model.ID: Timer.Model]
@@ -15,28 +15,13 @@ class DataManager: DataManaging {
     private let store: CoreDataStore
     private var cancellables: Set<AnyCancellable> = []
 
-    // TODO: - Refactor, remove SettingsManager dependency
-    private convenience init(settingsManager: SettingsManager,
-                             store: CoreDataStore,
-                             timerEventProvider: TimerEventProviding) {
-        let timerModels = [
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusSmall), category: .focus, size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusMedium), category: .focus, size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerFocusLarge), category: .focus, size: .large),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestSmall), category: .rest, size: .small),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestMedium), category: .rest, size: .medium),
-            Timer.Model(length: settingsManager.getTimerLength(for: .timerRestLarge), category: .rest, size: .large)
-        ]
-
-        self.init(timerModels: timerModels,
-                  store: store,
-                  timerEventProvider: timerEventProvider)
-    }
-
-    fileprivate init(timerModels: [Timer.Model],
+    fileprivate init(timerLengths: [Int],
                      store: CoreDataStore,
                      timerEventProvider: TimerEventProviding) {
-        self.timerModels = Dictionary(uniqueKeysWithValues: timerModels.map { ($0.id, $0) })
+        self.timerModels = timerLengths.reduce(into: [Timer.Model.ID: Timer.Model]()) { partialResult, timerLength in
+            let timerModel = Timer.Model(length: timerLength)
+            partialResult[timerModel.id] = timerModel
+        }
         self.store = store
         self.timerEvents = timerEventProvider.events
         configureEventSubscriptions()
@@ -60,7 +45,7 @@ class DataManager: DataManaging {
                                                 in: store.context)
         let timeBlock = NSManagedObject(entity: entity!, insertInto: nil) as! TimeBlock
 
-        timeBlock.category = Int16(timerModel.category.rawValue)
+        timeBlock.category = Int16(Timer.Model.category.rawValue)
         timeBlock.start = now - TimeInterval(timerModel.length * 60)
         timeBlock.end = now
         return timeBlock
@@ -68,11 +53,11 @@ class DataManager: DataManaging {
 }
 
 class DataManagerMock: DataManager {
-    override init(timerModels: [Timer.Model],
+    override init(timerLengths: [Int],
                   store: CoreDataStore,
                   timerEventProvider: TimerEventProviding) {
 
-        super.init(timerModels: timerModels,
+        super.init(timerLengths: timerLengths,
                    store: store,
                    timerEventProvider: timerEventProvider)
     }

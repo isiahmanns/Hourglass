@@ -2,16 +2,13 @@ import Foundation
 
 enum Timer {
     class Model: Identifiable, ObservableObject {
-        @Published var length: Int
+        let length: Int
         @Published var state: State
-        let category: Category
-        let size: Size
+        static var category: Category = .focus
 
-        init(length: Int, state: State = .inactive, category: Category, size: Size) {
+        init(length: Int, state: State = .inactive) {
             self.length = length
             self.state = state
-            self.category = category
-            self.size = size
         }
     }
 }
@@ -20,8 +17,6 @@ extension Timer {
     enum State {
         case active
         case inactive
-        // TODO: - Remove timer state
-        case disabled
     }
 
     enum Category: Int {
@@ -37,27 +32,10 @@ extension Timer {
             }
         }
     }
-
-    // TODO: - Remove timer size
-    enum Size: Int {
-        case small
-        case medium
-        case large
-    }
 }
 
-// TODO: - Remove
-extension Dictionary<Timer.Model.ID, Timer.Model> {
-    func filterByCategory(_ category: Timer.Category) -> [Timer.Model] {
-        self.values
-            .filter { timerModel in
-                timerModel.category == category
-            }
-    }
-}
-
-extension Array<Timer.Model> {
+extension Dictionary<Timer.Model.ID, Timer.Model>.Values {
     func sortBySize() -> [Timer.Model] {
-        self.sorted(by: {$0.size.rawValue < $1.size.rawValue})
+        self.sorted(by: {$0.length < $1.length})
     }
 }

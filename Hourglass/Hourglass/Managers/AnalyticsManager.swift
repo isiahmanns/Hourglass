@@ -22,7 +22,6 @@ enum AnalyticsEvent {
     case restWarningThresholdSet(Int)
     case enforceRestThresholdSet(Int)
     case getBackToWorkSet(Bool)
-    case timerPresetSet(Timer.Model)
     case notificationStyleSet(NotificationStyle)
     case statisticsViewOpened
 
@@ -38,8 +37,7 @@ enum AnalyticsEvent {
             return "enforceRestThresholdSet"
         case .getBackToWorkSet:
             return "getBackToWorkSet"
-        case .timerPresetSet:
-            return "timerPresetSet"
+        // TODO: - Remove
         case .notificationStyleSet:
             return "notificationStyleSet"
         case .statisticsViewOpened:
@@ -50,8 +48,7 @@ enum AnalyticsEvent {
     var metadata: Metadata? {
         switch self {
         case let .timerDidComplete(timerModel), let .timerWasCancelled(timerModel):
-            return ["Category" : String(describing: timerModel.category),
-                    "Size": String(describing: timerModel.size),
+            return ["Category" : String(describing: Timer.Model.category),
                     "Length": timerModel.length]
         case let .restWarningThresholdSet(restWarningThreshold):
             return ["Rest Warning Threshold": restWarningThreshold]
@@ -59,10 +56,6 @@ enum AnalyticsEvent {
             return ["Enforce Rest Threshold": enforceRestThreshold]
         case let .getBackToWorkSet(getBackToWork):
             return ["Get Back to Work": getBackToWork]
-        case let .timerPresetSet(timerModel):
-            return ["Category" : String(describing: timerModel.category),
-                    "Size": String(describing: timerModel.size),
-                    "New Length": timerModel.length]
         case let .notificationStyleSet(notificationStyle):
             return ["Notification Style": String(describing: notificationStyle)]
         case .statisticsViewOpened:

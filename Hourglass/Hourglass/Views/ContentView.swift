@@ -9,11 +9,19 @@ struct ContentView: View {
             AlertView(viewModel: viewModel, settingsManager: settingsManager)
 
             VStack(alignment: .center, spacing: 18.0) {
-                Logo(size: 40)
+                HStack {
+                    Logo(size: 40)
+                    Spacer()
+                    SettingsMenu(viewModel: viewModel)
+                }
 
-                TimerGrid(viewModel: viewModel)
-
-                SettingsMenu(viewModel: viewModel)
+                HStack {
+                    ForEach(viewModel.timerModels.values.sortBySize()) { model in
+                        TimerButton(model: model) {
+                            viewModel.didTapTimer(from: model)
+                        }
+                    }
+                }
             }
             .fixedSize()
             .padding([.top, .bottom], 34)

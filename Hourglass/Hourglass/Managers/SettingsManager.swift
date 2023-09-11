@@ -8,39 +8,8 @@ import Foundation
  The computed property setters are used for unit testing.
  These properties are exposed to objc to support KVO.
  */
-// TODO: - Remove timer settings
+
 extension UserDefaults {
-    // MARK: - Timer Lengths
-    @objc dynamic var timerFocusSmall: Int {
-        object(forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
-        as? Int ?? Constants.timerFocusSmall
-    }
-
-    @objc dynamic var timerFocusMedium: Int {
-        object(forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
-        as? Int ?? Constants.timerFocusMedium
-    }
-
-    @objc dynamic var timerFocusLarge: Int {
-        object(forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
-        as? Int ?? Constants.timerFocusLarge
-    }
-
-    @objc dynamic var timerRestSmall: Int {
-        object(forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
-        as? Int ?? Constants.timerRestSmall
-    }
-
-    @objc dynamic var timerRestMedium: Int {
-        object(forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
-        as? Int ?? Constants.timerRestMedium
-    }
-
-    @objc dynamic var timerRestLarge: Int {
-        object(forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
-        as? Int ?? Constants.timerRestLarge
-    }
-
     // MARK: - Rest Settings
     @objc dynamic var restWarningThreshold: Int {
         object(forKey: SettingsKeys.restWarningThreshold.rawValue)
@@ -76,42 +45,7 @@ struct SettingsManager {
             .subscribe(subscriber)
     }
 
-    // Timer
-    func setTimer(length: Int, for timerSetting: SettingsKeys.TimerSetting) {
-        switch timerSetting {
-        case .timerFocusSmall:
-            store.set(length, forKey: SettingsKeys.TimerSetting.timerFocusSmall.rawValue)
-        case .timerFocusMedium:
-            store.set(length, forKey: SettingsKeys.TimerSetting.timerFocusMedium.rawValue)
-        case .timerFocusLarge:
-            store.set(length, forKey: SettingsKeys.TimerSetting.timerFocusLarge.rawValue)
-        case .timerRestSmall:
-            store.set(length, forKey: SettingsKeys.TimerSetting.timerRestSmall.rawValue)
-        case .timerRestMedium:
-            store.set(length, forKey: SettingsKeys.TimerSetting.timerRestMedium.rawValue)
-        case .timerRestLarge:
-            store.set(length, forKey: SettingsKeys.TimerSetting.timerRestLarge.rawValue)
-        }
-    }
-
-    func getTimerLength(for timerSetting: SettingsKeys.TimerSetting) -> Int {
-        switch timerSetting {
-        case .timerFocusSmall:
-            return store.timerFocusSmall
-        case .timerFocusMedium:
-            return store.timerFocusMedium
-        case .timerFocusLarge:
-            return store.timerFocusLarge
-        case .timerRestSmall:
-            return store.timerRestSmall
-        case .timerRestMedium:
-            return store.timerRestMedium
-        case .timerRestLarge:
-            return store.timerRestLarge
-        }
-    }
-
-    // Rest Warning Threshold
+    // MARK: - Rest Warning Threshold
     func setRestWarningThreshold(_ value: Int, conservatively: Bool = false) {
         if conservatively {
             if store.restWarningThreshold != value {
@@ -126,7 +60,7 @@ struct SettingsManager {
         store.restWarningThreshold
     }
 
-    // Enforce Rest Threshold
+    // MARK: - Enforce Rest Threshold
     func setEnforceRestThreshold(_ value: Int, conservatively: Bool = false) {
         if conservatively {
             if store.enforceRestThreshold != value {
@@ -141,7 +75,7 @@ struct SettingsManager {
         store.enforceRestThreshold
     }
 
-    // Get Back to Work
+    // MARK: - Get Back to Work
     func setGetBackToWork(isEnabled: Bool, conservatively: Bool = false) {
         if conservatively {
             if store.getBackToWork != isEnabled {
@@ -156,7 +90,7 @@ struct SettingsManager {
         store.getBackToWork
     }
 
-    // Sound
+    // MARK: - Sound
     func setSound(isEnabled: Bool) {
         store.set(isEnabled, forKey: SettingsKeys.soundIsEnabled.rawValue)
     }

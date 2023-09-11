@@ -87,7 +87,7 @@ class TimerModelStateManager {
                 setTimers(state: .inactive)
                 delegate?.notifyUser(timerEvent: .timerDidComplete)
 
-                switch activeTimerModel.category {
+                switch Timer.Model.category {
                 case .focus:
                     focusStride += 1
                     showRestWarningIfNeeded()
@@ -116,41 +116,7 @@ class TimerModelStateManager {
             .store(in: &cancellables)
     }
 
-    // TODO: - Refactor
     private func configureSettingsObservations() {
-        let focusTimers = timerModels.filterByCategory(.focus)
-        let restTimers = timerModels.filterByCategory(.rest)
-
-        settingsManager.observe(\.timerFocusSmall) { length in
-            guard let timerModel = focusTimers.first(where: { $0.size == .small }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerFocusMedium) { length in
-            guard let timerModel = focusTimers.first(where: { $0.size == .medium }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerFocusLarge) { length in
-            guard let timerModel = focusTimers.first(where: { $0.size == .large }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerRestSmall) { length in
-            guard let timerModel = restTimers.first(where: { $0.size == .small }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerRestMedium) { length in
-            guard let timerModel = restTimers.first(where: { $0.size == .medium }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
-        settingsManager.observe(\.timerRestLarge) { length in
-            guard let timerModel = restTimers.first(where: { $0.size == .large }) else { return }
-            self.didChangeTimerPreset(for: timerModel, to: length)
-        }
-
         settingsManager.observe(\.restWarningThreshold) { [self] newValue in
             didChangeRestSettings()
             analyticsManager.logEvent(.restWarningThresholdSet(newValue))
@@ -164,25 +130,13 @@ class TimerModelStateManager {
         // TODO: - Refactor
         settingsManager.observe(\.getBackToWork) { [self] isEnabled in
             if !isEnabled {
-                if timerModels.filterByCategory(.rest).allSatisfy({$0.state == .disabled}) {
-                    setTimers(category: .rest, state: .inactive)
-                }
             }
 
             analyticsManager.logEvent(.getBackToWorkSet(isEnabled))
         }
     }
 
-    // TODO: - Refactor
-    private func didChangeTimerPreset(for timerModel: Timer.Model, to length: Int) {
-        defer {
-            timerModel.length = length
-            analyticsManager.logEvent(.timerPresetSet(timerModel))
-        }
-        delegate?.resetTimer(for: timerModel)
-    }
-
-    // TODO: - Test
+    // TODO: - Refactor, test
     private func didChangeRestSettings() {
         resetFocusStride()
         delegate?.resetActiveTimer()
@@ -202,8 +156,6 @@ class TimerModelStateManager {
     // TODO: - Refactor
     private func enforceRestIfNeeded() {
         if let enforceRestThreshold, focusStride == enforceRestThreshold {
-            setTimers(category: .focus, state: .disabled)
-            setTimers(category: .rest, state: .inactive)
             delegate?.notifyUser(progressEvent: .enforceRestThresholdMet)
         }
     }
@@ -212,21 +164,13 @@ class TimerModelStateManager {
     private func enforceFocusIfNeeded() {
         if getBackToWorkIsEnabled {
             delegate?.notifyUser(progressEvent: .getBackToWork)
-            setTimers(category: .rest, state: .disabled)
-            setTimers(category: .focus, state: .inactive)
         }
     }
 
+    // TODO: - Remove, set active timer's state only
     private func setTimers(state: Timer.State) {
         timerModels
             .forEach { id, timerModel in
-                timerModel.state = state
-            }
-    }
-
-    private func setTimers(category: Timer.Category, state: Timer.State) {
-        timerModels.filterByCategory(category)
-            .forEach { timerModel in
                 timerModel.state = state
             }
     }

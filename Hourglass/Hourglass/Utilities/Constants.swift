@@ -1,20 +1,15 @@
 import Foundation
 
 enum Constants {
+    // TODO: - Remove
     // Fullscreen-on-break default
     // static let fullscreenOnBreak = true
 
+    // Timer length defaults
+    static let timerLengths = [5, 10, 15, 20, 25, 30, 35, 40, 45]
+
     // Sound default
     static let soundIsEnabled = true
-
-    // TODO: - Remove timer settings
-    // Timer length defaults
-    static let timerFocusSmall = 15
-    static let timerFocusMedium = 25
-    static let timerFocusLarge = 35
-    static let timerRestSmall = 3
-    static let timerRestMedium = 10
-    static let timerRestLarge = 20
 
     // Timer threshold defaults
     static let restWarningThreshold: Int = 1
