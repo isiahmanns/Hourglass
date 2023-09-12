@@ -14,7 +14,7 @@ struct AboutView: View {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Hourglass")
-                        .font(.poppins)
+                        .font(.poppinsHeader)
 
                     if let releaseNo = bundle.releaseVersionNumber,
                        let buildNo = bundle.buildVersionNumber {

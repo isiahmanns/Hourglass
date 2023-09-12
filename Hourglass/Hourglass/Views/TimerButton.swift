@@ -10,6 +10,7 @@ struct TimerButton: View {
             action()
         } label: {
             Text(String(model.length))
+                .font(.poppinsBody)
         }
         .buttonStyle(TimerButton.Style(for: model.state))
         .accessibilityIdentifier("\(model.length)m-timer-button")
@@ -17,10 +18,9 @@ struct TimerButton: View {
 }
 
 extension TimerButton {
-    static let size: Double = 56
-
     private struct Style: ButtonStyle {
         let state: Timer.State
+        let size: CGFloat = 32
 
         init(for state: Timer.State) {
             self.state = state
@@ -58,6 +58,5 @@ struct TimerButton_Previews: PreviewProvider {
     static var previews: some View {
         let timerModel = Timer.Model(length: 15)
         TimerButton(model: timerModel) {}
-            .font(Font.poppins)
     }
 }

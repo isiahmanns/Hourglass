@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsMenu: View {
     let viewModel: ViewModel
+    let size: CGFloat = 24
 
     /**
      Note: These default values are not persisted.
@@ -60,7 +61,9 @@ struct SettingsMenu: View {
             }
         } label: {
             Image(systemName: "gearshape.fill")
-                .imageScale(.large)
+                .resizable()
+                .scaledToFit()
+                .frame(width: size, height: size)
                 .foregroundColor(Color.Hourglass.onBackgroundSecondary)
         }
         .buttonStyle(.plain)

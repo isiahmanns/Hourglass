@@ -87,7 +87,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func setupContentView() -> some View {
         return ContentView(viewModel: viewModel, settingsManager: Dependencies.settingsManager)
-            .font(.poppins)
     }
 
     private func setupAboutWindow() {

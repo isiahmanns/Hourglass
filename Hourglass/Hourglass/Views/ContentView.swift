@@ -10,7 +10,7 @@ struct ContentView: View {
 
             VStack(alignment: .center, spacing: 18.0) {
                 HStack {
-                    Logo(size: 40)
+                    Logo(size: 28)
                     Spacer()
                     SettingsMenu(viewModel: viewModel)
                 }
@@ -24,9 +24,9 @@ struct ContentView: View {
                 }
             }
             .fixedSize()
-            .padding([.top, .bottom], 34)
-            .padding([.leading, .trailing], 50)
+            .padding(24)
             .background(Color.Hourglass.background)
+            .font(.poppinsBody)
         }
     }
 }
@@ -40,6 +40,5 @@ struct ContentView_Previews: PreviewProvider {
                                   userNotificationManager: UserNotificationManager.shared)
         let settingsManager = SettingsManager.shared
         ContentView(viewModel: viewModel, settingsManager: settingsManager)
-            .font(Font.poppins)
     }
 }
