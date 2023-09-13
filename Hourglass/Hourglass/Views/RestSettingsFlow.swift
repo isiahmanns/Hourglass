@@ -51,6 +51,7 @@ struct RestSettingsFlow: View {
 
                 Button("Close") {
                     defer {
+                        // TODO: - Remove SettingsManager direct dependency and access via viewModel
                         settingsManager.setRestWarningThreshold(restWarningThreshold, conservatively: true)
                         settingsManager.setEnforceRestThreshold(enforceRestThreshold, conservatively: true)
                         settingsManager.setGetBackToWork(isEnabled: getBackToWorkIsEnabled, conservatively: true)

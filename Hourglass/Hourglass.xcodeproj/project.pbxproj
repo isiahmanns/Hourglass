@@ -34,6 +34,7 @@
 		258302EC29C369E400D37115 /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302EB29C369E400D37115 /* Events.swift */; };
 		258302EE29C36A0000D37115 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302ED29C36A0000D37115 /* Notifications.swift */; };
 		258CB4C529C2E4D800812DA4 /* UserNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258CB4C429C2E4D800812DA4 /* UserNotificationManager.swift */; };
+		258D5ABC2AB12F4D005CD49F /* TimerCategoryToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258D5ABB2AB12F4D005CD49F /* TimerCategoryToggle.swift */; };
 		25937DBA29B1B4E900A15F0B /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25937DB929B1B4E900A15F0B /* TimerModel.swift */; };
 		25AF8B902A2EAA93000A3F5F /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF8B8F2A2EAA93000A3F5F /* Mixpanel */; };
 		25AF8B922A2EAD3C000A3F5F /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF8B912A2EAD3C000A3F5F /* AnalyticsManager.swift */; };
@@ -104,6 +105,7 @@
 		258302EB29C369E400D37115 /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
 		258302ED29C36A0000D37115 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		258CB4C429C2E4D800812DA4 /* UserNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationManager.swift; sourceTree = "<group>"; };
+		258D5ABB2AB12F4D005CD49F /* TimerCategoryToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCategoryToggle.swift; sourceTree = "<group>"; };
 		25937DB929B1B4E900A15F0B /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		25AF8B912A2EAD3C000A3F5F /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		25AF8B942A2F92BA000A3F5F /* MixpanelEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixpanelEngine.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */,
 				2570F7492A1A34B20031B0BB /* StatisticsView.swift */,
 				25E0198E2A57B32F007BF235 /* IAPStoreView.swift */,
+				258D5ABB2AB12F4D005CD49F /* TimerCategoryToggle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -529,6 +532,7 @@
 				25937DBA29B1B4E900A15F0B /* TimerModel.swift in Sources */,
 				2570F73A2A1563C70031B0BB /* CoreDataStore.swift in Sources */,
 				25E019912A57B6A6007BF235 /* IAPManager.swift in Sources */,
+				258D5ABC2AB12F4D005CD49F /* TimerCategoryToggle.swift in Sources */,
 				25C3126629B5AE1E000070DF /* TimeUnit.swift in Sources */,
 				25C97C9329D2A2C9001A8CAD /* TimestampView.swift in Sources */,
 				25AF8B922A2EAD3C000A3F5F /* AnalyticsManager.swift in Sources */,

@@ -12,6 +12,8 @@ struct ContentView: View {
                 HStack {
                     Logo(size: 28)
                     Spacer()
+                    TimerCategoryToggle()
+                    Spacer()
                     SettingsMenu(viewModel: viewModel)
                 }
 

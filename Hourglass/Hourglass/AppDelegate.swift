@@ -63,6 +63,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             timestampNSView.translatesAutoresizingMaskIntoConstraints = false
             button.addSubview(timestampNSView)
 
+            // TODO: - Troubleshoot ambiguous contraints
             NSLayoutConstraint.activate([
                 timestampNSView.centerXAnchor.constraint(equalTo: button.centerXAnchor),
                 timestampNSView.centerYAnchor.constraint(equalTo: button.centerYAnchor)

@@ -71,6 +71,7 @@ class ViewModel: ObservableObject {
         pendingTimerModel = nil
     }
 
+    // TODO: - Break into extensions
     func showAboutWindow() {
         windowCoordinator?.showAboutWindow()
     }
