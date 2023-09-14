@@ -11,15 +11,17 @@ protocol TimerHandling: AnyObject {
     func resetActiveTimer()
 }
 
+// TODO: - Split root view model into domain specific groups of responsibilities
 class ViewModel: ObservableObject {
     private let analyticsManager: AnalyticsManager
     let timerModels: [Timer.Model.ID: Timer.Model]
+    let timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel
     private let timerManager: TimerManager
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
     weak var windowCoordinator: WindowCoordinator?
 
-    private var activeTimerModel: Timer.Model? {
+    var activeTimerModel: Timer.Model? {
         guard let activeTimerModelId = timerManager.activeTimerModelId else { return nil }
         return timerModels[activeTimerModelId]
     }
@@ -35,6 +37,7 @@ class ViewModel: ObservableObject {
 
         self.analyticsManager = analyticsManager
         self.timerModels = dataManager.timerModels
+        self.timerCategoryTogglePresenterModel = dataManager.timerCategoryTogglePresenterModel
         self.settingsManager = settingsManager
         self.timerManager = timerManager
         self.userNotificationManager = userNotificationManager

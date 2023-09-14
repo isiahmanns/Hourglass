@@ -16,6 +16,7 @@ enum AnalyticsEngine: AnalyticsEngineType {
     }
 }
 
+// TODO: - Add event for timer category toggle
 enum AnalyticsEvent {
     case timerDidComplete(Timer.Model)
     case timerWasCancelled(Timer.Model)

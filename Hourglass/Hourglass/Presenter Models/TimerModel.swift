@@ -1,5 +1,6 @@
 import Foundation
-
+// TODO: - Import Combine
+// TODO: - Refactor to use PresenterModel naming pattern
 enum Timer {
     class Model: Identifiable, ObservableObject {
         let length: Int

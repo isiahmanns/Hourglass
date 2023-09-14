@@ -11,6 +11,7 @@ class TimerModelStateManager {
 
     private let analyticsManager: AnalyticsManager
     private let timerModels: [Timer.Model.ID: Timer.Model]
+    private let timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let settingsManager: SettingsManager
     weak var delegate: (EventNotifying & TimerHandling)?
@@ -60,6 +61,7 @@ class TimerModelStateManager {
                      timerEventProvider: TimerEventProviding) {
         self.analyticsManager = analyticsManager
         self.timerModels = dataManager.timerModels
+        self.timerCategoryTogglePresenterModel = dataManager.timerCategoryTogglePresenterModel
         self.settingsManager = settingsManager
         self.timerEvents = timerEventProvider.events
         configureEventSubscriptions()
@@ -86,6 +88,15 @@ class TimerModelStateManager {
 
                 setTimers(state: .inactive)
                 delegate?.notifyUser(timerEvent: .timerDidComplete)
+
+                switch timerCategoryTogglePresenterModel.state {
+                case .focusOnly:
+                    timerCategoryTogglePresenterModel.state = .focus
+                case .restOnly:
+                    timerCategoryTogglePresenterModel.state = .rest
+                default:
+                    break
+                }
 
                 switch Timer.Model.category {
                 case .focus:
@@ -127,9 +138,9 @@ class TimerModelStateManager {
             analyticsManager.logEvent(.enforceRestThresholdSet(newValue))
         }
 
-        // TODO: - Refactor
         settingsManager.observe(\.getBackToWork) { [self] isEnabled in
             if !isEnabled {
+                timerCategoryTogglePresenterModel.state = .focus
             }
 
             analyticsManager.logEvent(.getBackToWorkSet(isEnabled))
@@ -141,6 +152,7 @@ class TimerModelStateManager {
         resetFocusStride()
         delegate?.resetActiveTimer()
         setTimers(state: .inactive)
+        timerCategoryTogglePresenterModel.state = .focus
     }
 
     private func resetFocusStride() {
@@ -153,17 +165,17 @@ class TimerModelStateManager {
         }
     }
 
-    // TODO: - Refactor
     private func enforceRestIfNeeded() {
         if let enforceRestThreshold, focusStride == enforceRestThreshold {
             delegate?.notifyUser(progressEvent: .enforceRestThresholdMet)
+            timerCategoryTogglePresenterModel.state = .restOnly
         }
     }
 
-    // TODO: - Refactor
     private func enforceFocusIfNeeded() {
         if getBackToWorkIsEnabled {
             delegate?.notifyUser(progressEvent: .getBackToWork)
+            timerCategoryTogglePresenterModel.state = .focusOnly
         }
     }
 

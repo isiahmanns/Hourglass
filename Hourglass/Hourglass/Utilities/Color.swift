@@ -1,25 +1,14 @@
 import SwiftUI
 
 extension Color {
-    private enum Token: String {
-        case background
-        case onBackgroundPrimary
-        case onBackgroundSecondary
-        case surface
-        case onSurface
-        case accent
-
-        var color: Color {
-            Color(self.rawValue)
-        }
-    }
-
     enum Hourglass {
-        static let background = Token.background.color
-        static let onBackgroundPrimary = Token.onBackgroundPrimary.color
-        static let onBackgroundSecondary = Token.onBackgroundSecondary.color
-        static let surface = Token.surface.color
-        static let onSurface = Token.onSurface.color
-        static let accent = Token.accent.color
+        static let background = Color("background")
+        static let onBackgroundPrimary = Color("onBackgroundPrimary")
+        static let onBackgroundSecondary = Color("onBackgroundSecondary")
+        static let surface = Color("surface")
+        static let onSurface = Color("onSurface")
+        static let accent = Color("accent")
+        static let toggleSelection = Color("toggleSelection")
+        static let toggleBackground = Color("toggleBackground")
     }
 }

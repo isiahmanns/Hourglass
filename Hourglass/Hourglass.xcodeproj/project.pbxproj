@@ -35,6 +35,7 @@
 		258302EE29C36A0000D37115 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258302ED29C36A0000D37115 /* Notifications.swift */; };
 		258CB4C529C2E4D800812DA4 /* UserNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258CB4C429C2E4D800812DA4 /* UserNotificationManager.swift */; };
 		258D5ABC2AB12F4D005CD49F /* TimerCategoryToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258D5ABB2AB12F4D005CD49F /* TimerCategoryToggle.swift */; };
+		258D5ABE2AB262C2005CD49F /* TimerCategoryTogglePresenterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 258D5ABD2AB262C2005CD49F /* TimerCategoryTogglePresenterModel.swift */; };
 		25937DBA29B1B4E900A15F0B /* TimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25937DB929B1B4E900A15F0B /* TimerModel.swift */; };
 		25AF8B902A2EAA93000A3F5F /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 25AF8B8F2A2EAA93000A3F5F /* Mixpanel */; };
 		25AF8B922A2EAD3C000A3F5F /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF8B912A2EAD3C000A3F5F /* AnalyticsManager.swift */; };
@@ -106,6 +107,7 @@
 		258302ED29C36A0000D37115 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		258CB4C429C2E4D800812DA4 /* UserNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationManager.swift; sourceTree = "<group>"; };
 		258D5ABB2AB12F4D005CD49F /* TimerCategoryToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCategoryToggle.swift; sourceTree = "<group>"; };
+		258D5ABD2AB262C2005CD49F /* TimerCategoryTogglePresenterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCategoryTogglePresenterModel.swift; sourceTree = "<group>"; };
 		25937DB929B1B4E900A15F0B /* TimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModel.swift; sourceTree = "<group>"; };
 		25AF8B912A2EAD3C000A3F5F /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		25AF8B942A2F92BA000A3F5F /* MixpanelEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixpanelEngine.swift; sourceTree = "<group>"; };
@@ -213,12 +215,13 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		2507BB5829C92067004478BE /* Data Models */ = {
+		2507BB5829C92067004478BE /* Presenter Models */ = {
 			isa = PBXGroup;
 			children = (
 				25937DB929B1B4E900A15F0B /* TimerModel.swift */,
+				258D5ABD2AB262C2005CD49F /* TimerCategoryTogglePresenterModel.swift */,
 			);
-			path = "Data Models";
+			path = "Presenter Models";
 			sourceTree = "<group>";
 		};
 		253816D129A5D88C007BD118 = {
@@ -253,7 +256,7 @@
 				25EB6DAB29B027AB005BC143 /* ViewModel.swift */,
 				2507BB5529C91D95004478BE /* Views */,
 				2507BB5729C92054004478BE /* Managers */,
-				2507BB5829C92067004478BE /* Data Models */,
+				2507BB5829C92067004478BE /* Presenter Models */,
 				2507BB5629C91DDB004478BE /* Utilities */,
 				253816E129A5D88C007BD118 /* Assets.xcassets */,
 				253816E629A5D88C007BD118 /* Hourglass.entitlements */,
@@ -543,6 +546,7 @@
 				2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */,
 				258302EA29C331CC00D37115 /* SettingsManager.swift in Sources */,
 				2570F7382A1472160031B0BB /* TimerHistory.xcdatamodeld in Sources */,
+				258D5ABE2AB262C2005CD49F /* TimerCategoryTogglePresenterModel.swift in Sources */,
 				2507BB4729C7A77F004478BE /* SettingsKeys.swift in Sources */,
 				254C4F062A33C74900217448 /* AnalyticsDataType.swift in Sources */,
 				25458EE129C6A69F00A118C0 /* Constants.swift in Sources */,

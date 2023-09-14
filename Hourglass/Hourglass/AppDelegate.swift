@@ -142,6 +142,7 @@ extension AppDelegate: WindowCoordinator {
         aboutWindow.makeKeyAndOrderFront(nil)
     }
 
+    // TODO: - Remove
     func showPopoverIfNeeded() {
         // Note: Fixes bug where tapping the status item wouldn't close the popover on the first time after an alert popup.
         if !popover.isShown {

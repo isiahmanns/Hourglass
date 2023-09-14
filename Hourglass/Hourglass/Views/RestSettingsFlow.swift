@@ -18,6 +18,7 @@ struct RestSettingsFlow: View {
 
     var body: some View {
         VStack {
+            // TODO: - Think about reducing these options to 3
             Form {
                 Picker("Rest Reminder:", selection: $restWarningThreshold) {
                     Text("Off").tag(-1)

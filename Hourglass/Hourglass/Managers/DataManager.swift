@@ -4,6 +4,7 @@ import Foundation
 
 protocol DataManaging {
     var timerModels: [Timer.Model.ID: Timer.Model] { get }
+    var timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel { get }
 }
 
 class DataManager: DataManaging {
@@ -11,6 +12,7 @@ class DataManager: DataManaging {
                                     store: CoreDataStore.shared,
                                     timerEventProvider: TimerManager.shared)
     let timerModels: [Timer.Model.ID: Timer.Model]
+    let timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel = .init()
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let store: CoreDataStore
     private var cancellables: Set<AnyCancellable> = []

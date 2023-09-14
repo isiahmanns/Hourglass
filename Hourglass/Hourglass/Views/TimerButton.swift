@@ -44,7 +44,7 @@ extension TimerButton {
                 EmptyView()
             case .active:
                 Circle()
-                    .stroke(Color.Hourglass.accent, lineWidth: 4.0)
+                    .stroke(Color.Hourglass.accent, lineWidth: 2.6)
             }
         }
 

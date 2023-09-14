@@ -1,10 +1,8 @@
 import SwiftUI
 
-// TODO: - Disable category toggle when timer is running, access via viewModel
-// TODO: - Make active timer stroke thinner
-// TODO: - Animate selection capsule movement and toggle re-sizing
 struct TimerCategoryToggle: View {
-    @State var state: TimerCategoryToggleState = .focus
+    let viewModel: ViewModel
+    @StateObject var presenterModel: PresenterModel
 
     var body: some View {
         let containerPadding: CGFloat = 4
@@ -12,44 +10,53 @@ struct TimerCategoryToggle: View {
         ZStack {
             ZStack {
                 Capsule()
-                    .fill(Color.Hourglass.background)
+                    .fill(Color.Hourglass.toggleSelection)
                     .frame(width: TimerCategoryButtonStyle.width, height: TimerCategoryButtonStyle.height)
                     .position(selectionCapsulePosition)
 
                 HStack(spacing: 0) {
-                    if state != .restOnly {
+                    if presenterModel.state != .restOnly {
                         Button {
-                            state = .focus
-                            Timer.Model.category = .focus
+                            if viewModel.activeTimerModel == nil {
+                                withAnimation(.easeOut(duration: 0.1)) {
+                                    presenterModel.state = .focus
+                                }
+                            }
                         } label: {
                             Text("Focus")
                         }
+                        .disabled(presenterModel.state == .focusOnly)
                     }
 
-                    if state != .focusOnly {
+                    if presenterModel.state != .focusOnly {
                         Button {
-                            state = .rest
-                            Timer.Model.category = .rest
+                            if viewModel.activeTimerModel == nil {
+                                withAnimation(.easeOut(duration: 0.1)) {
+                                    presenterModel.state = .rest
+                                }
+                            }
                         } label: {
                             Text("Rest")
                         }
+                        .disabled(presenterModel.state == .restOnly)
                     }
                 }
                 .font(.poppinsBody)
                 .foregroundColor(Color.Hourglass.onBackgroundPrimary)
                 .buttonStyle(TimerCategoryButtonStyle())
+                .animation(.easeOut(duration: 0.1), value: presenterModel.state)
             }
             .frame(width: toggleWidth, height: TimerCategoryButtonStyle.height)
         }
         .frame(width: toggleWidth + containerPadding, height: TimerCategoryButtonStyle.height + containerPadding)
-        .background(Color.Hourglass.onBackgroundSecondary)
+        .background(Color.Hourglass.toggleBackground)
         .cornerRadius((TimerCategoryButtonStyle.height + containerPadding) / 2)
     }
 
     private var selectionCapsulePosition: CGPoint {
         let y = 1 / 2 * TimerCategoryButtonStyle.height
 
-        switch state {
+        switch presenterModel.state {
         case .focus:
             return CGPoint(x: 1 / 4 * TimerCategoryButtonStyle.width * 2, y: y)
         case .rest:
@@ -62,7 +69,7 @@ struct TimerCategoryToggle: View {
     }
 
     private var toggleWidth: CGFloat {
-        switch state {
+        switch presenterModel.state {
         case .focus, .rest:
             return TimerCategoryButtonStyle.width * 2
         case .focusOnly, .restOnly:
@@ -83,20 +90,19 @@ fileprivate struct TimerCategoryButtonStyle: ButtonStyle {
     }
 }
 
-enum TimerCategoryToggleState {
-    case focus
-    case rest
-    case focusOnly
-    case restOnly
-}
-
 struct TimerCategoryToggle_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = ViewModelMock(analyticsManager: AnalyticsManager.shared,
+                                      dataManager: DataManager.shared,
+                                      settingsManager: SettingsManager.shared,
+                                      timerManager: TimerManager.shared,
+                                      userNotificationManager: UserNotificationManager.shared)
+
         VStack {
-            TimerCategoryToggle(state: .focus)
-            TimerCategoryToggle(state: .rest)
-            TimerCategoryToggle(state: .focusOnly)
-            TimerCategoryToggle(state: .restOnly)
+            TimerCategoryToggle(viewModel: viewModel, presenterModel: .init(state: .focus))
+            TimerCategoryToggle(viewModel: viewModel, presenterModel: .init(state: .rest))
+            TimerCategoryToggle(viewModel: viewModel, presenterModel: .init(state: .focusOnly))
+            TimerCategoryToggle(viewModel: viewModel, presenterModel: .init(state: .restOnly))
         }
     }
 }
