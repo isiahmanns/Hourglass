@@ -4,7 +4,6 @@ import SwiftUI
 
 protocol WindowCoordinator: AnyObject {
     func showAboutWindow()
-    func showPopoverIfNeeded()
     func showStatisticsWindow()
 }
 
@@ -140,14 +139,6 @@ extension AppDelegate {
 extension AppDelegate: WindowCoordinator {
     func showAboutWindow() {
         aboutWindow.makeKeyAndOrderFront(nil)
-    }
-
-    // TODO: - Remove
-    func showPopoverIfNeeded() {
-        // Note: Fixes bug where tapping the status item wouldn't close the popover on the first time after an alert popup.
-        if !popover.isShown {
-            showPopover()
-        }
     }
 
     func showStatisticsWindow() {
