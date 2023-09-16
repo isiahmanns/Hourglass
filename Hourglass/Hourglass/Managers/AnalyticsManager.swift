@@ -2,7 +2,6 @@ protocol AnalyticsEngine {
     func logEvent(name: String, metadata: Metadata?)
 }
 
-// TODO: - Add event for timer category toggle
 enum AnalyticsEvent {
     case timerDidComplete(Timer.Model)
     case timerWasCancelled(Timer.Model)
