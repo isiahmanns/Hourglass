@@ -10,7 +10,6 @@ struct TimerButton: View {
             action()
         } label: {
             Text(String(model.length))
-                .font(.poppinsBody)
         }
         .buttonStyle(TimerButton.Style(for: model.state))
         .accessibilityIdentifier("\(model.length)m-timer-button")
@@ -28,6 +27,7 @@ extension TimerButton {
 
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
+                .font(.poppinsBody)
                 .frame(width: size, height: size, alignment: .center)
                 .background(Color.Hourglass.surface)
                 .foregroundColor(Color.Hourglass.onSurface)
