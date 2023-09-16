@@ -7,8 +7,7 @@ protocol EventNotifying: AnyObject {
 }
 
 protocol TimerHandling: AnyObject {
-    func resetTimer(for timerModel: Timer.Model)
-    func resetActiveTimer()
+    func resetActiveTimer() throws
 }
 
 // TODO: - Split root view model into domain specific groups of responsibilities
@@ -46,7 +45,7 @@ class ViewModel: ObservableObject {
     func didTapTimer(from model: Timer.Model) -> Void {
         if let activeTimerModel {
             if model === activeTimerModel {
-                cancelTimer()
+                try? cancelTimer()
             } else {
                 promptStartNewTimer(for: model)
             }
@@ -60,9 +59,7 @@ class ViewModel: ObservableObject {
         case .no:
             break
         case .yes:
-            if activeTimerModel != nil {
-                cancelTimer()
-            }
+            try? cancelTimer()
 
             guard let pendingTimerModel else {
                 fatalError()
@@ -88,8 +85,8 @@ class ViewModel: ObservableObject {
         analyticsManager.logEvent(event)
     }
 
-    private func cancelTimer() {
-        timerManager.cancelTimer()
+    private func cancelTimer() throws {
+        try timerManager.cancelTimer()
     }
 
     private func startTimer(for model: Timer.Model) {
@@ -103,20 +100,8 @@ class ViewModel: ObservableObject {
 }
 
 extension ViewModel: TimerHandling {
-    func resetTimer(for timerModel: Timer.Model) {
-        if activeTimerModel === timerModel {
-            resetTimer()
-        }
-    }
-
-    func resetActiveTimer() {
-        if activeTimerModel != nil {
-            resetTimer()
-        }
-    }
-
-    private func resetTimer() {
-        cancelTimer()
+    func resetActiveTimer() throws {
+        try cancelTimer()
         viewState.showTimerResetAlert.toggle()
     }
 }

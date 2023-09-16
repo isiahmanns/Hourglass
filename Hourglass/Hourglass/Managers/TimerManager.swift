@@ -1,6 +1,10 @@
 import Foundation
 import Combine
 
+enum TimerManagerError: Error {
+    case attemptToCancelInactiveTimer
+}
+
 typealias TimerEvent = PassthroughSubject<Timer.Model.ID, Never>
 
 protocol TimerEventProviding {
@@ -58,10 +62,10 @@ class TimerManager: ObservableObject, TimerEventProviding {
             .store(in: &timerCancellables)
     }
 
-    func cancelTimer() {
-        guard let activeTimerModelId else {
-            fatalError()
-        }
+    func cancelTimer() throws {
+        guard let activeTimerModelId
+        else { throw TimerManagerError.attemptToCancelInactiveTimer }
+
         stopTimer()
         events[.timerWasCancelled]?.send(activeTimerModelId)
     }

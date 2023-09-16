@@ -1,5 +1,6 @@
 import Combine
 
+// TODO: - Update documentation
 /**
  A manager object that subscribes to timer events and handles associated `Timer.Model` state mutation.
  */
@@ -86,7 +87,7 @@ class TimerModelStateManager {
 
                 defer { self.activeTimerModelId = nil }
 
-                setTimers(state: .inactive)
+                activeTimerModel.state = .inactive
                 delegate?.notifyUser(timerEvent: .timerDidComplete)
 
                 switch timerCategoryTogglePresenterModel.state {
@@ -147,12 +148,10 @@ class TimerModelStateManager {
         }
     }
 
-    // TODO: - Refactor, test
     private func didChangeRestSettings() {
-        resetFocusStride()
-        delegate?.resetActiveTimer()
-        setTimers(state: .inactive)
+        try? delegate?.resetActiveTimer()
         timerCategoryTogglePresenterModel.state = .focus
+        resetFocusStride()
     }
 
     private func resetFocusStride() {
@@ -177,14 +176,6 @@ class TimerModelStateManager {
             delegate?.notifyUser(progressEvent: .getBackToWork)
             timerCategoryTogglePresenterModel.state = .focusOnly
         }
-    }
-
-    // TODO: - Remove, set active timer's state only
-    private func setTimers(state: Timer.State) {
-        timerModels
-            .forEach { id, timerModel in
-                timerModel.state = state
-            }
     }
 }
 
