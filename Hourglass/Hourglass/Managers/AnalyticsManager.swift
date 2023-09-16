@@ -1,19 +1,5 @@
-protocol AnalyticsEngineType {
+protocol AnalyticsEngine {
     func logEvent(name: String, metadata: Metadata?)
-}
-
-enum AnalyticsEngine: AnalyticsEngineType {
-    case mixpanel
-    case stdout
-
-    func logEvent(name: String, metadata: Metadata?) {
-        switch self {
-        case .mixpanel:
-            MixpanelEngine.shared.logEvent(name: name, metadata: metadata)
-        case .stdout:
-            StdoutEngine.shared.logEvent(name: name, metadata: metadata)
-        }
-    }
 }
 
 // TODO: - Add event for timer category toggle
@@ -23,8 +9,8 @@ enum AnalyticsEvent {
     case restWarningThresholdSet(Int)
     case enforceRestThresholdSet(Int)
     case getBackToWorkSet(Bool)
-    case notificationStyleSet(NotificationStyle)
     case statisticsViewOpened
+    case timerCategoryToggled
 
     var name: String {
         switch self {
@@ -38,10 +24,7 @@ enum AnalyticsEvent {
             return "enforceRestThresholdSet"
         case .getBackToWorkSet:
             return "getBackToWorkSet"
-        // TODO: - Remove
-        case .notificationStyleSet:
-            return "notificationStyleSet"
-        case .statisticsViewOpened:
+        case .statisticsViewOpened, .timerCategoryToggled:
             return String(describing: self)
         }
     }
@@ -57,26 +40,22 @@ enum AnalyticsEvent {
             return ["Enforce Rest Threshold": enforceRestThreshold]
         case let .getBackToWorkSet(getBackToWork):
             return ["Get Back to Work": getBackToWork]
-        case let .notificationStyleSet(notificationStyle):
-            return ["Notification Style": String(describing: notificationStyle)]
         case .statisticsViewOpened:
             return nil
+        case .timerCategoryToggled:
+            return ["Timer Category": String(describing: Timer.Model.category)]
         }
     }
 }
 
 struct AnalyticsManager {
     #if CITESTING
-    static let shared = AnalyticsManager(analyticsEngine: .stdout)
+    static let shared = AnalyticsManager(analyticsEngine: StdoutEngine.shared)
     #else
-    static let shared = AnalyticsManager(analyticsEngine: .mixpanel)
+    static let shared = AnalyticsManager(analyticsEngine: MixpanelEngine.shared)
     #endif
 
     private let analyticsEngine: AnalyticsEngine
-
-    private init(analyticsEngine: AnalyticsEngine) {
-        self.analyticsEngine = analyticsEngine
-    }
 
     func logEvent(_ event: AnalyticsEvent) {
         analyticsEngine.logEvent(name: event.name, metadata: event.metadata)

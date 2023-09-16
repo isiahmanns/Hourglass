@@ -1,4 +1,4 @@
-struct StdoutEngine: AnalyticsEngineType {
+struct StdoutEngine: AnalyticsEngine {
     static let shared = StdoutEngine()
 
     private init() {}

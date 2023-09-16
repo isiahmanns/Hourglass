@@ -1,7 +1,7 @@
 import Foundation
 import Mixpanel
 
-struct MixpanelEngine: AnalyticsEngineType {
+struct MixpanelEngine: AnalyticsEngine {
     static let shared = MixpanelEngine(mixpanel: Mixpanel.self, bundle: Bundle.main)
 
     let mixpanel: Mixpanel.Type
