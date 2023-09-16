@@ -5,7 +5,7 @@ enum TimerManagerError: Error {
     case attemptToCancelInactiveTimer
 }
 
-typealias TimerEvent = PassthroughSubject<Timer.Model.ID, Never>
+typealias TimerEvent = PassthroughSubject<TimerButton.PresenterModel.ID, Never>
 
 protocol TimerEventProviding {
     var events: [HourglassEventKey.Timer: TimerEvent] { get }
@@ -26,7 +26,7 @@ class TimerManager: ObservableObject, TimerEventProviding {
         }
     }
     @Published private(set) var timeStamp: String = Constants.timeStampZero
-    private(set) var activeTimerModelId: Timer.Model.ID?
+    private(set) var activeTimerModelId: TimerButton.PresenterModel.ID?
 
     let events: [HourglassEventKey.Timer: TimerEvent] = [
         .timerDidStart: .init(),
@@ -39,7 +39,7 @@ class TimerManager: ObservableObject, TimerEventProviding {
         self.timerPublisher = timerPublisher
     }
     
-    func startTimer(length: Int, activeTimerModelId: Timer.Model.ID) {
+    func startTimer(length: Int, activeTimerModelId: TimerButton.PresenterModel.ID) {
         self.count = length * Constants.countdownFactor
         self.activeTimerModelId = activeTimerModelId
         events[.timerDidStart]?.send(activeTimerModelId)

@@ -1,8 +1,7 @@
 import Combine
 
-// TODO: - Update documentation
 /**
- A manager object that subscribes to timer events and handles associated `Timer.Model` state mutation.
+ A manager object that subscribes to timer events and handles associated `TimerButton` and `TimerCategoryToggle` PresenterModel state mutation.
  */
 class TimerModelStateManager {
     static let shared = TimerModelStateManager(analyticsManager: AnalyticsManager.shared,
@@ -11,14 +10,14 @@ class TimerModelStateManager {
                                                timerEventProvider: TimerManager.shared)
 
     private let analyticsManager: AnalyticsManager
-    private let timerModels: [Timer.Model.ID: Timer.Model]
+    private let timerModels: [TimerButton.PresenterModel.ID: TimerButton.PresenterModel]
     private let timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let settingsManager: SettingsManager
     weak var delegate: (EventNotifying & TimerHandling)?
 
-    private var activeTimerModelId: Timer.Model.ID?
-    private var activeTimerModel: Timer.Model? {
+    private var activeTimerModelId: TimerButton.PresenterModel.ID?
+    private var activeTimerModel: TimerButton.PresenterModel? {
         guard let activeTimerModelId else { return nil }
         return timerModels[activeTimerModelId]
     }
@@ -99,7 +98,7 @@ class TimerModelStateManager {
                     break
                 }
 
-                switch Timer.Model.category {
+                switch TimerCategoryToggle.category {
                 case .focus:
                     focusStride += 1
                     showRestWarningIfNeeded()

@@ -2,7 +2,7 @@ import CoreData
 import Foundation
 
 enum TestData {
-    private static func createTimeBlock(start: Date, end: Date, category: Timer.Category) -> TimeBlock {
+    private static func createTimeBlock(start: Date, end: Date, category: TimerCategory) -> TimeBlock {
         let entity = NSEntityDescription.entity(forEntityName: CoreDataEntity.timeBlock.rawValue,
                                                 in: CoreDataStore.shared.context)
         let timeBlock = NSManagedObject(entity: entity!, insertInto: nil) as! TimeBlock

@@ -2,7 +2,7 @@ import SwiftUI
 import Combine
 
 struct TimerButton: View {
-    @StateObject var model: Timer.Model
+    @StateObject var model: TimerButton.PresenterModel
     let action: () -> Void
 
     var body: some View {
@@ -18,10 +18,10 @@ struct TimerButton: View {
 
 extension TimerButton {
     private struct Style: ButtonStyle {
-        let state: Timer.State
+        let state: TimerButton.State
         let size: CGFloat = 32
 
-        init(for state: Timer.State) {
+        init(for state: TimerButton.State) {
             self.state = state
         }
 
@@ -56,7 +56,7 @@ extension TimerButton {
 
 struct TimerButton_Previews: PreviewProvider {
     static var previews: some View {
-        let timerModel = Timer.Model(length: 15)
+        let timerModel = TimerButton.PresenterModel(length: 15)
         TimerButton(model: timerModel) {}
     }
 }

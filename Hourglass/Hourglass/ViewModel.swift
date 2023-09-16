@@ -13,19 +13,19 @@ protocol TimerHandling: AnyObject {
 // TODO: - Split root view model into domain specific groups of responsibilities
 class ViewModel: ObservableObject {
     private let analyticsManager: AnalyticsManager
-    let timerModels: [Timer.Model.ID: Timer.Model]
+    let timerModels: [TimerButton.PresenterModel.ID: TimerButton.PresenterModel]
     let timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel
     private let timerManager: TimerManager
     private let userNotificationManager: NotificationManager
     private let settingsManager: SettingsManager
     weak var windowCoordinator: WindowCoordinator?
 
-    var activeTimerModel: Timer.Model? {
+    var activeTimerModel: TimerButton.PresenterModel? {
         guard let activeTimerModelId = timerManager.activeTimerModelId else { return nil }
         return timerModels[activeTimerModelId]
     }
 
-    private var pendingTimerModel: Timer.Model?
+    private var pendingTimerModel: TimerButton.PresenterModel?
     @Published var viewState = ViewState()
 
     init(analyticsManager: AnalyticsManager,
@@ -42,7 +42,7 @@ class ViewModel: ObservableObject {
         self.userNotificationManager = userNotificationManager
     }
 
-    func didTapTimer(from model: Timer.Model) -> Void {
+    func didTapTimer(from model: TimerButton.PresenterModel) -> Void {
         if let activeTimerModel {
             if model === activeTimerModel {
                 try? cancelTimer()
@@ -89,11 +89,11 @@ class ViewModel: ObservableObject {
         try timerManager.cancelTimer()
     }
 
-    private func startTimer(for model: Timer.Model) {
+    private func startTimer(for model: TimerButton.PresenterModel) {
         timerManager.startTimer(length: model.length, activeTimerModelId: model.id)
     }
 
-    private func promptStartNewTimer(for model: Timer.Model) {
+    private func promptStartNewTimer(for model: TimerButton.PresenterModel) {
         pendingTimerModel = model
         viewState.showStartNewTimerDialog.toggle()
     }

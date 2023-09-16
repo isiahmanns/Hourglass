@@ -14,7 +14,7 @@ final class ViewModelTests: XCTestCase {
          settingsManager) = UnitTestProviders.fakeViewModel
     let now = Date.now
 
-    lazy var timerModels: [Hourglass.Timer.Category: [Hourglass.Timer.Model]] = {
+    lazy var timerModels: [Hourglass.Timer.Category: [Hourglass.TimerButton.PresenterModel]] = {
         Dictionary(grouping: Array(viewModel.timerModels.values).sortBySize(),
                    by: { $0.category })
     }()
@@ -449,17 +449,17 @@ final class ViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.notificationCount.progressEvents[event] ?? 0, count)
     }
 
-    private func assertTimer(_ timerModel: Hourglass.Timer.Model,
-                             state: Hourglass.Timer.State) {
+    private func assertTimer(_ timerModel: Hourglass.TimerButton.PresenterModel,
+                             state: Hourglass.TimerButton.State) {
         XCTAssertEqual(timerModel.state, state)
     }
 
-    private func assertTimerManager(activeTimerId: Hourglass.Timer.Model.ID?) {
+    private func assertTimerManager(activeTimerId: Hourglass.TimerButton.PresenterModel.ID?) {
         XCTAssertEqual(timerManager.activeTimerModelId, activeTimerId)
     }
 
-    private func assertStartNewTimer(_ newTimer: Hourglass.Timer.Model,
-                                     from currentTimer: Hourglass.Timer.Model,
+    private func assertStartNewTimer(_ newTimer: Hourglass.TimerButton.PresenterModel,
+                                     from currentTimer: Hourglass.TimerButton.PresenterModel,
                                      response: ViewModel.StartNewTimerDialogResponse) {
         switch response {
         case .yes:
@@ -473,8 +473,8 @@ final class ViewModelTests: XCTestCase {
         XCTAssertFalse(viewModel.viewState.showStartNewTimerDialog)
     }
 
-    private func assertRequestingNewTimer(_ newTimer: Hourglass.Timer.Model,
-                                          from currentTimer: Hourglass.Timer.Model) {
+    private func assertRequestingNewTimer(_ newTimer: Hourglass.TimerButton.PresenterModel,
+                                          from currentTimer: Hourglass.TimerButton.PresenterModel) {
         assertTimer(newTimer, state: .inactive)
         assertTimer(currentTimer, state: .active)
         XCTAssertTrue(viewModel.viewState.showStartNewTimerDialog)

@@ -3,8 +3,8 @@ protocol AnalyticsEngine {
 }
 
 enum AnalyticsEvent {
-    case timerDidComplete(Timer.Model)
-    case timerWasCancelled(Timer.Model)
+    case timerDidComplete(TimerButton.PresenterModel)
+    case timerWasCancelled(TimerButton.PresenterModel)
     case restWarningThresholdSet(Int)
     case enforceRestThresholdSet(Int)
     case getBackToWorkSet(Bool)
@@ -31,7 +31,7 @@ enum AnalyticsEvent {
     var metadata: Metadata? {
         switch self {
         case let .timerDidComplete(timerModel), let .timerWasCancelled(timerModel):
-            return ["Category" : String(describing: Timer.Model.category),
+            return ["Category" : String(describing: TimerCategoryToggle.category),
                     "Length": timerModel.length]
         case let .restWarningThresholdSet(restWarningThreshold):
             return ["Rest Warning Threshold": restWarningThreshold]
@@ -42,7 +42,7 @@ enum AnalyticsEvent {
         case .statisticsViewOpened:
             return nil
         case .timerCategoryToggled:
-            return ["Timer Category": String(describing: Timer.Model.category)]
+            return ["Timer Category": String(describing: TimerCategoryToggle.category)]
         }
     }
 }

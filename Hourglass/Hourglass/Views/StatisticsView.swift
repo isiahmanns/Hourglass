@@ -255,7 +255,7 @@ extension TimeBlock {
 
         let startSeconds: Int
         let endSeconds: Int
-        let category: Timer.Category
+        let category: TimerCategory
     }
 }
 
@@ -321,18 +321,18 @@ private extension TimeBlock {
                 Chunk(date: startDate.ymdDate,
                       startSeconds: startDate.secondOfDay,
                       endSeconds: lastSecondOfDay,
-                      category: Timer.Category(rawValue: Int(category))!),
+                      category: TimerCategory(rawValue: Int(category))!),
                 Chunk(date: endDate.ymdDate,
                       startSeconds: firstSecondOfDay,
                       endSeconds: endDate.secondOfDay,
-                      category: Timer.Category(rawValue: Int(category))!)
+                      category: TimerCategory(rawValue: Int(category))!)
             ]
         }
 
         return [Chunk(date: endDate.ymdDate,
                       startSeconds: startDate.secondOfDay,
                       endSeconds: endDate.secondOfDay,
-                      category: Timer.Category(rawValue: Int(category))!)]
+                      category: TimerCategory(rawValue: Int(category))!)]
     }
 }
 

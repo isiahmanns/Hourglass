@@ -3,7 +3,7 @@ import CoreData
 import Foundation
 
 protocol DataManaging {
-    var timerModels: [Timer.Model.ID: Timer.Model] { get }
+    var timerModels: [TimerButton.PresenterModel.ID: TimerButton.PresenterModel] { get }
     var timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel { get }
 }
 
@@ -11,7 +11,7 @@ class DataManager: DataManaging {
     static let shared = DataManager(timerLengths: Constants.timerLengths,
                                     store: CoreDataStore.shared,
                                     timerEventProvider: TimerManager.shared)
-    let timerModels: [Timer.Model.ID: Timer.Model]
+    let timerModels: [TimerButton.PresenterModel.ID: TimerButton.PresenterModel]
     let timerCategoryTogglePresenterModel: TimerCategoryToggle.PresenterModel = .init()
     private let timerEvents: [HourglassEventKey.Timer: TimerEvent]
     private let store: CoreDataStore
@@ -20,8 +20,8 @@ class DataManager: DataManaging {
     fileprivate init(timerLengths: [Int],
                      store: CoreDataStore,
                      timerEventProvider: TimerEventProviding) {
-        self.timerModels = timerLengths.reduce(into: [Timer.Model.ID: Timer.Model]()) { partialResult, timerLength in
-            let timerModel = Timer.Model(length: timerLength)
+        self.timerModels = timerLengths.reduce(into: [TimerButton.PresenterModel.ID: TimerButton.PresenterModel]()) { partialResult, timerLength in
+            let timerModel = TimerButton.PresenterModel(length: timerLength)
             partialResult[timerModel.id] = timerModel
         }
         self.store = store
@@ -41,13 +41,13 @@ class DataManager: DataManaging {
             .store(in: &cancellables)
     }
 
-    private func createTimeBlock(from timerModel: Timer.Model) -> TimeBlock {
+    private func createTimeBlock(from timerModel: TimerButton.PresenterModel) -> TimeBlock {
         let now = Date.now
         let entity = NSEntityDescription.entity(forEntityName: CoreDataEntity.timeBlock.rawValue,
                                                 in: store.context)
         let timeBlock = NSManagedObject(entity: entity!, insertInto: nil) as! TimeBlock
 
-        timeBlock.category = Int16(Timer.Model.category.rawValue)
+        timeBlock.category = Int16(TimerCategoryToggle.category.rawValue)
         timeBlock.start = now - TimeInterval(timerModel.length * 60)
         timeBlock.end = now
         return timeBlock

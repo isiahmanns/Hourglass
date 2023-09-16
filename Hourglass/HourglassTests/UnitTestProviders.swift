@@ -11,9 +11,9 @@ struct UnitTestProviders {
         return (stubTimerPublisher, fakeTimerManager)
     }
 
-    private static var stubTimerModels: [Hourglass.Timer.Model] {
-        [Timer.Model(length: 3, category: .focus, size: .small),
-         Timer.Model(length: 5, category: .rest, size: .medium)]
+    private static var stubTimerModels: [Hourglass.TimerButton.PresenterModel] {
+        [TimerButton.PresenterModel(length: 3, category: .focus, size: .small),
+         TimerButton.PresenterModel(length: 5, category: .rest, size: .medium)]
     }
 
     static var fakeViewModel: (ViewModelMock,

@@ -19,7 +19,8 @@ struct ContentView: View {
                 }
 
                 HStack {
-                    ForEach(viewModel.timerModels.values.sortBySize()) { model in
+                    let timerModels = viewModel.timerModels.values.sorted(by: {$0.length < $1.length})
+                    ForEach(timerModels) { model in
                         TimerButton(model: model) {
                             viewModel.didTapTimer(from: model)
                         }
