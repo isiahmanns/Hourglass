@@ -70,7 +70,7 @@ class TimerModelStateManager {
 
     private func configureEventSubscriptions() {
         timerEvents[.timerDidStart]?
-            .sink { [weak self] timerModelId in
+            .sink { [weak self] timerModelId, _ in
                 guard let self else { return }
                 activeTimerModelId = timerModelId
                 activeTimerModel?.state = .active
@@ -78,7 +78,7 @@ class TimerModelStateManager {
             .store(in: &cancellables)
 
         timerEvents[.timerDidComplete]?
-            .sink { [weak self] timerModelId in
+            .sink { [weak self] timerModelId, timerCategory in
                 guard let self else { return }
                 guard let activeTimerModel, timerModelId == activeTimerModel.id else {
                     fatalError()
@@ -98,7 +98,7 @@ class TimerModelStateManager {
                     break
                 }
 
-                switch TimerCategoryToggle.category {
+                switch timerCategory {
                 case .focus:
                     focusStride += 1
                     showRestWarningIfNeeded()
@@ -108,12 +108,12 @@ class TimerModelStateManager {
                     enforceFocusIfNeeded()
                 }
 
-                analyticsManager.logEvent(.timerDidComplete(activeTimerModel))
+                analyticsManager.logEvent(.timerDidComplete(activeTimerModel, timerCategory))
             }
             .store(in: &cancellables)
 
         timerEvents[.timerWasCancelled]?
-            .sink { [weak self] timerModelId in
+            .sink { [weak self] timerModelId, timerCategory in
                 guard let self else { return }
                 guard let activeTimerModel, timerModelId == activeTimerModel.id else {
                     fatalError()
@@ -122,7 +122,7 @@ class TimerModelStateManager {
                 defer { self.activeTimerModelId = nil }
 
                 activeTimerModel.state = .inactive
-                analyticsManager.logEvent(.timerWasCancelled(activeTimerModel))
+                analyticsManager.logEvent(.timerWasCancelled(activeTimerModel, timerCategory))
             }
             .store(in: &cancellables)
     }

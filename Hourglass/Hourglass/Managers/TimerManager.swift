@@ -5,7 +5,7 @@ enum TimerManagerError: Error {
     case attemptToCancelInactiveTimer
 }
 
-typealias TimerEvent = PassthroughSubject<TimerButton.PresenterModel.ID, Never>
+typealias TimerEvent = PassthroughSubject<(TimerButton.PresenterModel.ID, TimerCategory), Never>
 
 protocol TimerEventProviding {
     var events: [HourglassEventKey.Timer: TimerEvent] { get }
@@ -42,16 +42,16 @@ class TimerManager: ObservableObject, TimerEventProviding {
     func startTimer(length: Int, activeTimerModelId: TimerButton.PresenterModel.ID) {
         self.count = length * Constants.countdownFactor
         self.activeTimerModelId = activeTimerModelId
-        events[.timerDidStart]?.send(activeTimerModelId)
+        events[.timerDidStart]?.send((activeTimerModelId, TimerCategory.current))
 
         timerPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
                 self.count -= 1
-                events[.timerDidTick]?.send(activeTimerModelId)
+                events[.timerDidTick]?.send((activeTimerModelId, TimerCategory.current))
 
                 if self.count == 0 {
-                    events[.timerDidComplete]?.send(activeTimerModelId)
+                    events[.timerDidComplete]?.send((activeTimerModelId, TimerCategory.current))
                     self.stopTimer()
                 }
             }
@@ -67,7 +67,7 @@ class TimerManager: ObservableObject, TimerEventProviding {
         else { throw TimerManagerError.attemptToCancelInactiveTimer }
 
         stopTimer()
-        events[.timerWasCancelled]?.send(activeTimerModelId)
+        events[.timerWasCancelled]?.send((activeTimerModelId, TimerCategory.current))
     }
 
     private func stopTimer() {

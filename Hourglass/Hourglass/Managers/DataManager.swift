@@ -31,23 +31,24 @@ class DataManager: DataManaging {
 
     private func configureEventSubscriptions() {
         timerEvents[.timerDidComplete]?
-            .sink { [weak self] timerModelId in
+            .sink { [weak self] timerModelId, timerCategory in
                 guard let self else { return }
                 guard let timerModel = timerModels[timerModelId] else { return }
-                let timeBlock = createTimeBlock(from: timerModel)
+                let timeBlock = createTimeBlock(from: timerModel, for: timerCategory)
                 store.insert(object: timeBlock)
                 store.save()
             }
             .store(in: &cancellables)
     }
 
-    private func createTimeBlock(from timerModel: TimerButton.PresenterModel) -> TimeBlock {
+    private func createTimeBlock(from timerModel: TimerButton.PresenterModel,
+                                 for timerCategory: TimerCategory) -> TimeBlock {
         let now = Date.now
         let entity = NSEntityDescription.entity(forEntityName: CoreDataEntity.timeBlock.rawValue,
                                                 in: store.context)
         let timeBlock = NSManagedObject(entity: entity!, insertInto: nil) as! TimeBlock
 
-        timeBlock.category = Int16(TimerCategoryToggle.category.rawValue)
+        timeBlock.category = Int16(timerCategory.rawValue)
         timeBlock.start = now - TimeInterval(timerModel.length * 60)
         timeBlock.end = now
         return timeBlock

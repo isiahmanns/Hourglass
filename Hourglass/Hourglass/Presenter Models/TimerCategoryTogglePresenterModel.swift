@@ -1,16 +1,14 @@
 import Combine
 
 extension TimerCategoryToggle {
-    static var category: TimerCategory = .focus
-
     class PresenterModel: ObservableObject {
         @Published var state: State {
             didSet {
                 switch state {
                 case .focus, .focusOnly:
-                    TimerCategoryToggle.category = .focus
+                    TimerCategory.current = .focus
                 case .rest, .restOnly:
-                    TimerCategoryToggle.category = .rest
+                    TimerCategory.current = .rest
                 }
             }
         }
@@ -25,19 +23,5 @@ extension TimerCategoryToggle {
         case rest
         case focusOnly
         case restOnly
-    }
-}
-
-enum TimerCategory: Int {
-    case focus
-    case rest
-
-    var asString: String {
-        switch self {
-        case .focus:
-            return "Focus"
-        case .rest:
-            return "Rest"
-        }
     }
 }

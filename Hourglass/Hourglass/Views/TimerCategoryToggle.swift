@@ -18,11 +18,11 @@ struct TimerCategoryToggle: View {
                     if presenterModel.state != .restOnly {
                         Button {
                             if viewModel.activeTimerModel == nil {
-                                defer { viewModel.logEvent(.timerCategoryToggled) }
-
                                 withAnimation(.easeOut(duration: 0.1)) {
                                     presenterModel.state = .focus
                                 }
+
+                                viewModel.logEvent(.timerCategoryToggled(.focus))
                             }
                         } label: {
                             Text("Focus")
@@ -33,11 +33,11 @@ struct TimerCategoryToggle: View {
                     if presenterModel.state != .focusOnly {
                         Button {
                             if viewModel.activeTimerModel == nil {
-                                defer { viewModel.logEvent(.timerCategoryToggled) }
-
                                 withAnimation(.easeOut(duration: 0.1)) {
                                     presenterModel.state = .rest
                                 }
+
+                                viewModel.logEvent(.timerCategoryToggled(.rest))
                             }
                         } label: {
                             Text("Rest")

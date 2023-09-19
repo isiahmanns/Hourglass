@@ -26,6 +26,7 @@
 		254C4F0A2A38A8C200217448 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 254C4F072A38A8C200217448 /* GoogleService-Info.plist */; };
 		254C4F0D2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 254C4F0C2A38AD2B00217448 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		254C4F152A38F85700217448 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 254C4F142A38F85700217448 /* FirebaseCrashlytics */; };
+		255E75732AB94E9A00544875 /* TimerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 255E75722AB94E9A00544875 /* TimerCategory.swift */; };
 		2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */; };
 		2570F7382A1472160031B0BB /* TimerHistory.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7362A1472160031B0BB /* TimerHistory.xcdatamodeld */; };
 		2570F73A2A1563C70031B0BB /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2570F7392A1563C70031B0BB /* CoreDataStore.swift */; };
@@ -98,6 +99,7 @@
 		25458EE029C6A69F00A118C0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		254C4F052A33C74900217448 /* AnalyticsDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsDataType.swift; sourceTree = "<group>"; };
 		254C4F072A38A8C200217448 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		255E75722AB94E9A00544875 /* TimerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerCategory.swift; sourceTree = "<group>"; };
 		2570F7342A0BDA5F0031B0BB /* RestSettingsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSettingsFlow.swift; sourceTree = "<group>"; };
 		2570F7372A1472160031B0BB /* TimerHistory.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TimerHistory.xcdatamodel; sourceTree = "<group>"; };
 		2570F7392A1563C70031B0BB /* CoreDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStore.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				258302EB29C369E400D37115 /* Events.swift */,
 				254C4F052A33C74900217448 /* AnalyticsDataType.swift */,
 				25E019242A453D7F007BF235 /* Bundle.swift */,
+				255E75722AB94E9A00544875 /* TimerCategory.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				2507BB4B29C805BD004478BE /* AboutView.swift in Sources */,
 				25AF8B972A2F952C000A3F5F /* StdoutEngine.swift in Sources */,
 				25BAF15A29EE36F900FE33D8 /* DataManager.swift in Sources */,
+				255E75732AB94E9A00544875 /* TimerCategory.swift in Sources */,
 				258302EC29C369E400D37115 /* Events.swift in Sources */,
 				25AF8B952A2F92BA000A3F5F /* MixpanelEngine.swift in Sources */,
 				25D7D4BD2A1BC3C300ADEDF4 /* TestData.swift in Sources */,

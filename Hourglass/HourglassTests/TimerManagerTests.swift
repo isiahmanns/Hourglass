@@ -5,7 +5,7 @@ import XCTest
 final class TimerManagerTests: XCTestCase {
 
     let (timerPublisher, timerManager) = UnitTestProviders.fakeTimerManager
-    let timerID = TimerButton.PresenterModel(length: 5, category: .focus, size: .small).id
+    let timerID = TimerButton.PresenterModel(length: 5).id
     let now = Date.now
     var cancellables: Set<AnyCancellable> = []
     var eventTriggerCount = (timerDidStart: 0,
@@ -15,30 +15,34 @@ final class TimerManagerTests: XCTestCase {
 
     override func setUpWithError() throws {
         timerManager.events[.timerDidStart]?
-            .sink { [weak self] timerModelID in
-                XCTAssertEqual(self?.timerID, timerModelID)
-                self?.eventTriggerCount.timerDidStart += 1
+            .sink { [weak self] timerModelID, _ in
+                guard let self else { return }
+                XCTAssertEqual(timerID, timerModelID)
+                eventTriggerCount.timerDidStart += 1
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerDidTick]?
-            .sink { [weak self] timerModelID in
-                XCTAssertEqual(self?.timerID, timerModelID)
-                self?.eventTriggerCount.timerDidTick += 1
+            .sink { [weak self] timerModelID, _ in
+                guard let self else { return }
+                XCTAssertEqual(timerID, timerModelID)
+                eventTriggerCount.timerDidTick += 1
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerDidComplete]?
-            .sink { [weak self] timerModelID in
-                XCTAssertEqual(self?.timerID, timerModelID)
-                self?.eventTriggerCount.timerDidComplete += 1
+            .sink { [weak self] timerModelID, _ in
+                guard let self else { return }
+                XCTAssertEqual(timerID, timerModelID)
+                eventTriggerCount.timerDidComplete += 1
             }
             .store(in: &cancellables)
 
         timerManager.events[.timerWasCancelled]?
-            .sink { [weak self] timerModelID in
-                XCTAssertEqual(self?.timerID, timerModelID)
-                self?.eventTriggerCount.timerWasCancelled += 1
+            .sink { [weak self] timerModelID, _ in
+                guard let self else { return }
+                XCTAssertEqual(timerID, timerModelID)
+                eventTriggerCount.timerWasCancelled += 1
             }
             .store(in: &cancellables)
     }
@@ -81,7 +85,7 @@ final class TimerManagerTests: XCTestCase {
         XCTAssertEqual(eventTriggerCount.timerDidStart, 1)
         assertTimerInProgress()
 
-        timerManager.cancelTimer()
+        try! timerManager.cancelTimer()
         XCTAssertEqual(timerManager.timeStamp, "00:00")
         XCTAssertEqual(eventTriggerCount.timerWasCancelled, 1)
         assertTimerDefault()
