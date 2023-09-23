@@ -4,8 +4,8 @@ struct RestSettingsFlow: View {
     let viewModel: ViewModel
     let settingsManager: SettingsManager
 
-    @State var restWarningThreshold: Int
-    @State var enforceRestThreshold: Int
+    @State var restWarningThreshold: SettingsThreshold
+    @State var enforceRestThreshold: SettingsThreshold
     @State var getBackToWorkIsEnabled: Bool
 
     init(viewModel: ViewModel, settingsManager: SettingsManager) {
@@ -19,6 +19,7 @@ struct RestSettingsFlow: View {
     var body: some View {
         VStack {
             // TODO: - Think about reducing these options to 3
+            // TODO: - Tag with SettingsThreshold type
             Form {
                 Picker("Rest Reminder:", selection: $restWarningThreshold) {
                     Text("Off").tag(-1)
@@ -29,7 +30,7 @@ struct RestSettingsFlow: View {
                     Text("5 focus blocks").tag(5)
                 }
                 .onChange(of: restWarningThreshold) { _ in
-                    if !dataIsValid { enforceRestThreshold = -1 }
+                    if !dataIsValid { enforceRestThreshold = .off }
                 }
                 .help(Copy.restReminderHelp)
 
@@ -43,7 +44,7 @@ struct RestSettingsFlow: View {
                     Text("6 focus blocks").tag(6)
                 }
                 .onChange(of: enforceRestThreshold) { _ in
-                    if !dataIsValid { restWarningThreshold = -1 }
+                    if !dataIsValid { restWarningThreshold = .off }
                 }
                 .help(Copy.enforceRestHelp)
 
@@ -53,9 +54,9 @@ struct RestSettingsFlow: View {
                 Button("Close") {
                     defer {
                         // TODO: - Remove SettingsManager direct dependency and access via viewModel
-                        settingsManager.setRestWarningThreshold(restWarningThreshold, conservatively: true)
-                        settingsManager.setEnforceRestThreshold(enforceRestThreshold, conservatively: true)
-                        settingsManager.setGetBackToWork(isEnabled: getBackToWorkIsEnabled, conservatively: true)
+                        settingsManager.setRestWarningThreshold(restWarningThreshold)
+                        settingsManager.setEnforceRestThreshold(enforceRestThreshold)
+                        settingsManager.setGetBackToWork(isEnabled: getBackToWorkIsEnabled)
                     }
                     viewModel.viewState.showRestSettingsFlow.toggle()
                 }
@@ -72,12 +73,12 @@ struct RestSettingsFlow: View {
     }
 
     private var dataIsValid: Bool {
-        switch(restWarningThreshold, enforceRestThreshold) {
-        case let (a, b) where a > 0 && b > 0:
-            return a < b
-        default:
-            return true
+        let (a, b) = (restWarningThreshold, enforceRestThreshold)
+        if [a, b].allSatisfy({$0 != .off}) {
+            return a.rawValue < b.rawValue
         }
+
+        return true
     }
 }
 

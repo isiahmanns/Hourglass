@@ -27,9 +27,8 @@ class TimerModelStateManager {
 
      This setting is triggered immediately, on the tick of the timer.
      */
-    private var restWarningThreshold: Int? {
-        let restWarningThreshold = settingsManager.getRestWarningThreshold()
-        return restWarningThreshold > 0 ? restWarningThreshold : nil
+    private var restWarningThreshold: SettingsThreshold {
+        settingsManager.getRestWarningThreshold()
     }
 
     /**
@@ -37,9 +36,8 @@ class TimerModelStateManager {
 
      This setting is triggered when a timer is cancelled or completed.
      */
-    private var enforceRestThreshold: Int? {
-        let enforceRestThreshold = settingsManager.getEnforceRestThreshold()
-        return enforceRestThreshold > 0 ? enforceRestThreshold : nil
+    private var enforceRestThreshold: SettingsThreshold {
+        settingsManager.getEnforceRestThreshold()
     }
 
     private var getBackToWorkIsEnabled: Bool {
@@ -59,6 +57,7 @@ class TimerModelStateManager {
                      dataManager: DataManaging,
                      settingsManager: SettingsManager,
                      timerEventProvider: TimerEventProviding) {
+        print("INITIALIZING TMSM")
         self.analyticsManager = analyticsManager
         self.timerModels = dataManager.timerModels
         self.timerCategoryTogglePresenterModel = dataManager.timerCategoryTogglePresenterModel
@@ -72,6 +71,7 @@ class TimerModelStateManager {
         timerEvents[.timerDidStart]?
             .sink { [weak self] timerModelId, _ in
                 guard let self else { return }
+                guard activeTimerModelId == nil else { fatalError() }
                 activeTimerModelId = timerModelId
                 activeTimerModel?.state = .active
             }
@@ -89,13 +89,8 @@ class TimerModelStateManager {
                 activeTimerModel.state = .inactive
                 delegate?.notifyUser(timerEvent: .timerDidComplete)
 
-                switch timerCategoryTogglePresenterModel.state {
-                case .focusOnly:
+                if [.focusOnly, .restOnly].contains(timerCategoryTogglePresenterModel.state) {
                     timerCategoryTogglePresenterModel.state = .focus
-                case .restOnly:
-                    timerCategoryTogglePresenterModel.state = .rest
-                default:
-                    break
                 }
 
                 switch timerCategory {
@@ -139,6 +134,7 @@ class TimerModelStateManager {
         }
 
         settingsManager.observe(\.getBackToWork) { [self] isEnabled in
+            // TODO: - Invoke didChangeRestSettings here
             if !isEnabled {
                 timerCategoryTogglePresenterModel.state = .focus
             }
@@ -158,13 +154,13 @@ class TimerModelStateManager {
     }
 
     private func showRestWarningIfNeeded() {
-        if let restWarningThreshold, focusStride == restWarningThreshold {
+        if focusStride == restWarningThreshold.rawValue {
             delegate?.notifyUser(progressEvent: .restWarningThresholdMet)
         }
     }
 
     private func enforceRestIfNeeded() {
-        if let enforceRestThreshold, focusStride == enforceRestThreshold {
+        if focusStride == enforceRestThreshold.rawValue {
             delegate?.notifyUser(progressEvent: .enforceRestThresholdMet)
             timerCategoryTogglePresenterModel.state = .restOnly
         }

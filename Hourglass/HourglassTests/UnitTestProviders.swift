@@ -11,13 +11,13 @@ struct UnitTestProviders {
         return (stubTimerPublisher, fakeTimerManager)
     }
 
+    // TODO: - Access SettingsManager via viewModel methods (organize into extension)
     static var fakeViewModel: (ViewModelMock,
-                               CoreDataStore,
-                               DataManaging,
+                               DataManager,
                                TimerModelStateManagerFake,
                                TimerPublisher,
-                               TimerManagerFake,
                                SettingsManager) {
+        print("creating fakeViewModel")
 
         let (stubTimerPublisher, fakeTimerManager) = fakeTimerManager
         let inMemoryStore = CoreDataTestStore()
@@ -42,11 +42,9 @@ struct UnitTestProviders {
         fakeTimerModelStateManager.delegate = viewModel
 
         return (viewModel,
-                inMemoryStore,
                 mockDataManager,
                 fakeTimerModelStateManager,
                 stubTimerPublisher,
-                fakeTimerManager,
                 settingsManager)
     }
 }

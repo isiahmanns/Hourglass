@@ -11,14 +11,15 @@ struct SettingsMenu: View {
      - The UserDefaults cache gets written to only when selecting new options via the Menu.
      */
 
+    // TODO: - Use SettingsManager as source of truth, via viewModel
     @AppStorage(SettingsKeys.soundIsEnabled.rawValue)
     var soundIsEnabled: Bool = Constants.soundIsEnabled
 
     @AppStorage(SettingsKeys.restWarningThreshold.rawValue)
-    var restWarningThreshold: Int = Constants.restWarningThreshold
+    var restWarningThreshold: SettingsThreshold.RawValue = Constants.restWarningThreshold
 
     @AppStorage(SettingsKeys.enforceRestThreshold.rawValue)
-    var enforceRestThreshold: Int = Constants.enforceRestThreshold
+    var enforceRestThreshold: SettingsThreshold.RawValue = Constants.enforceRestThreshold
 
     @AppStorage(SettingsKeys.getBackToWork.rawValue)
     var getBackToWorkIsEnabled: Bool = Constants.getBackToWorkIsEnabled
@@ -44,6 +45,7 @@ struct SettingsMenu: View {
                         viewModel.viewState.showRestSettingsFlow.toggle()
                     }
 
+                    // TODO: - Compute display string from SettingThreshold type
                     let restWarningThreshold = restWarningThreshold > 0 ? "\(restWarningThreshold)fb" : "Off"
                     DetailText("Rest Reminder: \(restWarningThreshold)")
 

@@ -11,12 +11,12 @@ import Foundation
 
 extension UserDefaults {
     // MARK: - Rest Settings
-    @objc dynamic var restWarningThreshold: Int {
+    @objc dynamic var restWarningThreshold: SettingsThreshold.RawValue {
         object(forKey: SettingsKeys.restWarningThreshold.rawValue)
         as? Int ?? Constants.restWarningThreshold
     }
 
-    @objc dynamic var enforceRestThreshold: Int {
+    @objc dynamic var enforceRestThreshold: SettingsThreshold.RawValue {
         object(forKey: SettingsKeys.enforceRestThreshold.rawValue)
         as? Int ?? Constants.enforceRestThreshold
     }
@@ -46,42 +46,34 @@ struct SettingsManager {
     }
 
     // MARK: - Rest Warning Threshold
-    func setRestWarningThreshold(_ value: Int, conservatively: Bool = false) {
-        if conservatively {
-            if store.restWarningThreshold != value {
-                store.set(value, forKey: SettingsKeys.restWarningThreshold.rawValue)
-            }
-        } else {
-            store.set(value, forKey: SettingsKeys.restWarningThreshold.rawValue)
+    func setRestWarningThreshold(_ threshold: SettingsThreshold) {
+        let thresholdRawValue = threshold.rawValue
+        if store.restWarningThreshold != thresholdRawValue {
+            store.set(thresholdRawValue, forKey: SettingsKeys.restWarningThreshold.rawValue)
         }
     }
 
-    func getRestWarningThreshold() -> Int {
-        store.restWarningThreshold
+    func getRestWarningThreshold() -> SettingsThreshold {
+        let thresholdRawValue = store.restWarningThreshold
+        return SettingsThreshold(rawValue: thresholdRawValue)!
     }
 
     // MARK: - Enforce Rest Threshold
-    func setEnforceRestThreshold(_ value: Int, conservatively: Bool = false) {
-        if conservatively {
-            if store.enforceRestThreshold != value {
-                store.set(value, forKey: SettingsKeys.enforceRestThreshold.rawValue)
-            }
-        } else {
-            store.set(value, forKey: SettingsKeys.enforceRestThreshold.rawValue)
+    func setEnforceRestThreshold(_ threshold: SettingsThreshold) {
+        let thresholdRawValue = threshold.rawValue
+        if store.enforceRestThreshold != thresholdRawValue {
+            store.set(thresholdRawValue, forKey: SettingsKeys.enforceRestThreshold.rawValue)
         }
     }
 
-    func getEnforceRestThreshold() -> Int {
-        store.enforceRestThreshold
+    func getEnforceRestThreshold() -> SettingsThreshold {
+        let thresholdRawValue = store.enforceRestThreshold
+        return SettingsThreshold(rawValue: thresholdRawValue)!
     }
 
     // MARK: - Get Back to Work
-    func setGetBackToWork(isEnabled: Bool, conservatively: Bool = false) {
-        if conservatively {
-            if store.getBackToWork != isEnabled {
-                store.set(isEnabled, forKey: SettingsKeys.getBackToWork.rawValue)
-            }
-        } else {
+    func setGetBackToWork(isEnabled: Bool) {
+        if store.getBackToWork != isEnabled {
             store.set(isEnabled, forKey: SettingsKeys.getBackToWork.rawValue)
         }
     }
@@ -112,4 +104,14 @@ struct SettingsManager {
         as? Bool ?? Constants.fullscreenOnBreak
     }
      */
+}
+
+enum SettingsThreshold: Int {
+    case off = 0
+    case k1 = 1
+    case k2 = 2
+    case k3 = 3
+    case k4 = 4
+    case k5 = 5
+    case k6 = 6
 }

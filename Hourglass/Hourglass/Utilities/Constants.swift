@@ -8,12 +8,13 @@ enum Constants {
     // Timer length defaults
     static let timerLengths = [5, 10, 15, 20, 25, 30, 35, 40, 45]
 
-    // Sound default
-    static let soundIsEnabled = true
+    // UserDefaults Fallback Defaults
+    /// Sound
+    static let soundIsEnabled: Bool = true
 
-    // Timer threshold defaults
-    static let restWarningThreshold: Int = 1
-    static let enforceRestThreshold: Int = 2
+    /// Rest Settings
+    static let restWarningThreshold: SettingsThreshold.RawValue = SettingsThreshold.k1.rawValue
+    static let enforceRestThreshold: SettingsThreshold.RawValue = SettingsThreshold.k2.rawValue
     static let getBackToWorkIsEnabled: Bool = false
 
     // Timer alert dialog

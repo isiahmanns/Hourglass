@@ -51,7 +51,7 @@ final class TimerManagerTests: XCTestCase {
     }
 
     func testTimerCountdown() {
-        assertTimerDefault()
+        assertTimerIdle()
 
         timerManager.startTimer(length: 3, activeTimerModelId: timerID)
         XCTAssertEqual(timerManager.timeStamp, "00:03")
@@ -72,13 +72,13 @@ final class TimerManagerTests: XCTestCase {
         XCTAssertEqual(timerManager.timeStamp, "00:00")
         XCTAssertEqual(eventTriggerCount.timerDidTick, 3)
         XCTAssertEqual(eventTriggerCount.timerDidComplete, 1)
-        assertTimerDefault()
+        assertTimerIdle()
 
         XCTAssertEqual(eventTriggerCount.timerWasCancelled, 0)
     }
 
     func testTimerCountdownCancel() {
-        assertTimerDefault()
+        assertTimerIdle()
 
         timerManager.startTimer(length: 3, activeTimerModelId: timerID)
         XCTAssertEqual(timerManager.timeStamp, "00:03")
@@ -88,7 +88,7 @@ final class TimerManagerTests: XCTestCase {
         try! timerManager.cancelTimer()
         XCTAssertEqual(timerManager.timeStamp, "00:00")
         XCTAssertEqual(eventTriggerCount.timerWasCancelled, 1)
-        assertTimerDefault()
+        assertTimerIdle()
 
         XCTAssertEqual(eventTriggerCount.timerDidTick, 0)
         XCTAssertEqual(eventTriggerCount.timerDidComplete, 0)
@@ -99,7 +99,7 @@ final class TimerManagerTests: XCTestCase {
         XCTAssertEqual(timerManager.activeTimerModelId, timerID)
     }
 
-    private func assertTimerDefault() {
+    private func assertTimerIdle() {
         XCTAssertTrue(timerManager.timerCancellables.isEmpty)
         XCTAssertNil(timerManager.activeTimerModelId)
     }

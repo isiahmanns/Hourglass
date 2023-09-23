@@ -53,6 +53,10 @@ class DataManager: DataManaging {
         timeBlock.end = now
         return timeBlock
     }
+
+    internal func fetchTimeBlocks() throws -> [TimeBlock] {
+        try store.fetch(TimeBlock.fetchRequest())
+    }
 }
 
 class DataManagerMock: DataManager {

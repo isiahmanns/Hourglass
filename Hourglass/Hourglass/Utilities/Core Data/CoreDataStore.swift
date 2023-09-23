@@ -16,7 +16,9 @@ enum CoreDataEntity: String {
 class CoreDataStore {
     static let shared = CoreDataStore(storageType: .disk, modelName: .timerHistory)
     private let container: NSPersistentContainer
-    lazy var context: NSManagedObjectContext = container.viewContext
+    var context: NSManagedObjectContext {
+        container.viewContext
+    }
 
     fileprivate init(storageType: StorageType, modelName: CoreDataModel) {
         self.container = NSPersistentContainer(name: modelName.rawValue)
@@ -43,8 +45,8 @@ class CoreDataStore {
         }
     }
 
-    func fetch<T>(_ request: NSFetchRequest<T>) -> [T]? where T: NSFetchRequestResult {
-        try? context.fetch(request)
+    func fetch<T>(_ request: NSFetchRequest<T>) throws -> [T] where T: NSFetchRequestResult {
+        try context.fetch(request)
     }
 
     func insert(object: NSManagedObject) {
