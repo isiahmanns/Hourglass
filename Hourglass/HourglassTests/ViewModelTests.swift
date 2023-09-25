@@ -14,18 +14,19 @@ final class ViewModelTests: XCTestCase {
          settingsManager) = UnitTestProviders.fakeViewModel
     let now = Date.now
 
-    lazy var timerModels: [Int: TimerButton.PresenterModel] = {
-        Dictionary(uniqueKeysWithValues: viewModel.timerModels.values.map {($0.length, $0)})
-    }()
-
-    var timerModel3s: TimerButton.PresenterModel { timerModels[3]! }
-    var timerModel5s: TimerButton.PresenterModel { timerModels[5]! }
+    var timerModel3s: TimerButton.PresenterModel!
+    var timerModel5s: TimerButton.PresenterModel!
 
     override func setUpWithError() throws {
-        verifyTimerButtonInitialStates()
-    }
+        let timerModels = viewModel.timerModels.values
+        let timerModelsByLength = timerModels.reduce(into: [Int: TimerButton.PresenterModel]()) { partialResult, value in
+            partialResult[value.length] = value
+        }
 
-    override func tearDownWithError() throws {
+        timerModel3s = timerModelsByLength[3]
+        timerModel5s = timerModelsByLength[5]
+
+        verifyTimerButtonInitialStates()
     }
 
     private func verifyTimerButtonInitialStates() {

@@ -28,6 +28,6 @@ private extension AlertView {
         static let startNewTimerDialogPrompt = "Are you sure you want to start a new timer?"
         static let startNewTimerDialogConfirm = "Start timer"
         static let startNewTimerDialogCancel = "Cancel"
-        static let timerResetAlert = "Timer has been reset."
+        static let timerResetAlert = "Timer settings have been reset."
     }
 }

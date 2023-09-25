@@ -25,7 +25,7 @@ class TimerManager: ObservableObject, TimerEventProviding {
             timeStamp = String(format: "%02d:%02d", minutes, seconds)
         }
     }
-    @Published private(set) var timeStamp: String = Constants.timeStampZero
+    @Published private(set) var timeStamp: String = "00:00"
     private(set) var activeTimerModelId: TimerButton.PresenterModel.ID?
 
     let events: [HourglassEventKey.Timer: TimerEvent] = [

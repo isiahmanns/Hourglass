@@ -20,17 +20,26 @@ enum HourglassNotification: String {
     var title: String {
         switch self {
         case .timerCompleted:
-            return Constants.timerCompleteAlert
+            return Copy.timerCompleteAlert
         case .restWarningThresholdMet:
-            return Constants.restWarningAlert
+            return Copy.restWarningAlert
         case .enforceRestThresholdMet:
-            return Constants.enforceRestAlert
+            return Copy.enforceRestAlert
         case .getBackToWork:
-            return Constants.getBackToWorkAlert
+            return Copy.getBackToWorkAlert
         }
     }
 
     var id: String {
         rawValue
+    }
+}
+
+extension HourglassNotification {
+    enum Copy {
+        static let timerCompleteAlert = "Time is up."
+        static let restWarningAlert = "Take a rest, soon."
+        static let enforceRestAlert = "You've been focused for a while, now.\nTake a rest."
+        static let getBackToWorkAlert = "Get back to work!"
     }
 }

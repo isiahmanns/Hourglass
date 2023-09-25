@@ -19,37 +19,39 @@ struct RestSettingsFlow: View {
     var body: some View {
         VStack {
             // TODO: - Think about reducing these options to 3
-            // TODO: - Tag with SettingsThreshold type
             Form {
                 Picker("Rest Reminder:", selection: $restWarningThreshold) {
-                    Text("Off").tag(-1)
-                    Text("1 focus block").tag(1)
-                    Text("2 focus blocks").tag(2)
-                    Text("3 focus blocks").tag(3)
-                    Text("4 focus blocks").tag(4)
-                    Text("5 focus blocks").tag(5)
+                    Text("Off").tag(SettingsThreshold.off)
+                    Text("1 focus block").tag(SettingsThreshold.k1)
+                    Text("2 focus blocks").tag(SettingsThreshold.k2)
+                    Text("3 focus blocks").tag(SettingsThreshold.k3)
+                    Text("4 focus blocks").tag(SettingsThreshold.k4)
+                    Text("5 focus blocks").tag(SettingsThreshold.k5)
                 }
                 .onChange(of: restWarningThreshold) { _ in
                     if !dataIsValid { enforceRestThreshold = .off }
                 }
                 .help(Copy.restReminderHelp)
+                .accessibilityIdentifier("rest-reminder-picker")
 
                 Picker("Enforce Rest:", selection: $enforceRestThreshold) {
-                    Text("Off").tag(-1)
-                    Text("1 focus block").tag(1)
-                    Text("2 focus blocks").tag(2)
-                    Text("3 focus blocks").tag(3)
-                    Text("4 focus blocks").tag(4)
-                    Text("5 focus blocks").tag(5)
-                    Text("6 focus blocks").tag(6)
+                    Text("Off").tag(SettingsThreshold.off)
+                    Text("1 focus block").tag(SettingsThreshold.k1)
+                    Text("2 focus blocks").tag(SettingsThreshold.k2)
+                    Text("3 focus blocks").tag(SettingsThreshold.k3)
+                    Text("4 focus blocks").tag(SettingsThreshold.k4)
+                    Text("5 focus blocks").tag(SettingsThreshold.k5)
+                    Text("6 focus blocks").tag(SettingsThreshold.k6)
                 }
                 .onChange(of: enforceRestThreshold) { _ in
                     if !dataIsValid { restWarningThreshold = .off }
                 }
                 .help(Copy.enforceRestHelp)
+                .accessibilityIdentifier("enforce-rest-picker")
 
                 Toggle("Get Back to Work", isOn: $getBackToWorkIsEnabled)
                     .help(Copy.getBackToWorkHelp)
+                    .accessibilityIdentifier("get-back-to-work-toggle")
 
                 Button("Close") {
                     defer {

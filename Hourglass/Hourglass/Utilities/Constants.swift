@@ -17,15 +17,6 @@ enum Constants {
     static let enforceRestThreshold: SettingsThreshold.RawValue = SettingsThreshold.k2.rawValue
     static let getBackToWorkIsEnabled: Bool = false
 
-    // Timer alert dialog
-    static let timerCompleteAlert = "Time is up."
-    static let restWarningAlert = "Take a rest, soon."
-    static let enforceRestAlert = "You've been focused for a while, now.\nTake a rest."
-    static let getBackToWorkAlert = "Get back to work!"
-
-    // Timestamp default
-    static let timeStampZero = "00:00"
-
     // Timer length multiplier
 #if RELEASE
     static let countdownFactor = 60

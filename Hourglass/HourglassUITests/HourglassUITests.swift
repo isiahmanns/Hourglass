@@ -1,47 +1,24 @@
 import XCTest
 
 final class HourglassUITests: XCTestCase {
-    let app = XCUIApplication()
-
-    var timerGrid: (XCUIElement, [XCUIElement]) {
-        let timerGrid = app.groups["timer-grid"]
-        let predicate = NSPredicate(format: "identifier contains 'timer-button'")
-        let timerGridButtons = timerGrid.buttons.containing(predicate).allElementsBoundByIndex
-        return (timerGrid, timerGridButtons)
-    }
-
-    lazy var macosNotification: XCUIElement = {
-        // https://en.wikipedia.org/wiki/List_of_macOS_built-in_apps#Launchpad + Activity Center
-        XCUIApplication(bundleIdentifier: "com.apple.notificationcenterui")
-            .dialogs["Notification Center"]
-            .groups["Hourglass"]
-            .firstMatch
-    }()
+    var app: XCUIApplication!
+    var timerButtons: [XCUIElement]!
 
     override func setUpWithError() throws {
         continueAfterFailure = false
-    }
 
-    override func tearDownWithError() throws {
+        app = XCUIApplication()
+        app.launchMenu()
+        let predicate = NSPredicate(format: "identifier contains 'timer-button'")
+        timerButtons = app.buttons.containing(predicate).allElementsBoundByIndex
     }
 
     func testMainUI() throws {
-        app.launchMenu()
-
-        XCTAssertTrue(app.staticTexts["Focus"].exists)
-        XCTAssertTrue(app.staticTexts["Rest"].exists)
-
-        let (timerGrid, timerGridButtons) = timerGrid
-        XCTAssertTrue(timerGrid.exists)
-
-        XCTAssertEqual(timerGridButtons.count, 6)
-        timerGridButtons.forEach { timerButton in
-            XCTAssertTrue(timerButton.exists)
-            XCTAssertTrue(timerButton.isHittable)
-        }
-
+        let focusButton = app.buttons["Focus"]
+        let restButton = app.buttons["Rest"]
         let settingsButton = app.popUpButtons["settings-button"]
-        XCTAssertTrue(settingsButton.exists)
+        XCTAssertTrue(([focusButton, restButton, settingsButton]
+                       + timerButtons).allSatisfy({ $0.exists && $0.isHittable }))
     }
 
     /**
@@ -54,41 +31,36 @@ final class HourglassUITests: XCTestCase {
      - Menu bar is not hidden (Desktop and Dock system settings)
      */
     func DISABLED_testStartTimerToCompletionBanner() {
-        app.launchMenu()
-
         // Tap 3s timer
-        let (_, timerGridButtons) = timerGrid
-        timerGridButtons[3].tap()
+        timerButtons[0].tap()
 
         // sleep(4)
         // XCUIApplication(bundleIdentifier: "com.apple.notificationcenterui").log()
 
+        // https://en.wikipedia.org/wiki/List_of_macOS_built-in_apps#Launchpad + Activity Center
+        let macosNotification = XCUIApplication(bundleIdentifier: "com.apple.notificationcenterui")
+            .dialogs["Notification Center"]
+            .groups["Hourglass"]
+            .firstMatch
+
         XCTAssertTrue(macosNotification.waitForExistence(timeout: 5))
         let notificationTitle = macosNotification.staticTexts["Hourglass"]
         let notificationSubtitle = macosNotification.staticTexts["Time is up."]
-        [notificationTitle, notificationSubtitle].forEach { element in
-            XCTAssert(element.exists)
-        }
+        XCTAssertTrue([notificationTitle, notificationSubtitle].allSatisfy({ $0.exists }))
         macosNotification.tap()
     }
 
     func testStopTimer() {
-        app.launchMenu()
-
-        let (_, timerGridButtons) = timerGrid
-        timerGridButtons[3].tap()
-        timerGridButtons[3].tap()
+        timerButtons[3].tap()
+        timerButtons[3].tap()
 
         XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:00")
     }
 
     func testStartNewTimerFlowConfirm() {
-        app.launchMenu()
-
-        let (_, timerGridButtons) = timerGrid
-        timerGridButtons[4].tap()
+        timerButtons[2].tap()
         //sleep(1)
-        timerGridButtons[5].tap()
+        timerButtons[3].tap()
 
         let alert = app.sheets.matching(identifier: "alert").element
         XCTAssertTrue(alert.waitForExistence(timeout: 4))
@@ -96,9 +68,7 @@ final class HourglassUITests: XCTestCase {
         let alertTitle = alert.staticTexts["Are you sure you want to start a new timer?"]
         let affirmButton = alert.buttons["Start timer"]
         let denyButton = alert.buttons["Cancel"]
-        [alertTitle, affirmButton, denyButton].forEach { element in
-            XCTAssertTrue(element.exists)
-        }
+        XCTAssertTrue([alertTitle, affirmButton, denyButton].allSatisfy({ $0.exists }))
 
         affirmButton.tap()
         app.log()
@@ -106,12 +76,9 @@ final class HourglassUITests: XCTestCase {
     }
 
     func testStartNewTimerFlowDeny() {
-        app.launchMenu()
-
-        let (_, timerGridButtons) = timerGrid
-        timerGridButtons[4].tap()
+        timerButtons[1].tap()
         //sleep(1)
-        timerGridButtons[5].tap()
+        timerButtons[0].tap()
 
         let alert = app.sheets.matching(identifier: "alert").element
         XCTAssertTrue(alert.waitForExistence(timeout: 4))
@@ -119,41 +86,40 @@ final class HourglassUITests: XCTestCase {
         let alertTitle = alert.staticTexts["Are you sure you want to start a new timer?"]
         let affirmButton = alert.buttons["Start timer"]
         let denyButton = alert.buttons["Cancel"]
-        [alertTitle, affirmButton, denyButton].forEach { element in
-            XCTAssertTrue(element.exists)
-        }
+        XCTAssertTrue([alertTitle, affirmButton, denyButton].allSatisfy({ $0.exists }))
+
 
         denyButton.tap()
         // Note: - Assuming execution will be the same on each run could mean a flaky test.
         XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:07")
     }
 
-    func testSetTimerLengthWhileInProgressFlow() {
-        app.launchMenu()
-
-        let (_, timerGridButtons) = timerGrid
-        timerGridButtons[4].tap()
+    func testChangeRestSettingsWhileTimerInProgress() {
+        timerButtons[4].tap()
 
         let settingsButton = app.popUpButtons["settings-button"]
         settingsButton.tap()
 
-        let timerSetting = app.menuItems["Rest Timers"].menuItems["15 minutes"]
-        timerSetting.tap()
+        let editRestSettings = app.menuItems["Edit Rest Settings"]
+        editRestSettings.tap()
+
+        let restReminderPicker = app.popUpButtons["rest-reminder-picker"]
+        restReminderPicker.tap()
+
+        let offOption = app.menuItems["Off"]
+        offOption.tap()
+
+        let closeButton = app.buttons["Close"]
+        closeButton.tap()
 
         let alert = app.sheets.matching(identifier: "alert").element
         XCTAssertTrue(alert.waitForExistence(timeout: 1))
 
-        let alertTitle = alert.staticTexts["Timer has been reset."]
+        let alertTitle = alert.staticTexts["Timer settings have been reset."]
         let okButton = alert.buttons["OK"]
-        [alertTitle, okButton].forEach { element in
-            XCTAssertTrue(element.exists)
-        }
+        XCTAssertTrue([alertTitle, okButton].allSatisfy({ $0.exists }))
 
         okButton.tap()
-
-        // Cleanup
-        settingsButton.tap()
-        app.menuItems["Rest Timers"].menuItems["10 minutes"].tap()
     }
 }
 
