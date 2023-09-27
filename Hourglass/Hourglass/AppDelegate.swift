@@ -21,7 +21,6 @@ private struct Dependencies {
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBar: NSStatusBar = NSStatusBar.system
     private var statusItem: NSStatusItem!
-    private var popover: NSPopover!
     private var aboutWindow: NSWindow!
     private var statisticsWindow: NSWindow!
 
@@ -41,9 +40,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
         FirebaseApp.configure()
         setupDelegates()
-        setupStatusItem()
-        let view = setupContentView()
-        setupPopover(with: view)
+        setupUI()
+        // TODO: - Remove
         setupAboutWindow()
     }
 
@@ -52,7 +50,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         timerModelStateManager.delegate = viewModel
     }
 
-    private func setupStatusItem() {
+    private func setupUI() {
         let timestampSUIView = TimestampView(timerManager: Dependencies.timerManager)
         let timestampNSView = NSHostingView(rootView: timestampSUIView)
 
@@ -68,7 +66,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 timestampNSView.centerYAnchor.constraint(equalTo: button.centerYAnchor)
             ])
 
-            button.action = #selector(togglePopover)
             button.setAccessibilityIdentifier("menu-bar-button")
 
             Dependencies.timerManager.$timeStamp
@@ -77,16 +74,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 }
                 .store(in: &cancellables)
         }
-    }
 
-    private func setupPopover(with view: some View) {
-        popover = NSPopover()
-        popover.behavior = .transient
-        popover.contentViewController = PopoverViewController(with: view, backgroundColor: Color.Hourglass.background)
-    }
-
-    private func setupContentView() -> some View {
-        return ContentView(viewModel: viewModel, settingsManager: Dependencies.settingsManager)
+        let menu = NSMenu()
+        let uiMenuItem = NSMenuItem()
+        let view = NSHostingView(rootView: ContentView(viewModel: viewModel, settingsManager: Dependencies.settingsManager))
+        uiMenuItem.view = view
+        uiMenuItem.view?.setFrameSize(view.fittingSize)
+        menu.addItem(uiMenuItem)
+        statusItem.menu = menu
     }
 
     private func setupAboutWindow() {
@@ -116,27 +111,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-extension AppDelegate {
-    @objc private func togglePopover() {
-        if popover.isShown {
-            hidePopover()
-        } else {
-            showPopover()
-        }
-    }
-
-    private func hidePopover() {
-        popover.performClose(nil)
-    }
-
-    private func showPopover() {
-        if let button = statusItem.button {
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-        }
-    }
-}
-
 extension AppDelegate: WindowCoordinator {
+    // TODO: - Add check to create window if it is nil
     func showAboutWindow() {
         aboutWindow.makeKeyAndOrderFront(nil)
     }
@@ -151,6 +127,7 @@ extension AppDelegate: WindowCoordinator {
 }
 
 extension AppDelegate: NSWindowDelegate {
+    // TODO: - Use isReleasedWhenClose to handle this
     func windowShouldClose(_ sender: NSWindow) -> Bool {
         if sender == statisticsWindow {
             statisticsWindow = nil
