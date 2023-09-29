@@ -45,7 +45,6 @@
 		25AF8B972A2F952C000A3F5F /* StdoutEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AF8B962A2F952B000A3F5F /* StdoutEngine.swift */; };
 		25AFADD829EE6AC100307115 /* TimerModelStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25AFADD729EE6AC100307115 /* TimerModelStateManager.swift */; };
 		25BAF15A29EE36F900FE33D8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BAF15929EE36F800FE33D8 /* DataManager.swift */; };
-		25BE3D1629DE632A00278E02 /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25BE3D1529DE632A00278E02 /* PopoverViewController.swift */; };
 		25C3126629B5AE1E000070DF /* TimeUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C3126529B5AE1E000070DF /* TimeUnit.swift */; };
 		25C3126829BC1750000070DF /* TimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C3126729BC1750000070DF /* TimerManagerTests.swift */; };
 		25C3126A29BC287F000070DF /* UnitTestProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25C3126929BC287F000070DF /* UnitTestProviders.swift */; };
@@ -119,7 +118,6 @@
 		25AF8B992A2F9B38000A3F5F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		25AFADD729EE6AC100307115 /* TimerModelStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerModelStateManager.swift; sourceTree = "<group>"; };
 		25BAF15929EE36F800FE33D8 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		25BE3D1529DE632A00278E02 /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		25C3126529B5AE1E000070DF /* TimeUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUnit.swift; sourceTree = "<group>"; };
 		25C3126729BC1750000070DF /* TimerManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManagerTests.swift; sourceTree = "<group>"; };
 		25C3126929BC287F000070DF /* UnitTestProviders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestProviders.swift; sourceTree = "<group>"; };
@@ -171,7 +169,6 @@
 		2507BB5529C91D95004478BE /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				25BE3D1529DE632A00278E02 /* PopoverViewController.swift */,
 				253816DF29A5D88C007BD118 /* ContentView.swift */,
 				2507BB4C29C91AFD004478BE /* Logo.swift */,
 				25EB6D6829A67985005BC143 /* TimerButton.swift */,
@@ -547,7 +544,6 @@
 				25C97C9329D2A2C9001A8CAD /* TimestampView.swift in Sources */,
 				25AF8B922A2EAD3C000A3F5F /* AnalyticsManager.swift in Sources */,
 				2507BB5329C91C2E004478BE /* SettingsMenu.swift in Sources */,
-				25BE3D1629DE632A00278E02 /* PopoverViewController.swift in Sources */,
 				258CB4C529C2E4D800812DA4 /* UserNotificationManager.swift in Sources */,
 				2507BB4D29C91AFD004478BE /* Logo.swift in Sources */,
 				2570F7352A0BDA5F0031B0BB /* RestSettingsFlow.swift in Sources */,

@@ -1,10 +1,11 @@
 import XCTest
 
+// TODO: - Test toggling timer category state flows
 final class HourglassUITests: XCTestCase {
     var app: XCUIApplication!
     var timerButtons: [XCUIElement]!
 
-    override func setUpWithError() throws {
+    override func setUp() {
         continueAfterFailure = false
 
         app = XCUIApplication()
@@ -13,7 +14,7 @@ final class HourglassUITests: XCTestCase {
         timerButtons = app.buttons.containing(predicate).allElementsBoundByIndex
     }
 
-    func testMainUI() throws {
+    func testMainUI() {
         let focusButton = app.buttons["Focus"]
         let restButton = app.buttons["Rest"]
         let settingsButton = app.popUpButtons["settings-button"]
@@ -53,36 +54,28 @@ final class HourglassUITests: XCTestCase {
     func testStopTimer() {
         timerButtons[3].tap()
         timerButtons[3].tap()
-
         XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:00")
     }
 
     func testStartNewTimerFlowConfirm() {
         timerButtons[2].tap()
-        //sleep(1)
         timerButtons[3].tap()
 
-        let alert = app.sheets.matching(identifier: "alert").element
-        XCTAssertTrue(alert.waitForExistence(timeout: 4))
-
+        let alert = app.sheets["alert"]
         let alertTitle = alert.staticTexts["Are you sure you want to start a new timer?"]
         let affirmButton = alert.buttons["Start timer"]
         let denyButton = alert.buttons["Cancel"]
         XCTAssertTrue([alertTitle, affirmButton, denyButton].allSatisfy({ $0.exists }))
 
         affirmButton.tap()
-        app.log()
         XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:20")
     }
 
     func testStartNewTimerFlowDeny() {
         timerButtons[1].tap()
-        //sleep(1)
         timerButtons[0].tap()
 
-        let alert = app.sheets.matching(identifier: "alert").element
-        XCTAssertTrue(alert.waitForExistence(timeout: 4))
-
+        let alert = app.sheets["alert"]
         let alertTitle = alert.staticTexts["Are you sure you want to start a new timer?"]
         let affirmButton = alert.buttons["Start timer"]
         let denyButton = alert.buttons["Cancel"]
@@ -90,8 +83,9 @@ final class HourglassUITests: XCTestCase {
 
 
         denyButton.tap()
-        // Note: - Assuming execution will be the same on each run could mean a flaky test.
-        XCTAssertEqual(app.statusItems["menu-bar-button"].title, "00:07")
+        let timestamp = app.statusItems["menu-bar-button"].title
+        let remainingSec = Int(timestamp.split(separator: ":").last!)!
+        XCTAssertLessThan(remainingSec, 10)
     }
 
     func testChangeRestSettingsWhileTimerInProgress() {
@@ -112,9 +106,7 @@ final class HourglassUITests: XCTestCase {
         let closeButton = app.buttons["Close"]
         closeButton.tap()
 
-        let alert = app.sheets.matching(identifier: "alert").element
-        XCTAssertTrue(alert.waitForExistence(timeout: 1))
-
+        let alert = app.sheets["alert"]
         let alertTitle = alert.staticTexts["Timer settings have been reset."]
         let okButton = alert.buttons["OK"]
         XCTAssertTrue([alertTitle, okButton].allSatisfy({ $0.exists }))

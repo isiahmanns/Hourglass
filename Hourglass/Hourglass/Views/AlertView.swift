@@ -6,7 +6,6 @@ struct AlertView: View {
 
     var body: some View {
         Color.clear
-            .frame(width: 0, height: 0)
             .confirmationDialog(Copy.startNewTimerDialogPrompt,
                                 isPresented: $viewModel.viewState.showStartNewTimerDialog) {
                 Button(Copy.startNewTimerDialogConfirm, role: .none) {

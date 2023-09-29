@@ -9,7 +9,7 @@ struct ContentView: View {
             AlertView(viewModel: viewModel, settingsManager: settingsManager)
 
             VStack(alignment: .center, spacing: 18.0) {
-                HStack {
+                HStack(alignment: .top) {
                     Logo(size: 28)
                     Spacer()
                     TimerCategoryToggle(viewModel: viewModel,
@@ -28,7 +28,8 @@ struct ContentView: View {
                 }
             }
             .fixedSize()
-            .padding(24)
+            .padding([.horizontal, .bottom], 20)
+            .padding(.top, 4)
             .background(Color.Hourglass.background)
             .font(.poppinsBody)
         }
