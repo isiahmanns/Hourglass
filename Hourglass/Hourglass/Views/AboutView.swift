@@ -47,8 +47,9 @@ struct AboutView: View {
                     .foregroundColor(Color.Hourglass.onBackgroundSecondary)
             }
         }
-        .padding([.leading, .trailing], 50)
-        .padding([.top, .bottom], 50)
+        .fixedSize()
+        .padding([.horizontal, .bottom], 40)
+        .padding(.top, 40 - 28)
         .background(Color.Hourglass.background)
         .foregroundColor(Color.Hourglass.onBackgroundPrimary)
         .sheet(isPresented: $showStoreFlow) {

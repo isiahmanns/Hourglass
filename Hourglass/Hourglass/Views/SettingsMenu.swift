@@ -28,12 +28,12 @@ struct SettingsMenu: View {
         Menu {
             Section {
                 Button("About Hourglass") {
-                    viewModel.showAboutWindow()
+                    viewModel.showWindow(.about)
                 }
             }
             Section {
                 Button("Statistics") {
-                    viewModel.showStatisticsWindow()
+                    viewModel.showWindow(.statistics)
                 }
                 Section("Options") {
                     Toggle("Sound", isOn: $soundIsEnabled)

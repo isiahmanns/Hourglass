@@ -28,7 +28,8 @@ struct ContentView: View {
                 }
             }
             .fixedSize()
-            .padding(24)
+            .padding([.horizontal, .bottom], 24)
+            .padding(.top, -4)
             .background(Color.Hourglass.background)
             .font(.poppinsBody)
         }

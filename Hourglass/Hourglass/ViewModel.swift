@@ -71,14 +71,11 @@ class ViewModel: ObservableObject {
         pendingTimerModel = nil
     }
 
-    // TODO: - Break into extensions
-    func showAboutWindow() {
-        windowCoordinator?.showAboutWindow()
-    }
-
-    func showStatisticsWindow() {
-        windowCoordinator?.showStatisticsWindow()
-        logEvent(.statisticsViewOpened)
+    func showWindow(_ windowContext: WindowContext) {
+        if windowContext == .statistics {
+            logEvent(.statisticsViewOpened)
+        }
+        windowCoordinator?.showWindow(windowContext)
     }
 
     func logEvent(_ event: AnalyticsEvent) {

@@ -2,9 +2,14 @@ import Combine
 import FirebaseCore
 import SwiftUI
 
+enum WindowContext: Int {
+    case app
+    case about
+    case statistics
+}
+
 protocol WindowCoordinator: AnyObject {
-    func showAboutWindow()
-    func showStatisticsWindow()
+    func showWindow(_ windowContext: WindowContext)
 }
 
 private struct Dependencies {
@@ -21,7 +26,7 @@ private struct Dependencies {
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBar: NSStatusBar = NSStatusBar.system
     private var statusItem: NSStatusItem!
-    private var popover: NSPopover!
+    private var appWindow: NSWindow!
     private var aboutWindow: NSWindow!
     private var statisticsWindow: NSWindow!
 
@@ -42,9 +47,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         FirebaseApp.configure()
         setupDelegates()
         setupStatusItem()
-        let view = setupContentView()
-        setupPopover(with: view)
-        setupAboutWindow()
+        setupAppUI()
     }
 
     private func setupDelegates() {
@@ -60,15 +63,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         if let button = statusItem.button {
             timestampNSView.translatesAutoresizingMaskIntoConstraints = false
+            button.translatesAutoresizingMaskIntoConstraints = false
             button.addSubview(timestampNSView)
 
-            // TODO: - Troubleshoot ambiguous contraints
             NSLayoutConstraint.activate([
                 timestampNSView.centerXAnchor.constraint(equalTo: button.centerXAnchor),
-                timestampNSView.centerYAnchor.constraint(equalTo: button.centerYAnchor)
+                timestampNSView.centerYAnchor.constraint(equalTo: button.centerYAnchor),
+                timestampNSView.widthAnchor.constraint(equalTo: button.widthAnchor),
+                timestampNSView.heightAnchor.constraint(equalTo: button.heightAnchor)
             ])
 
-            button.action = #selector(togglePopover)
+            button.action = #selector(toggleAppUI)
             button.setAccessibilityIdentifier("menu-bar-button")
 
             Dependencies.timerManager.$timeStamp
@@ -79,83 +84,71 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func setupPopover(with view: some View) {
-        popover = NSPopover()
-        popover.behavior = .transient
-        popover.contentViewController = PopoverViewController(with: view, backgroundColor: Color.Hourglass.background)
+    @objc private func toggleAppUI() {
+        // TODO: - Handle close/opening window
+        showWindow(.app)
     }
 
-    private func setupContentView() -> some View {
-        return ContentView(viewModel: viewModel, settingsManager: Dependencies.settingsManager)
-    }
-
-    private func setupAboutWindow() {
-        let aboutView = AboutView(bundle: Dependencies.bundle,
-                                  iapManager: Dependencies.iapManager)
-        let aboutViewController = NSHostingController(rootView: aboutView)
-        aboutWindow = NSWindow(contentViewController: aboutViewController)
-        aboutWindow.styleMask = [.titled, .closable, .fullSizeContentView]
-        aboutWindow.title = "About"
-        aboutWindow.titleVisibility = .hidden
-        aboutWindow.titlebarAppearsTransparent = true
-        aboutWindow.level = .floating
-        aboutWindow.setContentSize(aboutViewController.view.fittingSize)
-    }
-
-    private func setupStatisticsWindow() {
-        let statisticsView = StatisticsView()
-            .environment(\.managedObjectContext, CoreDataStore.shared.context)
-
-        let statisticsViewController = NSHostingController(rootView: statisticsView)
-        statisticsWindow = NSWindow(contentViewController: statisticsViewController)
-        statisticsWindow.styleMask = [.titled, .closable, .resizable]
-        statisticsWindow.titlebarAppearsTransparent = true
-        statisticsWindow.level = .floating
-        statisticsWindow.title = "Statistics"
-        statisticsWindow.delegate = self
-    }
-}
-
-extension AppDelegate {
-    @objc private func togglePopover() {
-        if popover.isShown {
-            hidePopover()
-        } else {
-            showPopover()
-        }
-    }
-
-    private func hidePopover() {
-        popover.performClose(nil)
-    }
-
-    private func showPopover() {
-        if let button = statusItem.button {
-            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-        }
+    private func setupAppUI() {
+        let appView = ContentView(viewModel: viewModel, settingsManager: Dependencies.settingsManager)
+        let appViewController = NSHostingController(rootView: appView)
+        appWindow = NSWindow(contentViewController: appViewController)
+        // TODO: - Experiment with using close button on window
+        appWindow.styleMask = [.titled, .fullSizeContentView]
+        appWindow.titleVisibility = .hidden
+        appWindow.titlebarAppearsTransparent = true
+        appWindow.level = .floating
     }
 }
 
 extension AppDelegate: WindowCoordinator {
-    func showAboutWindow() {
-        aboutWindow.makeKeyAndOrderFront(nil)
-    }
+    func showWindow(_ windowContext: WindowContext) {
+        var window: NSWindow!
 
-    func showStatisticsWindow() {
-        if statisticsWindow == nil {
-            setupStatisticsWindow()
+        switch windowContext {
+        case .app:
+            window = appWindow
+        case .about:
+            window = aboutWindow
+        case .statistics:
+            window = statisticsWindow
         }
 
-        statisticsWindow.makeKeyAndOrderFront(nil)
-    }
-}
-
-extension AppDelegate: NSWindowDelegate {
-    func windowShouldClose(_ sender: NSWindow) -> Bool {
-        if sender == statisticsWindow {
-            statisticsWindow = nil
+        if window == nil {
+            window = setupWindow(windowContext)
         }
 
-        return true
+        window.makeKeyAndOrderFront(nil)
+    }
+
+    private func setupWindow(_ windowContext: WindowContext) -> NSWindow? {
+        // TODO: - Release windows on close
+        switch windowContext {
+        case .app:
+            break
+        case .about:
+            let aboutView = AboutView(bundle: Dependencies.bundle,
+                                      iapManager: Dependencies.iapManager)
+            let aboutViewController = NSHostingController(rootView: aboutView)
+            aboutWindow = NSWindow(contentViewController: aboutViewController)
+            aboutWindow.styleMask = [.titled, .closable, .fullSizeContentView]
+            aboutWindow.title = "About"
+            aboutWindow.titleVisibility = .hidden
+            aboutWindow.titlebarAppearsTransparent = true
+            aboutWindow.level = .floating
+            return aboutWindow
+        case .statistics:
+            let statisticsView = StatisticsView()
+                .environment(\.managedObjectContext, CoreDataStore.shared.context)
+            let statisticsViewController = NSHostingController(rootView: statisticsView)
+            statisticsWindow = NSWindow(contentViewController: statisticsViewController)
+            statisticsWindow.styleMask = [.titled, .closable, .resizable]
+            statisticsWindow.title = "Statistics"
+            statisticsWindow.titlebarAppearsTransparent = true
+            statisticsWindow.level = .floating
+            return statisticsWindow
+        }
+
+        return nil
     }
 }
