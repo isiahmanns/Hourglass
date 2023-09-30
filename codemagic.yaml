@@ -6,7 +6,7 @@ workflows:
             groups:
                 - firebase_credentials
                 - config_credentials
-            xcode: 14.3
+            xcode: 15.0
         triggering:
             events:
                 - push
@@ -35,8 +35,8 @@ workflows:
                 xcodebuild clean test \
                     -project 'Hourglass.xcodeproj' \
                     -scheme 'Hourglass' \
-                    -destination 'platform=macOS,arch=x86_64' \
-                    -sdk 'macosx13.3' \
+                    -destination 'platform=macOS,arch=arm64' \
+                    -sdk 'macosx14.0' \
                     -parallel-testing-enabled NO \
                     CODE_SIGNING_ALLOWED=NO \
                     | xcpretty
@@ -97,8 +97,8 @@ workflows:
                 xcodebuild clean archive \
                     -project 'Hourglass.xcodeproj' \
                     -scheme 'Hourglass' \
-                    -destination 'platform=macOS,arch=x86_64' \
-                    -sdk 'macosx13.3' \
+                    -destination 'platform=macOS,arch=arm64' \
+                    -sdk 'macosx14.0' \
                     -archivePath build/macos/Hourglass.xcarchive
             - name: Export archive
               script: |
