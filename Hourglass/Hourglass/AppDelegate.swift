@@ -2,7 +2,7 @@ import Combine
 import FirebaseCore
 import SwiftUI
 
-enum WindowContext: Int {
+enum WindowContext {
     case app
     case about
     case statistics
@@ -27,8 +27,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBar: NSStatusBar = NSStatusBar.system
     private var statusItem: NSStatusItem!
     private var appWindow: NSWindow!
-    private var aboutWindow: NSWindow!
-    private var statisticsWindow: NSWindow!
+    private var aboutWindow: NSWindow?
+    private var statisticsWindow: NSWindow?
 
     // Root Dependencies
     private var iapManager = Dependencies.iapManager
@@ -97,9 +97,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
-extension AppDelegate: WindowCoordinator {
+extension AppDelegate: WindowCoordinator, NSWindowDelegate {
     func showWindow(_ windowContext: WindowContext) {
-        var window: NSWindow!
+        var window: NSWindow?
 
         switch windowContext {
         case .app:
@@ -114,37 +114,51 @@ extension AppDelegate: WindowCoordinator {
             window = setupWindow(windowContext)
         }
 
-        window.makeKeyAndOrderFront(nil)
+        window!.makeKeyAndOrderFront(nil)
     }
 
-    private func setupWindow(_ windowContext: WindowContext) -> NSWindow? {
-        // TODO: - Release windows on close
+    private func setupWindow(_ windowContext: WindowContext) -> NSWindow {
         switch windowContext {
         case .app:
-            break
+            fatalError()
         case .about:
             let aboutView = AboutView(bundle: Dependencies.bundle,
                                       iapManager: Dependencies.iapManager)
             let aboutViewController = NSHostingController(rootView: aboutView)
-            aboutWindow = NSWindow(contentViewController: aboutViewController)
+            let aboutWindow = NSWindow(contentViewController: aboutViewController)
             aboutWindow.styleMask = [.titled, .closable, .fullSizeContentView]
             aboutWindow.title = "About"
             aboutWindow.titleVisibility = .hidden
             aboutWindow.titlebarAppearsTransparent = true
             aboutWindow.level = .floating
+            aboutWindow.delegate = self
+            self.aboutWindow = aboutWindow
             return aboutWindow
         case .statistics:
             let statisticsView = StatisticsView()
                 .environment(\.managedObjectContext, CoreDataStore.shared.context)
             let statisticsViewController = NSHostingController(rootView: statisticsView)
-            statisticsWindow = NSWindow(contentViewController: statisticsViewController)
+            let statisticsWindow = NSWindow(contentViewController: statisticsViewController)
             statisticsWindow.styleMask = [.titled, .closable, .resizable]
             statisticsWindow.title = "Statistics"
             statisticsWindow.titlebarAppearsTransparent = true
             statisticsWindow.level = .floating
+            statisticsWindow.delegate = self
+            self.statisticsWindow = statisticsWindow
             return statisticsWindow
         }
+    }
 
-        return nil
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        switch sender {
+        case aboutWindow:
+            self.aboutWindow = nil
+        case statisticsWindow:
+            self.statisticsWindow = nil
+        default:
+            break
+        }
+
+        return true
     }
 }
