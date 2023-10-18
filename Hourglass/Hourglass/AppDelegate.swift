@@ -84,6 +84,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func toggleAppUI() {
         showWindow(.app)
+        NSApplication.shared.activate(ignoringOtherApps: true)
     }
 
     private func setupAppUI() {
